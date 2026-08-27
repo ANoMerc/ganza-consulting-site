@@ -13,7 +13,8 @@
   justify-content:space-between;
   gap:24px;
   width:100%;
-  margin-top:0;
+  max-width:1320px;
+  margin:0 auto;
   padding:30px 32px;
   background:var(--ink);
   color:var(--paper);
