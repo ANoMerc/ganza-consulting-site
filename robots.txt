@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://anomerc.github.io/ganza-consulting-site/sitemap.xml
