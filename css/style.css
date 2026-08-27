@@ -264,6 +264,26 @@ html[data-lang="en"] .lang-switch__opt[data-set="en"]{opacity:1;}
   padding:56px 32px 32px;
   max-width:1320px;
   margin:0 auto;
+  position:relative;
+}
+.section-deco{
+  position:absolute;
+  top:44px;
+  right:32px;
+  width:56px;
+  height:56px;
+  pointer-events:none;
+  opacity:0.9;
+}
+.section-deco--plus{fill:var(--blue);}
+.section-deco--burst{fill:var(--yellow);}
+.section-deco--target{color:var(--red);}
+.section-deco--target circle:last-child{fill:var(--red);}
+@media (max-width: 980px){
+  .section-deco{width:42px; height:42px; top:40px; right:24px;}
+}
+@media (max-width: 720px){
+  .section-deco{display:none;}
 }
 .section-label .tag{margin-bottom:14px;}
 .section-label h2{font-size:clamp(34px, 5vw, 56px);}
@@ -702,6 +722,55 @@ html[data-lang="en"] .lang-switch__opt[data-set="en"]{opacity:1;}
   line-height:1.65;
   margin-bottom:16px;
   max-width:480px;
+}
+.about__col--photo{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:var(--paper-dim);
+  padding:56px 40px;
+  position:relative;
+  overflow:hidden;
+}
+.about__photo-frame{
+  position:relative;
+  width:100%;
+  max-width:360px;
+  border:var(--border-w-lg) solid var(--ink);
+  background:var(--yellow);
+  box-shadow:14px 14px 0 var(--blue);
+  transform:rotate(-1.5deg);
+}
+.about__photo{
+  display:block;
+  width:100%;
+  height:auto;
+  background:var(--yellow);
+}
+.about__photo-tag{
+  position:absolute;
+  left:-14px;
+  bottom:22px;
+  background:var(--ink);
+  color:var(--paper);
+  font-family:var(--font-mono);
+  font-weight:700;
+  font-size:12px;
+  line-height:1.4;
+  letter-spacing:0.03em;
+  padding:9px 13px;
+  border:2px solid var(--ink);
+  transform:rotate(-3deg);
+  box-shadow:4px 4px 0 var(--red);
+  white-space:nowrap;
+}
+@media (max-width: 980px){
+  .about__col--photo{padding:40px 32px;}
+}
+@media (max-width: 720px){
+  .about__col--photo{padding:36px 24px 44px; order:-1;}
+  .about__photo-frame{max-width:280px; box-shadow:9px 9px 0 var(--blue);}
+  .about__photo-tag{font-size:11px; padding:7px 10px; left:-8px;}
 }
 
 /* ==========================================================================
