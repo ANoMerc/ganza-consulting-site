@@ -138,6 +138,22 @@ def build_cover(slug, tag, title):
     return out, size, len(lines)
 
 
+def build_thumbs(width=760):
+    """Small WebP copies for the blog index — the 1200px PNGs are for social
+    cards only, shipping 12 of them to a listing page costs ~450 KB."""
+    saved = 0
+    for f in sorted(os.listdir(os.path.join(ROOT, "img", "blog"))):
+        if not f.endswith("-cover.png"):
+            continue
+        src = os.path.join(ROOT, "img", "blog", f)
+        dst = src.replace("-cover.png", "-card.webp")
+        im = Image.open(src)
+        im = im.resize((width, round(width * im.height / im.width)), Image.LANCZOS)
+        im.save(dst, "WEBP", quality=82, method=6)
+        saved += os.path.getsize(src) - os.path.getsize(dst)
+    print(f"thumbnails written, {saved // 1024} KB saved across the listing")
+
+
 def main():
     if not os.path.exists(TITLE_FONT):
         raise SystemExit(f"missing fonts in {FONT_DIR} — see README")
@@ -145,6 +161,7 @@ def main():
         title = short_title(post["h1"]["en"])
         _, size, lines = build_cover(post["slug"], post["tag"]["en"], title)
         print(f"{post['slug']:<44} {size:>3}px / {lines} lines — {title[:44]}")
+    build_thumbs()
 
 
 if __name__ == "__main__":
