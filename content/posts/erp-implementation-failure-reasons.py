@@ -5,8 +5,8 @@ POST = dict(
     updated="2026-08-27",
     tag={"en": "Project Management", "ru": "Управление проектами"},
     title={
-        "en": "Why ERP Implementations Fail: 7 Failure Modes and the Early Signal for Each",
-        "ru": "Почему проваливаются внедрения ERP: 7 сценариев отказа и ранний сигнал каждого",
+        "en": 'Why ERP Implementations Fail: 7 Failure Modes',
+        "ru": 'Почему проваливаются внедрения ERP: 7 сценариев',
     },
     h1={
         "en": "Why ERP Implementations Fail: 7 Failure Modes and the Early Signal for Each",
@@ -17,8 +17,8 @@ POST = dict(
         "ru": "У публично задокументированных катастроф общий небольшой набор механизмов. Каждый подаёт конкретный сигнал за месяцы до списания — если кто-то за ним следит.",
     },
     description={
-        "en": "Seven recurring ERP failure modes drawn from publicly documented cases, the early warning signal each produces, cheap countermeasures, and a pre-go-live checklist that catches most of them.",
-        "ru": "Семь повторяющихся сценариев провала ERP на основе публично задокументированных кейсов, ранний сигнал каждого, дешёвые контрмеры и чек-лист перед запуском, ловящий большинство из них.",
+        "en": 'Seven recurring ERP failure modes from publicly documented cases, the early signal each emits, and a pre-go-live checklist that catches most of them.',
+        "ru": 'Семь сценариев провала ERP по публичным кейсам, ранний сигнал каждого и чек-лист перед запуском, который ловит большинство из них.',
     },
     keywords={
         "en": "ERP implementation failure, why ERP projects fail, SAP implementation risks, ERP go-live checklist, data migration failure, change management ERP, ERP project governance, system implementation risk",

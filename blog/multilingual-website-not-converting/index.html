@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Why Your Multilingual Website Isn&#x27;t Converting (It&#x27;s Not About Translation) | Ganza Consulting</title>
-<meta name="description" content="Layout that breaks on longer strings, trust signals that don&#x27;t transfer, payment expectations, hreflang mistakes that hide half your site from search — the technical and cultural reasons a translated site still doesn&#x27;t sell.">
+<title>Why Your Multilingual Website Isn&#x27;t Converting</title>
+<meta name="description" content="Layout that breaks on longer strings, trust signals that don&#x27;t transfer, and the hreflang mistakes that hide half your site from search engines.">
 <meta name="keywords" content="multilingual website, website localization, hreflang implementation, international SEO, multi-market conversion, RTL layout, localization mistakes, translated website not converting">
 <meta name="author" content="George Mercer">
 <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1">
@@ -20,15 +20,15 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:locale:alternate" content="ru_RU">
 <meta property="og:url" content="https://anomerc.github.io/ganza-consulting-site/blog/multilingual-website-not-converting/">
-<meta property="og:title" content="Why Your Multilingual Website Isn&#x27;t Converting (It&#x27;s Not About Translation) | Ganza Consulting">
-<meta property="og:description" content="Layout that breaks on longer strings, trust signals that don&#x27;t transfer, payment expectations, hreflang mistakes that hide half your site from search — the technical and cultural reasons a translated site still doesn&#x27;t sell.">
+<meta property="og:title" content="Why Your Multilingual Website Isn&#x27;t Converting">
+<meta property="og:description" content="Layout that breaks on longer strings, trust signals that don&#x27;t transfer, and the hreflang mistakes that hide half your site from search engines.">
 <meta property="og:image" content="https://anomerc.github.io/ganza-consulting-site/img/blog/multilingual-website-not-converting-cover.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Why Your Multilingual Website Isn&#x27;t Converting (It&#x27;s Not About Translation)">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Why Your Multilingual Website Isn&#x27;t Converting (It&#x27;s Not About Translation) | Ganza Consulting">
-<meta name="twitter:description" content="Layout that breaks on longer strings, trust signals that don&#x27;t transfer, payment expectations, hreflang mistakes that hide half your site from search — the technical and cultural reasons a translated site still doesn&#x27;t sell.">
+<meta name="twitter:title" content="Why Your Multilingual Website Isn&#x27;t Converting">
+<meta name="twitter:description" content="Layout that breaks on longer strings, trust signals that don&#x27;t transfer, and the hreflang mistakes that hide half your site from search engines.">
 <meta name="twitter:image" content="https://anomerc.github.io/ganza-consulting-site/img/blog/multilingual-website-not-converting-cover.png">
 <meta property="article:published_time" content="2026-08-13">
 <meta property="article:modified_time" content="2026-08-27">
@@ -121,7 +121,7 @@
       "@id": "https://anomerc.github.io/ganza-consulting-site/blog/multilingual-website-not-converting/#article",
       "headline": "Why Your Multilingual Website Isn't Converting (It's Not About Translation)",
       "alternativeHeadline": "Translation is the easy 20% of localisation. The 80% that decides whether a site converts has almost nothing to do with words.",
-      "description": "Layout that breaks on longer strings, trust signals that don't transfer, payment expectations, hreflang mistakes that hide half your site from search — the technical and cultural reasons a translated site still doesn't sell.",
+      "description": "Layout that breaks on longer strings, trust signals that don't transfer, and the hreflang mistakes that hide half your site from search engines.",
       "articleSection": "Web Development",
       "keywords": "multilingual website, website localization, hreflang implementation, international SEO, multi-market conversion, RTL layout, localization mistakes, translated website not converting",
       "inLanguage": "en",
@@ -219,7 +219,7 @@
       <span class="logo__text">GANZA<br>CONSULTING</span>
     </a>
 
-    <nav class="nav" id="nav">
+    <nav class="nav" id="nav" aria-label="Main navigation">
       <a href="../../#services">Services</a>
       <a href="../../#cases">Cases</a>
       <a href="../../#pricing">Pricing</a>
@@ -282,7 +282,7 @@
         <h2 id="5-search-engines-can-only-see-one-version-of-your-site">5. Search engines can only see one version of your site</h2>
         <p>This is the failure that hides all the others: you fixed the site, and half of it isn't being indexed. The most common technical mistakes:</p>
         <ol><li><strong>Client-side language switching only.</strong> If both languages live in one URL and JavaScript toggles them, search engines index one version. The other language effectively doesn't exist as a landing page.</li><li><strong>Missing or non-reciprocal hreflang.</strong> Every language version must point to every other one <em>and</em> to itself, with matching URLs on both sides. One-way declarations are ignored.</li><li><strong>Wrong or invented language codes.</strong> Use ISO 639-1 language codes plus optional ISO 3166-1 Alpha-2 region codes. <code>en-GB</code> is valid; <code>en-UK</code> is not.</li><li><strong>No x-default.</strong> Declare which version serves users whose language you don't target.</li><li><strong>Canonical fighting hreflang.</strong> Each language version should be canonical to itself. Pointing every localised page's canonical at the English one removes them from the index — a surprisingly common configuration.</li><li><strong>Automatic IP-based redirects.</strong> Forcing a visitor (or a crawler) into a language version by geography prevents indexing of the others and irritates people who deliberately chose a language.</li></ol>
-        <aside class="post__note">Practical structure that avoids most of this: one physical URL per language (<code>/</code> and <code>/ru/</code>, or subdomains, or ccTLDs), reciprocal hreflang tags including x-default, self-referencing canonicals, and a language switch that navigates to a real URL rather than silently swapping text. Let users choose; never redirect them by IP.</aside>
+        <div class="post__note">Practical structure that avoids most of this: one physical URL per language (<code>/</code> and <code>/ru/</code>, or subdomains, or ccTLDs), reciprocal hreflang tags including x-default, self-referencing canonicals, and a language switch that navigates to a real URL rather than silently swapping text. Let users choose; never redirect them by IP.</div>
         <h2 id="6-the-content-strategy-is-a-translation-not-a-market">6. The content strategy is a translation, not a market</h2>
         <p>The deepest version of the problem: the page answers the questions your home market asks. Objections differ by market — price sensitivity, contract length, data residency, whether working with a foreign supplier is normal or exotic. A word-perfect translation of the wrong objection handling converts worse than clumsy copy addressing the right one.</p>
         <p>The same applies to search intent. Direct translation of keywords frequently misses how the market actually searches: different phrasing, different level of technicality, sometimes an English loanword that ranks better than the native term. Keyword research has to be redone per language, not translated.</p>
@@ -293,10 +293,10 @@
         <p>Most localisation budgets run this list backwards: they start with content and never reach hreflang. If you only have budget for one step, do the first — a correctly indexed mediocre translation outperforms a beautiful one nobody can find.</p>
   </div>
 
-  <aside class="post__takeaways">
+  <div class="post__takeaways">
     <p class="post__takeaways-title">WHAT TO TAKE AWAY</p>
     <ul><li>Translation is roughly 20% of localisation; layout tolerance, trust signals, transactional expectations and indexing are the rest.</li><li>Design so any string can grow ~35% without breaking, and test with your longest language — buttons and form messages fail first.</li><li>Trust signals are market-specific: match local competitors' level of disclosure and lead with the market's default contact channel.</li><li>The most expensive technical mistake is client-side-only language switching, followed by non-reciprocal hreflang and canonicals pointing at the source language.</li><li>Never redirect by IP; let the user choose and make the switch change the URL.</li><li>Sequence the work indexing → conversion path → trust signals → content. Most budgets run it backwards.</li></ul>
-  </aside>
+  </div>
 
   <section class="post__faq" id="faq">
     <h2>FREQUENTLY ASKED QUESTIONS</h2>

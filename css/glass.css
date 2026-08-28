@@ -26,8 +26,8 @@
 
   /* текст */
   --g-text:          #f2f0e8;
-  --g-text-2:        rgba(242,240,232,.74);
-  --g-text-3:        rgba(242,240,232,.54);
+  --g-text-2:        rgba(242,240,232,.82);
+  --g-text-3:        rgba(242,240,232,.72);   /* AA на 11px bold: 8.5:1 */
 
   /* стекло */
   --g-surface:       rgba(255,255,255,.055);
@@ -653,3 +653,52 @@ a:focus-visible,button:focus-visible,summary:focus-visible,details:focus-visible
   .nav a{border-bottom:1px solid var(--g-border); padding:13px 20px;}
   .nav a:last-child{border-bottom:0;}
 }
+
+/* контраст: декоративная строка в баннере конструктора не проходила AA */
+.builder-trigger__glitch{color:rgba(232,255,46,.55);}
+
+/* ==========================================================================
+   ИСПРАВЛЕНИЯ КОНТРАСТА (по отчёту axe-core, WCAG 2.1 AA)
+   Наследуемая opacity перемножалась с цветом и опускала мелкий жирный текст
+   до 2.4–3.9:1 при норме 4.5:1.
+   ========================================================================== */
+.post__meta,
+.post__nav-label,
+.post-card__meta,
+.related-card__meta,
+.related-card__tag,
+.post__author-label,
+.post__toc-title,
+.blog-hero__count,
+.breadcrumbs,
+.footer__bottom,
+.price-card__note,
+.price-card__duration,
+.case-card__client,
+.case-card__label,
+.service-cell__num,
+.service-cell__cta,
+.pricing__footnote{
+  opacity:1;
+  color:var(--g-text-3);
+}
+.post__meta,.post__nav-label{color:rgba(242,240,232,.86);}
+.builder-trigger__glitch{opacity:1; color:rgba(232,255,46,.62);}
+
+/* ==========================================================================
+   ПРОИЗВОДИТЕЛЬНОСТЬ: 39 слоёв backdrop-filter на главной — это дорого даже
+   на десктопе. Мелкие повторяющиеся элементы размытия всё равно не показывают
+   (нечего размывать на площади 20×80px), поэтому у них его нет.
+   ========================================================================== */
+.btn,.tag,.badge,.post__steps li,.lang-switch,.burger,
+.post-card__tag,.post__tag,.blog-filter__btn,.hero__tag,.price-card__badge{
+  -webkit-backdrop-filter:none;
+  backdrop-filter:none;
+}
+.btn{background:rgba(255,255,255,.10);}
+.btn--outline{background:rgba(255,255,255,.04);}
+.btn--yellow{background:var(--yellow);}
+.lang-switch,.burger{background:rgba(255,255,255,.10);}
+.post__steps li{background:rgba(255,255,255,.06);}
+.blog-filter__btn{background:rgba(255,255,255,.06);}
+.hero__tag{background:linear-gradient(150deg, rgba(47,46,240,.9), rgba(47,46,240,.72));}

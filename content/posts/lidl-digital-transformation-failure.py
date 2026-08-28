@@ -5,8 +5,8 @@ POST = dict(
     updated="2026-08-27",
     tag={"en": "Case Study", "ru": "Разбор кейса"},
     title={
-        "en": "How Lidl Lost €500 Million: A Case Study in Digital Transformation Failure",
-        "ru": "Как Lidl потерял €500 млн: разбор провала цифровой трансформации",
+        "en": 'How Lidl Lost €500M: A Digital Transformation Failure',
+        "ru": 'Как Lidl потерял €500 млн: разбор провала внедрения',
     },
     h1={
         "en": "How Lidl Lost €500 Million: A Case Study in Digital Transformation Failure",
@@ -17,8 +17,8 @@ POST = dict(
         "ru": "Проект eLWIS не провалился в один момент. Он уезжал в сторону семь лет — пока поддерживать его не стало дороже, чем признать мёртвым.",
     },
     description={
-        "en": "A breakdown of Lidl's abandoned SAP rollout: how customising software instead of changing one process, plus a widening gap between reports and reality, burned roughly €500 million — and the five checks that catch the same drift early.",
-        "ru": "Разбор отменённого внедрения SAP в Lidl: как доработка системы вместо изменения одного процесса и растущий разрыв между отчётами и реальностью сожгли около €500 млн — и пять проверок, ловящих тот же сценарий заранее.",
+        "en": 'How customising SAP instead of changing one process burned about €500 million over seven years — and the five checks that catch the same drift early.',
+        "ru": 'Как доработка SAP вместо изменения одного процесса сожгла около €500 млн за семь лет — и пять проверок, которые ловят тот же сценарий заранее.',
     },
     keywords={
         "en": "Lidl SAP failure, eLWIS project, digital transformation failure case study, ERP implementation failure, SAP customization risk, change management failure, IT project governance, sunk cost in IT projects",

@@ -5,8 +5,8 @@ POST = dict(
     updated="2026-08-27",
     tag={"en": "Pricing", "ru": "Цены"},
     title={
-        "en": "How Much Does Business Consulting Cost in 2026? Rates, Models and What Drives the Number",
-        "ru": "Сколько стоит бизнес-консалтинг в 2026 году: ставки, модели оплаты и из чего складывается цена",
+        "en": 'How Much Does Business Consulting Cost in 2026?',
+        "ru": 'Сколько стоит бизнес-консалтинг в 2026 году',
     },
     h1={
         "en": "How Much Does Business Consulting Cost in 2026? Rates, Models and What Drives the Number",
@@ -17,8 +17,8 @@ POST = dict(
         "ru": "Публикуемые вилки ставок настолько широки, что сами по себе бесполезны. Значение имеет модель оплаты и семь факторов, которые реально двигают ваше предложение.",
     },
     description={
-        "en": "Real 2026 benchmarks for consulting rates by supplier type, the four pricing models and what each one optimises, the seven factors that move a quote, and how to read a proposal for padding.",
-        "ru": "Реальные ориентиры 2026 года по ставкам консалтинга в зависимости от типа подрядчика, четыре модели оплаты, семь факторов, двигающих цену, и как читать коммерческое предложение на предмет раздувания.",
+        "en": 'Real 2026 benchmarks by supplier type, the four pricing models, the seven factors that move a quote, and how to read a proposal for padding.',
+        "ru": 'Ориентиры 2026 года по типам подрядчиков, четыре модели оплаты, семь факторов цены и как читать предложение на предмет раздувания.',
     },
     keywords={
         "en": "business consulting cost, consulting rates 2026, consultant hourly rate, consulting day rate, management consulting fees, fixed price vs hourly consulting, how much do consultants charge, consulting project budget",

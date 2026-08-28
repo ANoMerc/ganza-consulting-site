@@ -5,8 +5,8 @@ POST = dict(
     updated="2026-08-27",
     tag={"en": "Consulting", "ru": "Консалтинг"},
     title={
-        "en": "How to Choose a Business Consultant: 9 Questions That Separate Expertise From a Good Deck",
-        "ru": "Как выбрать бизнес-консультанта: 9 вопросов, отделяющих экспертизу от красивой презентации",
+        "en": 'How to Choose a Business Consultant: 9 Questions',
+        "ru": 'Как выбрать бизнес-консультанта: 9 вопросов',
     },
     h1={
         "en": "How to Choose a Business Consultant: 9 Questions That Separate Expertise From a Good Deck",
@@ -17,8 +17,8 @@ POST = dict(
         "ru": "Выбор обычно проваливается в первом разговоре, а не на исполнении. Эти девять вопросов за полчаса вскрывают то, на что у отзывов уходят недели.",
     },
     description={
-        "en": "Nine questions to ask a consultant before signing, what a good and a bad answer sound like for each, the proposal red flags worth walking away from, and how to structure a low-risk first engagement.",
-        "ru": "Девять вопросов, которые нужно задать консультанту до подписания, как звучит хороший и плохой ответ на каждый, тревожные признаки в предложении и как построить первый проект с минимальным риском.",
+        "en": "Nine questions to ask before signing, what a good and a bad answer sound like, and how to structure a first engagement that's cheap to walk away from.",
+        "ru": 'Девять вопросов до подписания, как звучит хороший и плохой ответ на каждый и как построить первый проект, из которого дёшево выйти.',
     },
     keywords={
         "en": "how to choose a business consultant, hiring a consultant, consultant selection criteria, questions to ask a consultant, vetting consultants, consulting proposal red flags, consultant references, first engagement structure",

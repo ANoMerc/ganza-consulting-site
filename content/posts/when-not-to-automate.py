@@ -5,8 +5,8 @@ POST = dict(
     updated="2026-08-27",
     tag={"en": "Automation & AI", "ru": "Автоматизация и ИИ"},
     title={
-        "en": "When Not to Automate: The Hidden Risk of Automating Broken Processes",
-        "ru": "Когда не нужно автоматизировать: скрытый риск автоматизации сломанных процессов",
+        "en": 'When Not to Automate: The Risk of Broken Processes',
+        "ru": 'Когда не нужно автоматизировать: скрытые риски',
     },
     h1={
         "en": "When Not to Automate: The Hidden Risk of Automating Broken Processes",
@@ -17,8 +17,8 @@ POST = dict(
         "ru": "Автоматизация сломанного процесса его не чинит. Она заставляет сломанную версию работать быстрее, стабильнее и гораздо незаметнее.",
     },
     description={
-        "en": "Six categories of process that should not be automated, the hidden costs missing from every business case, and a scorecard for deciding whether a process deserves to survive in its current form at all.",
-        "ru": "Шесть категорий процессов, которые не стоит автоматизировать, скрытые издержки, отсутствующие в любом обосновании проекта, и оценочная таблица: заслуживает ли процесс существовать в текущем виде.",
+        "en": 'Six kinds of process you should not automate, the costs missing from every business case, and a scorecard for deciding what deserves to survive.',
+        "ru": 'Шесть категорий процессов, которые не стоит автоматизировать, издержки, отсутствующие в обоснованиях, и таблица для решения, что оставить.',
     },
     keywords={
         "en": "when not to automate, process automation risks, automating broken processes, AI automation mistakes, business process automation, hidden costs of automation, workflow automation strategy, RPA failure",

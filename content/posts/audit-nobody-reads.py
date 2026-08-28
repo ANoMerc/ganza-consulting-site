@@ -5,8 +5,8 @@ POST = dict(
     updated="2026-08-27",
     tag={"en": "Consulting", "ru": "Консалтинг"},
     title={
-        "en": "The Audit Nobody Reads: Why Most Business Audits Fail to Drive Change",
-        "ru": "Аудит, который никто не читает: почему отчёты не меняют бизнес",
+        "en": 'The Audit Nobody Reads: Why Business Audits Fail',
+        "ru": 'Аудит, который никто не читает: почему отчёты не работают',
     },
     h1={
         "en": "The Audit Nobody Reads: Why Most Business Audits Fail to Drive Change",
@@ -17,8 +17,8 @@ POST = dict(
         "ru": "Большинство аудитов спроектированы, чтобы продемонстрировать основательность, а не чтобы их применили. Это проблема проектирования, а не точности — и решается она в техзадании.",
     },
     description={
-        "en": "Why a correct 60-slide audit changes nothing, the structural reasons consultants write them that way, and how to specify a business audit that produces a decision instead of a PDF.",
-        "ru": "Почему абсолютно верный отчёт на 60 слайдов ничего не меняет, из-за чего консультанты пишут именно так и как заказать аудит, который заканчивается решением, а не PDF-файлом.",
+        "en": 'Why a correct 60-slide audit changes nothing, and how to specify a business audit that ends in a decision instead of a PDF nobody opens twice.',
+        "ru": 'Почему верный отчёт на 60 слайдов ничего не меняет и как заказать аудит, который заканчивается решением, а не PDF-файлом на один просмотр.',
     },
     keywords={
         "en": "business audit, process audit, operational audit, consulting deliverables, why audits fail, actionable recommendations, audit scope, business process improvement, consulting report",

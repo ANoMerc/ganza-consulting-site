@@ -5,8 +5,8 @@ POST = dict(
     updated="2026-08-27",
     tag={"en": "Automation & AI", "ru": "Автоматизация и ИИ"},
     title={
-        "en": "Small Business Automation: What to Automate First (and What to Leave Alone)",
-        "ru": "Автоматизация малого бизнеса: что автоматизировать первым, а что не трогать",
+        "en": 'Small Business Automation: What to Automate First',
+        "ru": 'Автоматизация малого бизнеса: с чего начать',
     },
     h1={
         "en": "Small Business Automation: What to Automate First (and What to Leave Alone)",
@@ -17,8 +17,8 @@ POST = dict(
         "ru": "Способ расставить приоритеты за двадцать минут, пять автоматизаций, которые стабильно окупаются в небольших командах, и стоимость поддержки, которую никто не закладывает.",
     },
     description={
-        "en": "How to rank automation candidates by payback rather than by annoyance, the five that work for small teams, build-vs-buy-vs-no-code trade-offs, a 90-day sequence, and where AI actually helps in 2026.",
-        "ru": "Как ранжировать кандидатов на автоматизацию по окупаемости, а не по раздражению, пять работающих в небольших командах решений, выбор между разработкой, покупкой и no-code, план на 90 дней и где ИИ действительно помогает.",
+        "en": 'How to rank automation candidates by payback instead of annoyance, the five that reliably work for small teams, and the maintenance cost nobody budgets.',
+        "ru": 'Как ранжировать автоматизацию по окупаемости, а не по раздражению, пять решений для небольших команд и стоимость поддержки, которую не закладывают.',
     },
     keywords={
         "en": "small business automation, what to automate first, business process automation for small teams, no-code automation, automation ROI, AI for small business, workflow automation, automation maintenance cost",

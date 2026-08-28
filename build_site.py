@@ -23,14 +23,14 @@ MASTER = os.path.join(ROOT, "_src", "index.master.html")
 
 META = {
     "en": dict(
-        title="Ganza Consulting — Independent Business Consulting, Automation &amp; AI, Project Management",
-        description="Independent consulting studio for the hard problems bigger firms pass on: business consulting, process automation and AI, project management, custom web development.",
+        title="Ganza Consulting — Business Consulting, Automation &amp; AI",
+        description="Independent consulting studio for the hard problems bigger firms pass on: consulting, process automation and AI, project management, web development.",
         keywords="business consulting, independent consultant, boutique consulting studio, business process automation, AI implementation, project management consulting, custom web development, digital transformation consulting, operations consulting, consulting for startups",
         og_alt="Ganza Consulting — independent consulting, automation and project management",
     ),
     "ru": dict(
-        title="Ganza Consulting — бизнес-консалтинг, автоматизация и ИИ, проектный менеджмент",
-        description="Независимый консалтинг для сложных задач, за которые не берутся другие: бизнес-консалтинг, автоматизация процессов и ИИ, проектный менеджмент, веб-разработка.",
+        title="Ganza Consulting — консалтинг, автоматизация и ИИ",
+        description="Независимый консалтинг для задач, за которые не берутся другие: автоматизация процессов и ИИ, проектный менеджмент, веб-разработка.",
         keywords="бизнес-консалтинг, независимый консультант, автоматизация бизнес-процессов, внедрение ИИ, проектный менеджмент, разработка сайтов на заказ, цифровая трансформация, консалтинг для стартапов, аудит бизнес-процессов, управление проектами",
         og_alt="Ganza Consulting — независимый консалтинг, автоматизация и проектный менеджмент",
     ),

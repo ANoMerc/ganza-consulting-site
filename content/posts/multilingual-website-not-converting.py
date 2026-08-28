@@ -5,8 +5,8 @@ POST = dict(
     updated="2026-08-27",
     tag={"en": "Web Development", "ru": "Веб-разработка"},
     title={
-        "en": "Why Your Multilingual Website Isn't Converting (It's Not About Translation)",
-        "ru": "Почему многоязычный сайт не конвертирует (дело не в переводе)",
+        "en": "Why Your Multilingual Website Isn't Converting",
+        "ru": 'Почему многоязычный сайт не конвертирует',
     },
     h1={
         "en": "Why Your Multilingual Website Isn't Converting (It's Not About Translation)",
@@ -17,8 +17,8 @@ POST = dict(
         "ru": "Перевод — простые 20% локализации. Оставшиеся 80%, которые решают, конвертирует ли сайт, к словам почти не относятся.",
     },
     description={
-        "en": "Layout that breaks on longer strings, trust signals that don't transfer, payment expectations, hreflang mistakes that hide half your site from search — the technical and cultural reasons a translated site still doesn't sell.",
-        "ru": "Ломающаяся вёрстка на длинных строках, непереносимые сигналы доверия, ожидания по оплате, ошибки hreflang, скрывающие половину сайта от поиска, — технические и культурные причины, по которым переведённый сайт всё равно не продаёт.",
+        "en": "Layout that breaks on longer strings, trust signals that don't transfer, and the hreflang mistakes that hide half your site from search engines.",
+        "ru": 'Ломающаяся вёрстка, непереносимые сигналы доверия и ошибки hreflang, из-за которых половина сайта не попадает в поисковую выдачу.',
     },
     keywords={
         "en": "multilingual website, website localization, hreflang implementation, international SEO, multi-market conversion, RTL layout, localization mistakes, translated website not converting",

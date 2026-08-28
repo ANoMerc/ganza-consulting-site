@@ -239,7 +239,7 @@ def header(lang, p, home, blog_href, alt_url, active=""):
       <span class="logo__text">GANZA<br>CONSULTING</span>
     </a>
 
-    <nav class="nav" id="nav">
+    <nav class="nav" id="nav" aria-label="Main navigation">
       <a href="{home}#services">{L['nav_services']}</a>
       <a href="{home}#cases">{L['nav_cases']}</a>
       <a href="{home}#pricing">{L['nav_pricing']}</a>

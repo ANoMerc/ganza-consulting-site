@@ -129,7 +129,7 @@ def render_body(post, lang, home, blogroot):
         elif kind == "q":
             out.append(f'<blockquote class="post__pull">{resolve(content, home, blogroot)}</blockquote>')
         elif kind == "note":
-            out.append(f'<aside class="post__note">{resolve(content, home, blogroot)}</aside>')
+            out.append(f'<div class="post__note">{resolve(content, home, blogroot)}</div>')
         elif kind == "steps":
             lis = "".join(
                 f'<li><strong>{resolve(t, home, blogroot)}</strong>'
@@ -168,10 +168,10 @@ def render_takeaways(post, lang):
     if not items:
         return ""
     lis = "".join(f"<li>{i}</li>" for i in items)
-    return f"""<aside class="post__takeaways">
+    return f"""<div class="post__takeaways">
     <p class="post__takeaways-title">{LABELS[lang]['takeaways']}</p>
     <ul>{lis}</ul>
-  </aside>"""
+  </div>"""
 
 
 def render_faq(post, lang, home, blogroot):
@@ -288,7 +288,7 @@ def build_post(post, posts, lang):
 
     head = build_head(
         lang=lang,
-        title=esc(f"{post['title'][lang]} | {BRAND}"),
+        title=esc(post["title"][lang]),
         description=esc(post["description"][lang]),
         keywords=esc(post["keywords"][lang]),
         canonical=canonical,
@@ -394,17 +394,17 @@ def build_post(post, posts, lang):
 # ---------------------------------------------------------------------------
 INDEX_COPY = {
     "en": dict(
-        title="Blog — Consulting, Automation and Project Management, Without the Fluff | Ganza Consulting",
+        title="Blog — Consulting, Automation and Project Management",
         h1="NOTES ON HARD PROBLEMS",
-        description="Long-form, no-fluff articles on business consulting, process automation and AI, project management and web development — written from delivered engagements, not from a content calendar.",
+        description="Long-form, no-fluff articles on consulting, process automation and AI, project management and web development — written from delivered engagements.",
         keywords="business consulting blog, process automation articles, project management insights, digital transformation case studies, consulting advice for founders, AI automation guide",
         intro="Long-form notes on consulting, automation, project management and web development — written by the person who does the work. Every article ends with something you can act on, not a list of things to consider.",
         count="{n} articles · {mins} minutes of reading",
     ),
     "ru": dict(
-        title="Блог — консалтинг, автоматизация и проектный менеджмент без воды | Ganza Consulting",
+        title="Блог — консалтинг, автоматизация, проектный менеджмент",
         h1="ЗАМЕТКИ О СЛОЖНЫХ ЗАДАЧАХ",
-        description="Большие статьи без воды о бизнес-консалтинге, автоматизации процессов и ИИ, проектном менеджменте и веб-разработке — по реальным проектам, а не по контент-плану.",
+        description="Большие статьи без воды о консалтинге, автоматизации и ИИ, проектном менеджменте и веб-разработке — по реальным проектам, а не по контент-плану.",
         keywords="блог о бизнес-консалтинге, статьи об автоматизации процессов, проектный менеджмент статьи, цифровая трансформация кейсы, советы консультанта для основателей, внедрение ИИ в бизнес",
         intro="Большие заметки о консалтинге, автоматизации, управлении проектами и веб-разработке — от человека, который сам делает работу. Каждая статья заканчивается тем, что можно применить, а не списком «вопросов к обсуждению».",
         count="{n} статей · {mins} минут чтения",
@@ -439,7 +439,7 @@ def build_index(posts, lang):
     for x in ordered:
         cards.append(f"""    <a class="post-card" href="{x['slug']}/" data-tag="{esc(x['tag'][lang])}" data-track="card-{x['slug']}">
       <span class="post-card__cover">
-        <img src="{p}img/blog/{x['cover']}" width="1200" height="630" loading="lazy" decoding="async" alt="{esc(x['h1'][lang])}">
+        <img src="{p}img/blog/{x['slug']}-card.webp" width="760" height="399" loading="lazy" decoding="async" alt="{esc(x['h1'][lang])}">
       </span>
       <span class="post-card__meta">
         <span class="post-card__tag">{esc(x['tag'][lang])}</span>

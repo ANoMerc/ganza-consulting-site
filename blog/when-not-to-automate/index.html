@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>When Not to Automate: The Hidden Risk of Automating Broken Processes | Ganza Consulting</title>
-<meta name="description" content="Six categories of process that should not be automated, the hidden costs missing from every business case, and a scorecard for deciding whether a process deserves to survive in its current form at all.">
+<title>When Not to Automate: The Risk of Broken Processes</title>
+<meta name="description" content="Six kinds of process you should not automate, the costs missing from every business case, and a scorecard for deciding what deserves to survive.">
 <meta name="keywords" content="when not to automate, process automation risks, automating broken processes, AI automation mistakes, business process automation, hidden costs of automation, workflow automation strategy, RPA failure">
 <meta name="author" content="George Mercer">
 <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1">
@@ -20,15 +20,15 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:locale:alternate" content="ru_RU">
 <meta property="og:url" content="https://anomerc.github.io/ganza-consulting-site/blog/when-not-to-automate/">
-<meta property="og:title" content="When Not to Automate: The Hidden Risk of Automating Broken Processes | Ganza Consulting">
-<meta property="og:description" content="Six categories of process that should not be automated, the hidden costs missing from every business case, and a scorecard for deciding whether a process deserves to survive in its current form at all.">
+<meta property="og:title" content="When Not to Automate: The Risk of Broken Processes">
+<meta property="og:description" content="Six kinds of process you should not automate, the costs missing from every business case, and a scorecard for deciding what deserves to survive.">
 <meta property="og:image" content="https://anomerc.github.io/ganza-consulting-site/img/blog/when-not-to-automate-cover.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="When Not to Automate: The Hidden Risk of Automating Broken Processes">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="When Not to Automate: The Hidden Risk of Automating Broken Processes | Ganza Consulting">
-<meta name="twitter:description" content="Six categories of process that should not be automated, the hidden costs missing from every business case, and a scorecard for deciding whether a process deserves to survive in its current form at all.">
+<meta name="twitter:title" content="When Not to Automate: The Risk of Broken Processes">
+<meta name="twitter:description" content="Six kinds of process you should not automate, the costs missing from every business case, and a scorecard for deciding what deserves to survive.">
 <meta name="twitter:image" content="https://anomerc.github.io/ganza-consulting-site/img/blog/when-not-to-automate-cover.png">
 <meta property="article:published_time" content="2026-08-04">
 <meta property="article:modified_time" content="2026-08-27">
@@ -121,7 +121,7 @@
       "@id": "https://anomerc.github.io/ganza-consulting-site/blog/when-not-to-automate/#article",
       "headline": "When Not to Automate: The Hidden Risk of Automating Broken Processes",
       "alternativeHeadline": "Automating a broken process doesn't fix it. It makes the broken version run faster, more consistently, and much harder to notice.",
-      "description": "Six categories of process that should not be automated, the hidden costs missing from every business case, and a scorecard for deciding whether a process deserves to survive in its current form at all.",
+      "description": "Six kinds of process you should not automate, the costs missing from every business case, and a scorecard for deciding what deserves to survive.",
       "articleSection": "Automation & AI",
       "keywords": "when not to automate, process automation risks, automating broken processes, AI automation mistakes, business process automation, hidden costs of automation, workflow automation strategy, RPA failure",
       "inLanguage": "en",
@@ -219,7 +219,7 @@
       <span class="logo__text">GANZA<br>CONSULTING</span>
     </a>
 
-    <nav class="nav" id="nav">
+    <nav class="nav" id="nav" aria-label="Main navigation">
       <a href="../../#services">Services</a>
       <a href="../../#cases">Cases</a>
       <a href="../../#pricing">Pricing</a>
@@ -290,7 +290,7 @@
         <p>The saving was smaller than the original pitch and it held up. A full automation would have produced a larger number in the business case and a worse outcome in the second quarter.</p>
         <h2 id="the-costs-that-never-make-it-into-the-business-case">The costs that never make it into the business case</h2>
         <div class="post__table-wrap"><table class="post__table"><caption>Automation costs that are real, recurring, and routinely omitted</caption><thead><tr><th scope="col">Cost</th><th scope="col">Why it's missed</th><th scope="col">Rough size</th></tr></thead><tbody><tr><td>Maintenance when an upstream system changes</td><td>It's someone else's release note</td><td>10–20% of build cost per year, forever</td></tr><tr><td>Exception handling</td><td>Estimated from the happy path</td><td>Often exceeds the build itself when exceptions >10%</td></tr><tr><td>Silent failure</td><td>Nobody budgets for the thing that doesn't announce itself</td><td>Unbounded until discovered; grows with time-to-detection</td></tr><tr><td>Knowledge loss</td><td>The people who understood the manual version stop doing it</td><td>Appears 12–24 months later as inability to change the process</td></tr><tr><td>Ownership</td><td>Nobody is named at handover</td><td>The automation quietly becomes nobody's job and rots</td></tr><tr><td>Model drift (AI-based steps)</td><td>Accuracy at launch is treated as a constant</td><td>Requires ongoing sampling and re-evaluation, not a one-off test</td></tr></tbody></table></div>
-        <aside class="post__note">One rule that prevents most of this: no automation goes live without a named owner and a monitoring answer to "how would we know if this stopped being correct?" If neither exists, you're not deploying automation, you're deploying an unmonitored dependency.</aside>
+        <div class="post__note">One rule that prevents most of this: no automation goes live without a named owner and a monitoring answer to "how would we know if this stopped being correct?" If neither exists, you're not deploying automation, you're deploying an unmonitored dependency.</div>
         <h2 id="a-scorecard-for-deciding">A scorecard for deciding</h2>
         <p>Before building anything, score the process from 0 to 2 on each line. Anything below 7 out of 12 means redesign first.</p>
         <ul class="post__checklist"><li><strong>Stability:</strong> will this process be materially the same in 18 months? (0 = a change is already scheduled)</li><li><strong>Definition:</strong> can two people independently describe it identically? (0 = accounts diverge after step three)</li><li><strong>Exception rate:</strong> under 5% = 2, 5–20% = 1, over 20% = 0</li><li><strong>Consequence distribution:</strong> is a wrong output cheap to fix? (0 = a wrong output costs a client or a fine)</li><li><strong>Verification:</strong> does someone read the output and could they tell it was wrong? (0 = nobody looks)</li><li><strong>Necessity:</strong> would this process still be needed if the upstream problem were fixed? (0 = it exists only to compensate)</li></ul>
@@ -302,10 +302,10 @@
         <p>The question worth asking before any automation project isn't "can this be automated." It's: <strong>if I automated this exactly as it exists today, would I be proud of what I shipped?</strong></p>
   </div>
 
-  <aside class="post__takeaways">
+  <div class="post__takeaways">
     <p class="post__takeaways-title">WHAT TO TAKE AWAY</p>
     <ul><li>Manual friction is the only running measurement of how bad a process design is; automating it as-is removes the sensor, not the problem.</li><li>Don't automate a process nobody can describe end to end, one that exists only to compensate for another broken process, or judgement work that looks repetitive from a distance.</li><li>Exception rate is the practical threshold: under 5% is usually clean, over 20% means redesign before automating.</li><li>The costs missing from every business case are maintenance, exception handling, silent failure, knowledge loss, ownership and model drift.</li><li>Automate the repetitive 80% and route the judgement 20% to a human with full context rather than a bare notification.</li><li>Nothing goes live without a named owner and an answer to "how would we know if this stopped being correct?"</li></ul>
-  </aside>
+  </div>
 
   <section class="post__faq" id="faq">
     <h2>FREQUENTLY ASKED QUESTIONS</h2>

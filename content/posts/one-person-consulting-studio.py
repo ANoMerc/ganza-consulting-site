@@ -5,8 +5,8 @@ POST = dict(
     updated="2026-08-27",
     tag={"en": "Consulting", "ru": "Консалтинг"},
     title={
-        "en": "The One-Person Consulting Studio: When Small Beats Big (and When It Doesn't)",
-        "ru": "Студия из одного человека: когда маленький подрядчик лучше большого — и когда нет",
+        "en": 'One-Person Consulting Studio: When Small Beats Big',
+        "ru": 'Студия из одного человека или агентство: что выбрать',
     },
     h1={
         "en": "The One-Person Consulting Studio: When Small Beats Big (and When It Doesn't)",
@@ -17,8 +17,8 @@ POST = dict(
         "ru": "«А если вы заболеете?» — стандартное возражение против консультанта-одиночки. Вопрос честный — и обычно направлен не на тот риск.",
     },
     description={
-        "en": "How agency economics create the gap between who sells the work and who does it, where a one-person studio is genuinely better, where it is genuinely worse, and what continuity guarantees to demand from either.",
-        "ru": "Как экономика агентства порождает разрыв между тем, кто продаёт работу, и тем, кто её делает; где студия из одного человека действительно лучше, где хуже и какие гарантии непрерывности требовать от обоих.",
+        "en": "Where a one-person studio genuinely beats an agency, where it doesn't, and the four continuity guarantees to demand before signing with either.",
+        "ru": 'Где студия из одного человека реально сильнее агентства, где слабее и какие четыре гарантии непрерывности требовать до подписания договора.',
     },
     keywords={
         "en": "boutique consulting, solo consultant vs agency, independent consultant risk, consulting firm selection, small consulting studio, accountability in consulting, choosing a consulting partner, bus factor consulting",

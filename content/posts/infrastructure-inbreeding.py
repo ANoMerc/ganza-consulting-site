@@ -5,8 +5,8 @@ POST = dict(
     updated="2026-08-27",
     tag={"en": "Leadership", "ru": "Управление"},
     title={
-        "en": "Infrastructure Inbreeding: Why Promoting Only From Within Puts Your Company at Risk",
-        "ru": "Инфраструктурный инбридинг: почему повышать только своих — риск для компании",
+        "en": 'Infrastructure Inbreeding: The Risk of Promoting Within',
+        "ru": 'Инфраструктурный инбридинг: чем опасно повышать своих',
     },
     h1={
         "en": "Infrastructure Inbreeding: Why Promoting Only From Within Puts Your Company at Risk",
@@ -17,8 +17,8 @@ POST = dict(
         "ru": "У университетов есть название для найма только своих выпускников. У компаний та же проблема — просто без названия, поэтому ей никто не управляет.",
     },
     description={
-        "en": "Why a closed leadership pipeline quietly erodes a company's ability to adapt, the five symptoms that show up before the numbers move, and a diagnostic you can run on your own org chart in 20 minutes.",
-        "ru": "Почему закрытый управленческий контур незаметно убивает способность компании адаптироваться, пять симптомов, которые появляются раньше плохих цифр, и диагностика оргструктуры за 20 минут.",
+        "en": "Why a closed leadership pipeline erodes a company's ability to adapt, the five symptoms that appear before the numbers move, and a 20-minute diagnostic.",
+        "ru": 'Почему закрытый управленческий контур убивает способность адаптироваться, пять симптомов раньше плохих цифр и диагностика оргструктуры за 20 минут.',
     },
     keywords={
         "en": "internal promotion vs external hiring, organizational inbreeding, leadership pipeline, succession planning risk, groupthink in management, executive hiring strategy, organizational design, closed talent pipeline",

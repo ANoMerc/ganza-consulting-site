@@ -5,8 +5,8 @@ POST = dict(
     updated="2026-08-27",
     tag={"en": "Consulting", "ru": "Консалтинг"},
     title={
-        "en": "The Consulting Retainer Trap: Why Monthly Retainers Rarely Solve Real Problems",
-        "ru": "Ловушка консалтингового ретейнера: почему абонентка редко решает настоящую задачу",
+        "en": 'The Consulting Retainer Trap: Why Monthly Fees Fail',
+        "ru": 'Ловушка ретейнера: почему абонентка не решает задачу',
     },
     h1={
         "en": "The Consulting Retainer Trap: Why Monthly Retainers Rarely Solve Real Problems",
@@ -17,8 +17,8 @@ POST = dict(
         "ru": "Ретейнер гарантирует, что консультант получает деньги каждый месяц. Он не гарантирует, что сложная задача будет решена, — и эта разница накапливается незаметно.",
     },
     description={
-        "en": "Why most consulting retainers become a subscription to activity, the three cases where a retainer is genuinely the right structure, four signs yours has drifted, and the renewal conversation that fixes it.",
-        "ru": "Почему большинство консалтинговых ретейнеров превращается в подписку на деятельность, три случая, когда ретейнер действительно уместен, четыре признака дрейфа и разговор при продлении, который всё чинит.",
+        "en": 'Why most consulting retainers become a subscription to activity, the three cases where they genuinely work, and the renewal conversation that fixes it.',
+        "ru": 'Почему ретейнер превращается в подписку на деятельность, три случая, когда он действительно нужен, и разговор при продлении, который всё чинит.',
     },
     keywords={
         "en": "consulting retainer, monthly retainer agreement, retainer vs project pricing, consulting engagement models, when to end a retainer, consulting value measurement, advisory retainer, scope creep consulting",

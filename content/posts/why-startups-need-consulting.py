@@ -5,8 +5,8 @@ POST = dict(
     updated="2026-08-27",
     tag={"en": "Startups", "ru": "Стартапы"},
     title={
-        "en": "Why Startups Need Consulting (Even the Ones That Think They Can't Afford It)",
-        "ru": "Зачем стартапу консалтинг, даже если кажется, что денег на него нет",
+        "en": 'Why Startups Need Consulting Most When Money Is Tight',
+        "ru": 'Зачем стартапу консалтинг, когда денег мало',
     },
     h1={
         "en": "Why Startups Need Consulting (Even the Ones That Think They Can't Afford It)",
@@ -17,8 +17,8 @@ POST = dict(
         "ru": "Консалтинг нужен не тем, кто достаточно велик, чтобы позволить себе медлительность. Он полезнее всего тем, кто слишком мал, чтобы позволить себе ошибку.",
     },
     description={
-        "en": "The runway maths behind hiring outside expertise at seed stage, the four moments when it pays for itself, how to scope an engagement so it can't drift into a retainer, and when a founder genuinely shouldn't hire anyone.",
-        "ru": "Арифметика ранвея за наймом внешней экспертизы на ранней стадии, четыре момента, когда это окупается, как ограничить проект, чтобы он не превратился в абонентку, и когда основателю действительно не нужен консультант.",
+        "en": "The runway maths behind hiring outside expertise at seed stage, the four moments it pays for itself, and when a founder shouldn't hire anyone at all.",
+        "ru": 'Арифметика ранвея за наймом внешней экспертизы, четыре момента, когда это окупается, и случаи, когда основателю не нужен никакой консультант.',
     },
     keywords={
         "en": "consulting for startups, startup advisory, when to hire a consultant, seed stage decisions, founder decision making, startup runway management, outside expertise, fractional expertise for founders",
