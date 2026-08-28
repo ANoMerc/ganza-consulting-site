@@ -1,0 +1,655 @@
+/* ==========================================================================
+   GANZA CONSULTING — LIQUID GLASS
+   --------------------------------------------------------------------------
+   Тема-слой. Подключается ПОСЛЕ style.css / builder.css / blog.css и
+   переопределяет только материал: фон, границы, скругления, тени, цвет.
+   Разметка и сетки не трогаются. Убрать этот файл из <head> — вернётся
+   исходный бруталистский вид.
+
+   Структура:
+     0. Токены
+     1. Фон страницы (дрейфующие пятна)
+     2. Материал стекла — миксины через классы
+     3. Компоненты: шапка, герой, услуги, кейсы, цены, FAQ, о нас, подвал
+     4. Блог: лента и спокойный режим чтения статьи
+     5. Конструктор проекта
+     6. Доступность: прозрачность, движение, контраст, мобильные
+   ========================================================================== */
+
+/* ==========================================================================
+   0. ТОКЕНЫ
+   ========================================================================== */
+:root{
+  /* база */
+  --g-bg:            #0b0b09;
+  --g-bg-2:          #17170f;
+
+  /* текст */
+  --g-text:          #f2f0e8;
+  --g-text-2:        rgba(242,240,232,.74);
+  --g-text-3:        rgba(242,240,232,.54);
+
+  /* стекло */
+  --g-surface:       rgba(255,255,255,.055);
+  --g-surface-2:     rgba(255,255,255,.10);
+  --g-surface-3:     rgba(255,255,255,.16);
+  --g-border:        rgba(255,255,255,.14);
+  --g-border-2:      rgba(255,255,255,.26);
+  --g-blur:          22px;
+
+  /* блики и тени */
+  --g-spec:          inset 0 1px 0 rgba(255,255,255,.38);
+  --g-spec-strong:   inset 0 1px 0 rgba(255,255,255,.55);
+  --g-shadow:        0 18px 44px rgba(0,0,0,.42);
+  --g-shadow-lg:     0 28px 64px rgba(0,0,0,.52);
+
+  /* геометрия */
+  --g-r:             22px;
+  --g-r-sm:          14px;
+  --g-r-pill:        999px;
+
+  /* акценты остаются прежними */
+  --yellow:#e8ff2e;
+  --blue:#2f2ef0;
+  --red:#e8432c;
+}
+
+html{background:var(--g-bg);}
+body{
+  background:transparent;
+  color:var(--g-text);
+}
+
+/* ==========================================================================
+   1. ФОН — дрейфующие цветные пятна за стеклом
+   ========================================================================== */
+body::before{
+  content:"";
+  position:fixed; inset:0; z-index:-2;
+  background-color:var(--g-bg);
+  background-image:
+    radial-gradient(circle, rgba(47,46,240,.60)  0%, rgba(47,46,240,0)  62%),
+    radial-gradient(circle, rgba(232,67,44,.46)  0%, rgba(232,67,44,0)  62%),
+    radial-gradient(circle, rgba(232,255,46,.24) 0%, rgba(232,255,46,0) 60%),
+    radial-gradient(120% 120% at 50% -10%, var(--g-bg-2) 0%, var(--g-bg) 58%);
+  background-size: 92vw 92vw, 78vw 78vw, 58vw 58vw, 100% 100%;
+  background-position: 2% -6%, 98% 104%, 62% 46%, 0 0;
+  background-repeat:no-repeat;
+  animation:g-drift 46s ease-in-out infinite alternate;
+}
+@keyframes g-drift{
+  to{ background-position: 26% 16%, 72% 78%, 34% 66%, 0 0; }
+}
+
+/* тонкое зерно — без него стекло выглядит «пластиковым» */
+body::after{
+  content:"";
+  position:fixed; inset:0; z-index:-1; pointer-events:none;
+  opacity:.05;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ==========================================================================
+   2. МАТЕРИАЛ
+   ========================================================================== */
+.g-pane,
+.service-cell,
+.case-card,
+.price-card,
+.about__col,
+.post-card,
+.related-card,
+.post__toc,
+.post__takeaways,
+.post__author,
+.post__table-wrap,
+.post__note,
+.post__steps li{
+  background:linear-gradient(158deg, var(--g-surface-2), var(--g-surface));
+  -webkit-backdrop-filter:blur(var(--g-blur)) saturate(180%);
+  backdrop-filter:blur(var(--g-blur)) saturate(180%);
+  border:1px solid var(--g-border);
+  border-radius:var(--g-r);
+  box-shadow:var(--g-spec), var(--g-shadow);
+  color:var(--g-text);
+}
+
+/* ==========================================================================
+   3. КОМПОНЕНТЫ
+   ========================================================================== */
+
+/* ---- бегущая строка ---- */
+.ticker{
+  background:linear-gradient(180deg, rgba(232,67,44,.94), rgba(232,67,44,.80));
+  -webkit-backdrop-filter:blur(14px) saturate(160%);
+  backdrop-filter:blur(14px) saturate(160%);
+  color:#140b08;
+  border-bottom:1px solid rgba(255,255,255,.20);
+  box-shadow:var(--g-spec);
+}
+
+/* ---- шапка ---- */
+.site-header{
+  background:transparent;
+  border-bottom:0;
+  padding:12px 0 0;
+}
+.site-header__inner{
+  /* тёмная подложка, а не белая: иначе контент читается сквозь шапку */
+  background:linear-gradient(150deg, rgba(24,24,19,.82), rgba(14,14,11,.66));
+  -webkit-backdrop-filter:blur(30px) saturate(180%);
+  backdrop-filter:blur(30px) saturate(180%);
+  border:1px solid var(--g-border-2);
+  border-radius:var(--g-r-pill);
+  box-shadow:var(--g-spec), 0 16px 40px rgba(0,0,0,.5);
+  padding:11px 14px 11px 18px;
+  max-width:1256px;
+  width:calc(100% - 40px);
+  margin:0 auto;
+}
+.logo__mark{
+  background:var(--yellow);
+  color:#0d0d0a;
+  border-radius:12px;
+  width:36px; height:36px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.6), 0 4px 16px rgba(232,255,46,.28);
+}
+.logo__text{color:var(--g-text);}
+.nav a{color:var(--g-text-2); transition:color .18s;}
+.nav a:hover,.nav a.is-active{color:var(--g-text);}
+.nav a.is-active{text-decoration:none; position:relative;}
+.nav a.is-active::after{
+  content:""; position:absolute; left:0; right:0; bottom:-2px; height:2px;
+  background:var(--yellow); border-radius:2px;
+}
+
+.lang-switch{
+  background:var(--g-surface-2);
+  border:1px solid var(--g-border-2);
+  border-radius:var(--g-r-pill);
+  color:var(--g-text);
+  padding:7px 13px;
+  -webkit-backdrop-filter:blur(12px);
+  backdrop-filter:blur(12px);
+  box-shadow:var(--g-spec);
+}
+.lang-switch__opt{opacity:.42;}
+.burger{
+  background:var(--g-surface-2);
+  border:1px solid var(--g-border-2);
+  border-radius:var(--g-r-pill);
+  color:var(--g-text);
+  -webkit-backdrop-filter:blur(12px);
+  backdrop-filter:blur(12px);
+}
+
+/* ---- кнопки ---- */
+.btn{
+  border:1px solid var(--g-border-2);
+  border-radius:var(--g-r-sm);
+  background:var(--g-surface-2);
+  color:var(--g-text);
+  -webkit-backdrop-filter:blur(14px) saturate(160%);
+  backdrop-filter:blur(14px) saturate(160%);
+  box-shadow:var(--g-spec);
+  transition:transform .2s cubic-bezier(.2,.8,.2,1), box-shadow .2s, background .2s;
+}
+.btn:hover{
+  transform:translateY(-2px);
+  background:var(--g-surface-3);
+  box-shadow:var(--g-spec-strong), 0 14px 32px rgba(0,0,0,.4);
+}
+.btn--yellow{
+  background:var(--yellow); color:#0d0d0a; border-color:rgba(255,255,255,.5);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.7), 0 10px 30px rgba(232,255,46,.26);
+}
+.btn--yellow:hover{
+  background:#f0ff5a;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.85), 0 16px 40px rgba(232,255,46,.36);
+}
+.btn--outline{background:transparent; color:var(--g-text); border-color:var(--g-border-2);}
+.btn--outline:hover{background:var(--g-surface-2);}
+.btn--small{border-radius:var(--g-r-pill);}
+
+/* ---- метки ---- */
+.tag{border-radius:var(--g-r-pill); border-width:1px;}
+.tag--blue{background:rgba(47,46,240,.55); border-color:rgba(255,255,255,.28); color:var(--g-text);
+  -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px);}
+.tag--yellow{background:var(--yellow); color:#0d0d0a; border-color:rgba(255,255,255,.5);}
+.tag--dark{background:var(--g-surface-2); color:var(--yellow); border-color:var(--g-border-2);}
+.badge{
+  background:var(--g-surface-2); border:1px solid var(--g-border); color:var(--g-text-2);
+  border-radius:var(--g-r-pill);
+  -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px);
+}
+.dot{background:var(--yellow); box-shadow:0 0 10px rgba(232,255,46,.6);}
+.dot--red{background:var(--red); box-shadow:0 0 10px rgba(232,67,44,.6);}
+
+/* ---- герой ---- */
+.hero{border-bottom:0; padding-top:52px;}
+.hero__meta{border-bottom:1px solid var(--g-border); color:var(--g-text-3);}
+.hero__title{
+  color:var(--g-text);
+  text-shadow:0 2px 40px rgba(0,0,0,.35);
+}
+.hero__title .hl{
+  background:linear-gradient(160deg, rgba(232,67,44,.96), rgba(232,67,44,.82));
+  border-radius:16px;
+  color:#fff;
+  box-shadow:inset 0 2px 0 rgba(255,255,255,.32), 0 10px 30px rgba(232,67,44,.36);
+}
+.hero__tag{
+  background:linear-gradient(150deg, rgba(47,46,240,.82), rgba(47,46,240,.60));
+  border:1px solid rgba(255,255,255,.3);
+  border-radius:var(--g-r-pill);
+  color:var(--g-text);
+  -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px);
+  box-shadow:var(--g-spec), 0 10px 28px rgba(47,46,240,.3);
+}
+.hero__sub{color:var(--g-text-2);}
+
+/* ---- заголовки секций ---- */
+.section-label--dark{background:transparent; color:var(--g-text);}
+.section-label h2{color:var(--g-text);}
+.section-label__intro{color:var(--g-text-2); opacity:1;}
+
+/* ---- услуги: сетка превращается в карточки ---- */
+.services{border-bottom:0;}
+.services__grid{
+  border-top:0;
+  gap:16px;
+  padding:0 32px 8px;
+}
+.service-cell{
+  border-right:0;
+  padding:28px 24px 26px;
+  transition:transform .28s cubic-bezier(.2,.8,.2,1), box-shadow .28s, border-color .28s, background .28s;
+}
+.service-cell:hover,
+.service-cell:focus-visible{
+  background:linear-gradient(158deg, var(--g-surface-3), var(--g-surface-2));
+  color:var(--g-text);
+  transform:translateY(-4px);
+  border-color:var(--g-border-2);
+  box-shadow:var(--g-spec-strong), var(--g-shadow-lg);
+  outline:none;
+}
+.service-cell:focus-visible{box-shadow:var(--g-spec-strong), var(--g-shadow-lg), 0 0 0 2px var(--yellow);}
+.service-cell__num{color:var(--yellow); opacity:1;}
+.service-cell p{color:var(--g-text-2); opacity:1;}
+.service-cell__cta{color:var(--g-text-3); opacity:1;}
+.service-cell:hover .service-cell__cta{color:var(--yellow); opacity:1;}
+
+/* ---- кейсы: цветное стекло ---- */
+.cases{background:transparent; border-bottom:0;}
+.cases__grid{border-top:0; gap:16px; padding:0 32px;}
+.case-card{
+  border-right:0;
+  padding:28px 24px 30px;
+  transition:transform .28s cubic-bezier(.2,.8,.2,1), box-shadow .28s;
+}
+.case-card:hover{transform:translateY(-4px); box-shadow:var(--g-spec-strong), var(--g-shadow-lg);}
+.case-card--yellow{
+  background:linear-gradient(158deg, rgba(232,255,46,.24), rgba(232,255,46,.09));
+  border-color:rgba(232,255,46,.42); color:var(--g-text);
+}
+.case-card--blue{
+  background:linear-gradient(158deg, rgba(47,46,240,.42), rgba(47,46,240,.16));
+  border-color:rgba(120,119,255,.45); color:var(--g-text);
+}
+.case-card--red{
+  background:linear-gradient(158deg, rgba(232,67,44,.38), rgba(232,67,44,.14));
+  border-color:rgba(255,140,120,.42); color:var(--g-text);
+}
+.case-card__client{color:var(--g-text-3); opacity:1;}
+.case-card__stat{color:var(--g-text);}
+.case-card__label{color:var(--g-text-3); opacity:1;}
+.case-card__result{border-top:1px solid var(--g-border-2);}
+
+/* ---- цены ---- */
+.pricing{border-bottom:0;}
+.pricing__grid{border-top:0; gap:16px; padding:0 32px;}
+.price-card{
+  border-right:0; border-bottom:0;
+  padding:28px 24px 26px;
+  transition:transform .28s cubic-bezier(.2,.8,.2,1), box-shadow .28s;
+}
+.price-card:hover{transform:translateY(-4px); box-shadow:var(--g-spec-strong), var(--g-shadow-lg);}
+.price-card__sub{color:var(--g-text-2); opacity:1;}
+.price-card__for{
+  background:var(--g-surface); border-left:2px solid var(--blue);
+  border-radius:var(--g-r-sm); color:var(--g-text-2);
+}
+.price-card__list li{color:var(--g-text-2);}
+.price-card__list li::before{color:var(--yellow);}
+.price-card__list-label{color:var(--g-text-3); opacity:1;}
+.price-card__out{
+  background:linear-gradient(150deg, rgba(232,255,46,.9), rgba(232,255,46,.72));
+  color:#0d0d0a; border:1px solid rgba(255,255,255,.45); border-radius:var(--g-r-sm);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.6);
+}
+.price-card__note{color:var(--g-text-3); opacity:1;}
+.price-card__foot{border-top:1px solid var(--g-border-2);}
+.price-card__duration{color:var(--g-text-3); opacity:1;}
+.price-card__price{color:var(--g-text);}
+.price-card__price .approx{color:var(--g-text-3); opacity:1;}
+.price-card--flagship{
+  background:linear-gradient(158deg, rgba(232,255,46,.16), rgba(255,255,255,.05));
+  border-color:rgba(232,255,46,.34);
+  color:var(--g-text);
+}
+.price-card--flagship .price-card__for{background:var(--g-surface); border-left-color:var(--yellow);}
+.price-card__why{border:1px dashed var(--g-border-2); border-radius:var(--g-r-sm);}
+.price-card__why li{color:var(--g-text-2);}
+.price-card__why li::before{color:var(--yellow);}
+.price-card__badge{
+  background:var(--yellow); color:#0d0d0a;
+  border:1px solid rgba(255,255,255,.5); border-radius:var(--g-r-pill);
+  top:14px; right:14px;
+  box-shadow:0 6px 18px rgba(232,255,46,.3);
+}
+.pricing__footnote{color:var(--g-text-3); opacity:1;}
+
+/* ---- FAQ ---- */
+.faq{background:transparent; border-bottom:0;}
+.faq__list{
+  border-top:0;
+  max-width:940px;
+  background:linear-gradient(158deg, var(--g-surface-2), var(--g-surface));
+  -webkit-backdrop-filter:blur(var(--g-blur)) saturate(180%);
+  backdrop-filter:blur(var(--g-blur)) saturate(180%);
+  border:1px solid var(--g-border);
+  border-radius:var(--g-r);
+  box-shadow:var(--g-spec), var(--g-shadow);
+  padding:8px 28px;
+}
+.faq-item{border-bottom:1px solid var(--g-border);}
+.faq-item:last-child{border-bottom:0;}
+.faq-item summary{color:var(--g-text);}
+.faq-item__icon{
+  border:1px solid var(--g-border-2); border-radius:50%;
+  background:var(--g-surface-2); color:var(--yellow);
+}
+.faq-item__body{color:var(--g-text-2); opacity:1;}
+.faq__cta p{color:var(--g-text-2); opacity:1;}
+
+/* ---- о нас ---- */
+.about{border-bottom:0; gap:16px; padding:0 32px;}
+.about__col{padding:40px 34px;}
+.about__col--text{border-right:0;}
+.about__col--text p{color:var(--g-text-2);}
+.about__col--photo{
+  background:linear-gradient(158deg, var(--g-surface-2), var(--g-surface));
+  overflow:visible;
+}
+.about__photo-frame{
+  border:1px solid var(--g-border-2);
+  border-radius:var(--g-r);
+  background:transparent;
+  box-shadow:var(--g-spec-strong), 0 26px 60px rgba(0,0,0,.5), 0 0 60px rgba(47,46,240,.28);
+  transform:rotate(-1deg);
+  overflow:visible;
+}
+.about__photo{background:transparent; border-radius:calc(var(--g-r) - 1px);}
+.about__photo-tag{
+  background:linear-gradient(150deg, rgba(255,255,255,.18), rgba(255,255,255,.08));
+  -webkit-backdrop-filter:blur(16px); backdrop-filter:blur(16px);
+  border:1px solid var(--g-border-2); border-radius:var(--g-r-pill);
+  color:var(--g-text);
+  box-shadow:var(--g-spec), 0 10px 26px rgba(0,0,0,.4);
+}
+
+/* ---- подвал ---- */
+.footer{
+  background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(0,0,0,.28));
+  -webkit-backdrop-filter:blur(18px); backdrop-filter:blur(18px);
+  border-top:1px solid var(--g-border);
+  color:var(--g-text);
+  margin-top:64px;
+}
+.footer__top{border-bottom:1px solid var(--g-border);}
+.footer__top h2{color:var(--g-text);}
+.contact-link{
+  border:1px solid var(--g-border-2); border-radius:var(--g-r-sm);
+  background:var(--g-surface);
+  -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px);
+  transition:background .2s, border-color .2s, transform .2s;
+}
+.contact-link:hover{
+  background:rgba(47,46,240,.42); border-color:rgba(120,119,255,.5);
+  transform:translateY(-2px);
+}
+.contact-link__label{color:var(--g-text-3); opacity:1;}
+.footer__bottom{color:var(--g-text-3); opacity:1;}
+
+/* ==========================================================================
+   4. БЛОГ
+   ========================================================================== */
+.blog-hero__intro{color:var(--g-text-2);}
+.blog-hero__count{color:var(--g-text-3); opacity:1;}
+.breadcrumbs a{color:var(--g-text-2); opacity:1;}
+.breadcrumbs a:hover{color:var(--g-text);}
+.breadcrumbs span[aria-current]{color:var(--g-text-3); opacity:1;}
+
+.blog-filter__btn{
+  background:var(--g-surface); border:1px solid var(--g-border);
+  border-radius:var(--g-r-pill); color:var(--g-text-2);
+  -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px);
+  transition:.2s;
+}
+.blog-filter__btn:hover{background:var(--g-surface-2); color:var(--g-text);}
+.blog-filter__btn.is-active{background:var(--yellow); color:#0d0d0a; border-color:rgba(255,255,255,.5);}
+
+.post-card{
+  padding:24px;
+  transition:transform .28s cubic-bezier(.2,.8,.2,1), box-shadow .28s, border-color .28s;
+}
+.post-card:hover{transform:translateY(-5px); border-color:var(--g-border-2); box-shadow:var(--g-spec-strong), var(--g-shadow-lg);}
+.post-card__cover{
+  border-bottom:0; border-radius:var(--g-r-sm);
+  margin:-4px -4px 18px; overflow:hidden;
+  box-shadow:0 10px 26px rgba(0,0,0,.35);
+}
+.post-card__tag{
+  background:rgba(47,46,240,.5); color:var(--g-text);
+  border-radius:var(--g-r-pill); border:1px solid var(--g-border-2);
+}
+.post-card__excerpt{color:var(--g-text-2);}
+.post-card__cta{color:var(--yellow);}
+.post-card__meta{color:var(--g-text-3);}
+
+/* ---- страница статьи: спокойное чтение ---------------------------------
+   Фон остаётся тёмным, но перестаёт двигаться и приглушается, чтобы длинный
+   текст читался. Стекло остаётся в шапке, оглавлении, врезках и таблицах. */
+body.page-article::before{
+  animation:none;
+  background-image:
+    radial-gradient(circle, rgba(47,46,240,.24) 0%, rgba(47,46,240,0) 60%),
+    radial-gradient(circle, rgba(232,67,44,.16) 0%, rgba(232,67,44,0) 60%),
+    radial-gradient(130% 110% at 50% -10%, #14140e 0%, var(--g-bg) 62%);
+  background-size: 80vw 80vw, 62vw 62vw, 100% 100%;
+  background-position: -6% -10%, 104% 12%, 0 0;
+}
+body.page-article::after{opacity:.035;}
+
+.post__head{border-bottom:1px solid var(--g-border);}
+.post__dek{color:var(--g-text-2);}
+.post__meta{color:var(--g-text-3);}
+.post__tag{
+  background:rgba(232,255,46,.9); color:#0d0d0a;
+  border-radius:var(--g-r-pill); border:1px solid rgba(255,255,255,.4);
+}
+.post__body{color:var(--g-text-2);}
+.post__body h2,.post__body h3{color:var(--g-text);}
+.post__body strong{color:var(--g-text);}
+.post__body a{color:var(--yellow); border-bottom:1px solid rgba(232,255,46,.4);}
+.post__body a:hover{border-bottom-color:var(--yellow);}
+.post__body code{
+  background:var(--g-surface-2); border:1px solid var(--g-border);
+  border-radius:6px; color:var(--yellow);
+}
+
+.post__toc{background:linear-gradient(158deg, var(--g-surface-2), var(--g-surface)); padding:22px 24px;}
+.post__toc-title{color:var(--g-text-3); opacity:1;}
+.post__toc a{color:var(--g-text-2); border-bottom:1px solid var(--g-border);}
+.post__toc a:hover{color:var(--g-text); border-bottom-color:var(--g-border-2);}
+.post__toc a.is-current{background:transparent; color:var(--yellow); border-bottom-color:var(--yellow);}
+
+.post__pull{
+  background:linear-gradient(150deg, rgba(47,46,240,.34), rgba(47,46,240,.12));
+  -webkit-backdrop-filter:blur(18px); backdrop-filter:blur(18px);
+  border:1px solid rgba(120,119,255,.4);
+  border-left:4px solid var(--yellow);
+  border-radius:var(--g-r);
+  color:var(--g-text);
+  box-shadow:var(--g-spec), var(--g-shadow);
+}
+.post__note{
+  background:linear-gradient(150deg, rgba(232,255,46,.16), rgba(232,255,46,.05));
+  border:1px solid rgba(232,255,46,.34);
+  color:var(--g-text);
+}
+.post__checklist li::before{
+  border:1px solid var(--g-border-2); border-radius:5px;
+  background:var(--g-surface-2);
+}
+.post__steps li{padding:16px 18px 16px 62px;}
+.post__steps li::before{color:var(--yellow);}
+.post__steps span{color:var(--g-text-2); opacity:1;}
+.post__table-wrap{border:1px solid var(--g-border); border-radius:var(--g-r); overflow:hidden;}
+.post__table{background:transparent; color:var(--g-text-2);}
+.post__table caption{
+  background:var(--g-surface-2); color:var(--g-text-3);
+  border-bottom:1px solid var(--g-border);
+}
+.post__table th,.post__table td{border:1px solid var(--g-border);}
+.post__table thead th{background:var(--g-surface-2); color:var(--g-text);}
+.post__table tbody tr:nth-child(even){background:rgba(255,255,255,.03);}
+
+.post__takeaways{
+  background:linear-gradient(158deg, rgba(232,255,46,.14), var(--g-surface));
+  border:1px solid rgba(232,255,46,.3);
+  box-shadow:var(--g-spec), var(--g-shadow), 0 0 50px rgba(232,255,46,.08);
+  padding:24px 26px;
+}
+.post__takeaways-title{color:var(--yellow);}
+.post__takeaways li{color:var(--g-text-2);}
+
+.post__faq h2{color:var(--g-text);}
+.post__faq .faq__list{padding:8px 24px;}
+.post__author{background:linear-gradient(158deg, var(--g-surface-2), var(--g-surface)); padding:22px 24px;}
+.post__author img{border:1px solid var(--g-border-2); border-radius:16px;}
+.post__author-label{color:var(--g-text-3); opacity:1;}
+.post__author-name{color:var(--g-text);}
+.post__author-bio{color:var(--g-text-2);}
+.post__author-links a{color:var(--yellow);}
+
+.post__cta-box{
+  background:linear-gradient(150deg, var(--g-surface-3), var(--g-surface));
+  -webkit-backdrop-filter:blur(22px) saturate(180%); backdrop-filter:blur(22px) saturate(180%);
+  border:1px solid var(--g-border-2); border-radius:var(--g-r);
+  box-shadow:var(--g-spec-strong), var(--g-shadow-lg);
+  color:var(--g-text);
+}
+.post__related h2{color:var(--g-text);}
+.related-card{padding:18px; background:linear-gradient(158deg, var(--g-surface-2), var(--g-surface));}
+.related-card:hover{transform:translateY(-4px); box-shadow:var(--g-spec-strong), var(--g-shadow-lg);}
+.related-card__tag{color:var(--g-text-3); opacity:1;}
+.related-card__title{color:var(--g-text);}
+.related-card__meta{color:var(--g-text-3); opacity:1;}
+
+.post__nav{border-top:1px solid var(--g-border); padding-top:24px;}
+.post__nav-link{border:0;}
+.post__nav-label{color:var(--g-text-3);}
+.post__nav-title{color:var(--g-text);}
+.post__back{color:var(--g-text-2);}
+.read-progress span{background:var(--yellow); border-bottom:0; box-shadow:0 0 14px rgba(232,255,46,.7);}
+
+/* ==========================================================================
+   5. КОНСТРУКТОР ПРОЕКТА
+   ========================================================================== */
+.builder-banner,
+.builder__panel,
+.builder-modal__inner,
+.builder__card,
+.builder__option,
+.builder__result{
+  background:linear-gradient(158deg, var(--g-surface-2), var(--g-surface));
+  -webkit-backdrop-filter:blur(var(--g-blur)) saturate(180%);
+  backdrop-filter:blur(var(--g-blur)) saturate(180%);
+  border:1px solid var(--g-border);
+  border-radius:var(--g-r);
+  box-shadow:var(--g-spec), var(--g-shadow);
+  color:var(--g-text);
+}
+.builder-modal{background:rgba(6,6,5,.62); -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px);}
+.builder__option:hover,
+.builder__option.is-selected{
+  background:linear-gradient(158deg, rgba(232,255,46,.2), var(--g-surface-2));
+  border-color:rgba(232,255,46,.42);
+}
+
+/* ==========================================================================
+   6. ДОСТУПНОСТЬ И ПРОИЗВОДИТЕЛЬНОСТЬ
+   ========================================================================== */
+
+/* фокус виден всегда */
+a:focus-visible,button:focus-visible,summary:focus-visible,details:focus-visible{
+  outline:2px solid var(--yellow); outline-offset:3px; border-radius:6px;
+}
+
+/* пользователь отключил анимацию — фон замирает */
+@media (prefers-reduced-motion: reduce){
+  body::before{animation:none;}
+  .btn,.service-cell,.case-card,.price-card,.post-card,.related-card,.contact-link{transition:none;}
+  .btn:hover,.service-cell:hover,.case-card:hover,.price-card:hover,
+  .post-card:hover,.related-card:hover,.contact-link:hover{transform:none;}
+}
+
+/* пользователь отключил прозрачность — стекло становится плотным.
+   Без этого правила часть текста стала бы нечитаемой. */
+@media (prefers-reduced-transparency: reduce){
+  .g-pane,.service-cell,.case-card,.price-card,.about__col,.post-card,.related-card,
+  .post__toc,.post__takeaways,.post__author,.post__table-wrap,.post__note,.post__steps li,
+  .site-header__inner,.faq__list,.post__cta-box,.footer,.btn,.lang-switch,.burger{
+    -webkit-backdrop-filter:none; backdrop-filter:none;
+    background:#17171280;
+    background:color-mix(in srgb, var(--g-bg) 88%, white 12%);
+  }
+  body::before{background-image:radial-gradient(130% 110% at 50% -10%, var(--g-bg-2) 0%, var(--g-bg) 60%); animation:none;}
+}
+
+/* мобильные: backdrop-filter на двух десятках слоёв — самый дорогой эффект
+   на средних устройствах. Ниже 900px оставляем его только в шапке. */
+@media (max-width: 900px){
+  .service-cell,.case-card,.price-card,.about__col,.post-card,.related-card,
+  .post__toc,.post__takeaways,.post__author,.post__table-wrap,.post__note,
+  .post__steps li,.faq__list,.post__cta-box,.btn,.badge,.tag{
+    -webkit-backdrop-filter:none; backdrop-filter:none;
+    background:rgba(28,28,22,.82);
+  }
+  .case-card--yellow{background:rgba(70,74,18,.86);}
+  .case-card--blue{background:rgba(28,28,96,.86);}
+  .case-card--red{background:rgba(84,28,20,.86);}
+  .price-card--flagship{background:rgba(58,60,20,.88);}
+  .btn--yellow{background:var(--yellow);}
+  .post__note{background:rgba(58,60,20,.88);}
+  .post__takeaways{background:rgba(48,50,18,.88);}
+  .post__pull{-webkit-backdrop-filter:none; backdrop-filter:none; background:rgba(26,26,80,.88);}
+}
+
+@media (max-width: 720px){
+  .services__grid,.cases__grid,.pricing__grid,.about{padding-left:16px; padding-right:16px; gap:14px;}
+  .site-header{padding-top:8px;}
+  .site-header__inner{margin:0 12px; padding:10px 12px;}
+  .nav{
+    background:rgba(20,20,16,.94);
+    -webkit-backdrop-filter:blur(20px); backdrop-filter:blur(20px);
+    border:1px solid var(--g-border-2); border-radius:var(--g-r);
+    border-bottom:1px solid var(--g-border-2);
+    top:calc(100% + 8px); left:12px; right:12px;
+    overflow:hidden;
+  }
+  .nav a{border-bottom:1px solid var(--g-border); padding:13px 20px;}
+  .nav a:last-child{border-bottom:0;}
+}

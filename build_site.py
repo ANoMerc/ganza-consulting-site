@@ -166,11 +166,11 @@ def build_lang(master, lang):
         og_type="website",
         p=p,
         jsonld=jsonld_block(graph),
-        css=("style", "builder"),
+        css=("style", "builder", "glass"),
         feed=f"{SITE}/blog/feed.xml" if lang == "en" else f"{SITE}/ru/blog/feed.xml",
     )
 
-    html = head + "<body>\n" + body + f"""
+    html = head + '<body class="page-home">\n' + body + f"""
 
 <script src="{p}js/script.js"></script>
 <script src="{p}js/builder.js"></script>

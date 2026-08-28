@@ -299,7 +299,7 @@ def build_post(post, posts, lang):
         p=p,
         jsonld=jsonld_block(article_graph(post, lang, canonical, blog_url, home_url)),
         extra_meta=extra_meta,
-        css=("style", "builder", "blog"),
+        css=("style", "builder", "blog", "glass"),
         feed=f"{blog_url}feed.xml",
     )
 
@@ -328,7 +328,7 @@ def build_post(post, posts, lang):
     if post["updated"] != post["date"]:
         updated_html = f' · {L["updated"]} {fmt_date(post["updated"], lang)}'
 
-    html = head + "<body>\n" + ticker(lang)
+    html = head + '<body class="page-article">\n' + ticker(lang)
     html += header(lang, p, home, blogroot, alt_url, active="blog")
     html += f"""
 <main class="post-wrap">
@@ -496,11 +496,11 @@ def build_index(posts, lang):
         og_type="website",
         p=p,
         jsonld=jsonld_block(graph),
-        css=("style", "builder", "blog"),
+        css=("style", "builder", "blog", "glass"),
         feed=f"{canonical}feed.xml",
     )
 
-    html = head + "<body>\n" + ticker(lang)
+    html = head + '<body class="page-blog">\n' + ticker(lang)
     html += header(lang, p, home, blogroot, alt_url, active="blog")
     html += f"""
 <main>
