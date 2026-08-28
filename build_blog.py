@@ -1,461 +1,580 @@
 #!/usr/bin/env python3
-"""Generates /blog/index.html and /blog/<slug>/index.html from POSTS below.
-Run: python3 build_blog.py
+# -*- coding: utf-8 -*-
+"""Bilingual blog generator.
+
+    /blog/                      — English index
+    /blog/<slug>/               — English article
+    /blog/feed.xml              — English RSS
+    /ru/blog/                   — Russian index
+    /ru/blog/<slug>/            — Russian article
+    /ru/blog/feed.xml           — Russian RSS
+
+Content lives in content/posts/<slug>.py, one module per article, each with a
+POST dict holding both languages. Nothing about layout or SEO markup lives in
+the content files — add an article, run this, done.
+
+Run:  python3 build_blog.py
 """
-import os, re, math, json, html as html_mod
+import glob
+import importlib.util
+import json
+import math
+import os
+import re
+import datetime
 
-esc = html_mod.escape
+from buildlib import (SITE, BRAND, LABELS, WPM, AUTHOR_NAME, AUTHOR_BIO, TELEGRAM,
+                      build_head, jsonld_block, org_node, person_node, ticker, header,
+                      footer, fmt_date, count_words, esc, write, ROOT)
 
-SITE = "https://anomerc.github.io/ganza-consulting-site"
-ROOT = os.path.dirname(os.path.abspath(__file__))
+LANGS = ("en", "ru")
 
-POSTS = [
-    dict(
-        slug="infrastructure-inbreeding",
-        date="2026-06-02",
-        tag="Leadership",
-        title="Infrastructure Inbreeding: Why Promoting Only From Within Puts Your Company at Risk",
-        dek="Universities have a name for hiring only their own graduates. Most companies have the same problem — they just don't have a name for it.",
-        description="Why closed internal talent pipelines quietly erode a company's ability to adapt — and where the line is between healthy internal promotion and organizational inbreeding.",
-        body=[
-            ("p", "Universities have a name for hiring almost exclusively their own graduates: <strong>academic inbreeding</strong>. Less diversity of ideas, more replication of the same approach, slow intellectual isolation."),
-            ("p", "Companies have the same pattern. They just don't have a name for it."),
-            ("p", "Promoting from within isn't the problem — it protects culture and speeds up onboarding. The problem starts when the pipeline closes almost entirely: when most executives walked the same path, sat in the same rooms, absorbed the same management philosophy."),
-            ("p", "What that produces, reliably:"),
-            ("ul", [
-                "New ideas read as threats to \"how we do things here.\"",
-                "Groupthink gets easier — nobody in the room has a genuinely different reference point.",
-                "The organization gets slower to notice market shifts.",
-                "Internal politics start outweighing internal logic.",
-                "Outside candidates are filed as \"won't fit,\" regardless of what they bring.",
-            ]),
-            ("p", "The strange part: these companies often look stable from the outside. Processes run smoothly. Everyone speaks the same language. Meetings are calm."),
-            ("p", "That calm is exactly what hides it. The system isn't adapting to its environment anymore — it's reproducing itself."),
-            ("q", "Where's the line between developing internal talent and building infrastructure inbreeding — a system that gradually loses its ability to learn?"),
-            ("p", "What's the right ratio, in your experience — internal promotions vs. external hires at the leadership level?"),
-        ],
-        hashtags=["OrganizationalDesign", "Leadership", "CorporateCulture", "TalentStrategy", "ExecutiveHiring"],
-    ),
-    dict(
-        slug="lidl-digital-transformation-failure",
-        date="2026-06-16",
-        tag="Case Study",
-        title="How Lidl Lost €500 Million: A Case Study in Digital Transformation Failure",
-        dek="Lidl's eLWIS project didn't fail in a single moment. It drifted — until keeping it alive cost more than admitting it was dead.",
-        description="A breakdown of Lidl's failed SAP rollout: how customizing a system instead of adapting processes, and a widening gap between reports and reality, cost the company roughly €500 million.",
-        body=[
-            ("p", "In 2011, Lidl started eLWIS — a SAP-based system meant to unify operations across 30 countries. Simple goal, huge scope."),
-            ("p", "In 2018, they shut it down. Cost: roughly <strong>€500 million</strong>. They rolled back to the old in-house system."),
-            ("p", "What actually happened inside:"),
-            ("p", "Lidl customized SAP to match its existing processes instead of adapting processes to SAP's standard. Every customization added complexity. Every added complexity got labeled \"solvable\" — because on paper, it was."),
-            ("p", "Meanwhile, reporting still looked fine. External metrics stayed acceptable. The gap between what dashboards showed and what engineers actually saw kept widening, quietly."),
-            ("p", "Engineers flagged scalability and architecture risk. Those signals either didn't reach the people who could act on them, or got diluted somewhere between layers of \"let's not escalate this yet.\""),
-            ("p", "The project didn't fail in a moment. It drifted — until keeping it alive cost more than admitting it was dead."),
-            ("p", "Large transformations rarely break from one bad decision. They break from the accumulated gap between what's actually happening and what people feel safe saying out loud."),
-            ("q", "If your team could tell you the real state of a project without it costing them anything — would today's numbers still look the same?"),
-        ],
-        hashtags=["DigitalTransformation", "ProjectManagement", "ChangeManagement", "ERP", "RiskManagement"],
-    ),
-    dict(
-        slug="why-startups-need-consulting",
-        date="2026-06-30",
-        tag="Startups",
-        title="Why Startups Need Consulting (Even the Ones That Think They Can't Afford It)",
-        dek="Consulting isn't for companies big enough to afford being slow. It's most useful exactly when you're too small to afford being wrong.",
-        description="Why the founders who avoid consulting usually aren't avoiding the cost — and what a startup should actually look for in an outside opinion.",
-        body=[
-            ("p", "Most founders think consulting is for companies big enough to afford being slow."),
-            ("p", "It's actually the opposite. Consulting is most useful exactly when you're too small to afford being wrong."),
-            ("p", "A 200-person company can absorb a bad six-month bet on the wrong process, the wrong automation, the wrong hire. A 6-person startup can't — one wrong call burns a quarter of runway you don't get back."),
-            ("p", "What a startup actually needs from a consultant isn't a strategy deck. It's someone who's seen the specific failure mode you're about to walk into, and can tell you before it costs you three months."),
-            ("p", "The founders who avoid consulting usually aren't avoiding the cost. They're avoiding the idea that someone outside the company might see the problem faster than they can. That instinct is understandable — and it's the expensive one."),
-            ("p", "The founders who use consulting well don't outsource decisions. They buy a second, sharper pair of eyes for the one decision that's too important to get wrong on the first try."),
-            ("p", "You don't need a retainer. You need someone for the one hard question, at the one moment it actually matters."),
-            ("q", "What's the one decision in your startup right now where you'd genuinely want an outside opinion before committing?"),
-        ],
-        hashtags=["StartupAdvice", "Founders", "BusinessConsulting", "Entrepreneurship", "StartupGrowth"],
-    ),
-    dict(
-        slug="audit-nobody-reads",
-        date="2026-07-14",
-        tag="Consulting",
-        title="The Audit Nobody Reads: Why Most Business Audits Fail to Drive Change",
-        dek="Most audits are built to demonstrate thoroughness, not to be acted on. That's a design problem, not an accuracy problem.",
-        description="Why most business audits end up as a PDF opened once — and what a business audit needs to look like to actually change what happens on Monday morning.",
-        body=[
-            ("p", "Most business audits end the same way: a 60-slide deck, a round of applause in the final meeting, and a PDF that gets opened once — the day it's delivered."),
-            ("p", "Nobody's lying in that meeting. The findings are usually correct. The problem isn't accuracy. It's design."),
-            ("p", "Most audits are built to demonstrate thoroughness, not to be acted on. They cover every department, every risk, every possible finding — because \"comprehensive\" is what gets sold and what looks defensible later. The output is a document you can point to, not a decision you can make."),
-            ("p", "An audit that actually gets used looks different. It picks one real, specific, expensive problem — not twelve medium ones — and it ends with an answer, not a menu of \"options to consider.\""),
-            ("p", "If you can't tell, from the last page, exactly what to do on Monday morning, the audit did its job for the consultant, not for you."),
-            ("q", "Next time someone hands you an audit — count how many of the findings actually have an owner and a deadline attached. That number tells you more than the deck does."),
-        ],
-        hashtags=["BusinessConsulting", "ProcessImprovement", "Audit", "OperationalExcellence", "ManagementConsulting"],
-    ),
-    dict(
-        slug="one-person-consulting-studio",
-        date="2026-07-21",
-        tag="Consulting",
-        title="The One-Person Consulting Studio Advantage: Why Small Beats Big",
-        dek="\"What if you get sick?\" is the most common objection to hiring a solo consultant. It's usually asked backwards.",
-        description="Why diluted accountability, not team size, is the real risk in consulting — and what you actually get from working with a one-person studio instead of an agency.",
-        body=[
-            ("p", "\"What if you get sick?\" is the most common objection to hiring a solo consultant instead of an agency."),
-            ("p", "It's a fair question. It's also usually asked backwards."),
-            ("p", "At a large agency, the person who sold you the project and the person doing the work are rarely the same person. By the time your problem reaches someone senior enough to actually solve it, it's passed through two account managers and a kickoff deck. If that senior person leaves, you often don't know — the agency just quietly reassigns."),
-            ("p", "At a one-person studio, there's no one to hide behind. The person on the call is the person doing the work, which means there's nowhere for a wrong assumption to survive unnoticed. It also means you can only take on a handful of clients at once — which sounds like a limitation until you realize it's the only way anyone can promise you their full attention instead of 20% of it."),
-            ("p", "Small isn't the risk. Diluted accountability is the risk. Small is just where accountability has nowhere left to hide."),
-            ("q", "Would you rather have 20% of a senior person's attention, or 100% of someone slightly less famous?"),
-        ],
-        hashtags=["Consulting", "BoutiqueConsulting", "SmallBusiness", "ClientExperience", "Freelance"],
-    ),
-    dict(
-        slug="when-not-to-automate",
-        date="2026-08-04",
-        tag="Automation & AI",
-        title="When Not to Automate: The Hidden Risk of Automating Broken Processes",
-        dek="Automating a broken process doesn't fix it. It makes the broken version run faster, more consistently, and harder to notice.",
-        description="Why the right question before any automation project isn't \"can this be automated\" — it's whether the process deserves to survive in its current form at all.",
-        body=[
-            ("p", "Every automation pitch sounds the same: \"we'll save you X hours a week.\" Almost none of them ask whether the process being automated should still exist."),
-            ("p", "Automating a broken process doesn't fix it. It just makes the broken version run faster, more consistently, and harder to notice — because now nobody has to manually suffer through it to see how bad it is."),
-            ("p", "We once evaluated replacing a full-time hire with an AI manager for handling estimates, documents, and logistics. The honest answer wasn't \"yes, automate it.\" It was: most of the risk wasn't in the manual work — it was in a handful of judgment calls that shouldn't be automated at all. So we automated the 80% that was pure repetition, and left the 20% that actually needed a human decision exactly where it was."),
-            ("p", "The question worth asking before any automation project isn't \"can this be automated.\" It's \"does this process deserve to survive in its current form at all.\""),
-            ("q", "If you automated your worst process tomorrow exactly as it exists today — would you be proud of what you shipped?"),
-        ],
-        hashtags=["Automation", "AI", "ProcessOptimization", "DigitalTransformation", "Efficiency"],
-    ),
-    dict(
-        slug="multilingual-website-not-converting",
-        date="2026-08-13",
-        tag="Web Development",
-        title="Why Your Multilingual Website Isn't Converting (It's Not About Translation)",
-        dek="Translation is the easy 20% of localization. The 80% that determines whether a site converts has nothing to do with words.",
-        description="What actually makes a multi-market website convert — beyond translation: layout direction, reading patterns, and local trust signals that word-for-word translation gets wrong.",
-        body=[
-            ("p", "Most companies localize a website by translating it. That's the easy 20% of the problem, and it's the part everyone gets right."),
-            ("p", "The 80% that actually determines whether a multilingual site converts has nothing to do with translation: right-to-left layout that doesn't quietly break your grid, alphabet and reading-direction differences that change how people scan a page, and local specifics — payment habits, trust signals, even color associations — that a word-for-word translation carries over by accident, wrong."),
-            ("p", "A site that reads correctly but \"feels\" imported rarely converts. Visitors can't always say why it feels off. They just leave faster."),
-            ("p", "The test isn't \"does it read correctly in this language.\" It's \"would someone who only reads this language assume it was built by someone who only reads this language.\""),
-            ("q", "If you translated your site tomorrow into a language with a different alphabet or reading direction — would it still look designed, or just translated?"),
-        ],
-        hashtags=["WebDevelopment", "Localization", "InternationalBusiness", "UXDesign", "GlobalMarketing"],
-    ),
-    dict(
-        slug="consulting-retainer-trap",
-        date="2026-08-25",
-        tag="Consulting",
-        title="The Consulting Retainer Trap: Why Monthly Retainers Rarely Solve Real Problems",
-        dek="A retainer guarantees the consultant gets paid every month. It doesn't guarantee you get a hard problem solved.",
-        description="Why most consulting retainers quietly turn into a subscription for activity instead of results — and what to ask before renewing one.",
-        body=[
-            ("p", "Most consulting relationships start with a retainer, because retainers are easier to sell than results."),
-            ("p", "A retainer guarantees the consultant gets paid every month. It doesn't guarantee you get a hard problem solved — it guarantees you get <strong>something</strong> delivered every month, whether or not that's what actually moves the number you care about."),
-            ("p", "That's how six-month retainers turn into eighteen-month retainers with a slide deck's worth of \"progress\" and no single decision anyone can point to as the reason things got better."),
-            ("p", "The alternative isn't \"no consulting.\" It's consulting scoped to one specific, expensive problem, with a defined end — not a subscription to someone's calendar."),
-            ("p", "If you can't name the one decision your current consulting engagement is supposed to produce, that's usually the real finding."),
-            ("q", "Before renewing any retainer, ask one question out loud: what's the single decision this made possible that wouldn't have happened otherwise?"),
-        ],
-        hashtags=["Consulting", "ManagementConsulting", "BusinessStrategy", "ClientRelationships", "ConsultingIndustry"],
-    ),
-]
+# ---------------------------------------------------------------------------
+# Load content modules, ordered oldest → newest
+# ---------------------------------------------------------------------------
+def load_posts():
+    posts = []
+    for path in sorted(glob.glob(os.path.join(ROOT, "content", "posts", "*.py"))):
+        name = os.path.splitext(os.path.basename(path))[0]
+        if name.startswith("_"):
+            continue
+        spec = importlib.util.spec_from_file_location(f"post_{name}", path)
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        post = mod.POST
+        post.setdefault("slug", name)
+        post.setdefault("updated", post["date"])
+        post.setdefault("cover", f"{post['slug']}-cover.png")
+        posts.append(post)
+    posts.sort(key=lambda p: p["date"])
+    return posts
 
 
-def word_count(post):
-    n = 0
-    for kind, content in post["body"]:
-        if kind == "ul":
-            n += sum(len(re.findall(r"\w+", li)) for li in content)
+# ---------------------------------------------------------------------------
+# Helpers
+# ---------------------------------------------------------------------------
+TRANSLIT = {
+    "а": "a", "б": "b", "в": "v", "г": "g", "д": "d", "е": "e", "ё": "e", "ж": "zh",
+    "з": "z", "и": "i", "й": "y", "к": "k", "л": "l", "м": "m", "н": "n", "о": "o",
+    "п": "p", "р": "r", "с": "s", "т": "t", "у": "u", "ф": "f", "х": "h", "ц": "ts",
+    "ч": "ch", "ш": "sh", "щ": "sch", "ъ": "", "ы": "y", "ь": "", "э": "e", "ю": "yu",
+    "я": "ya",
+}
+
+
+def anchor(text):
+    text = re.sub(r"<[^>]+>", "", text).lower()
+    text = "".join(TRANSLIT.get(ch, ch) for ch in text)
+    text = re.sub(r"[^a-z0-9]+", "-", text).strip("-")
+    return text[:60] or "section"
+
+
+def resolve(text, home, blogroot):
+    return text.replace("{{HOME}}", home).replace("{{BLOG}}", blogroot)
+
+
+def post_text(post, lang):
+    """Everything a reader actually reads — used for the reading-time figure."""
+    chunks = [post["h1"][lang], post["dek"][lang]]
+    for kind, content in post["body"][lang]:
+        if kind in ("ul", "ol", "checklist"):
+            chunks.extend(content)
+        elif kind == "steps":
+            for t, b in content:
+                chunks += [t, b]
+        elif kind == "table":
+            chunks.extend(content.get("head", []))
+            for row in content.get("rows", []):
+                chunks.extend(row)
+            chunks.append(content.get("caption", ""))
         else:
-            n += len(re.findall(r"\w+", content))
-    n += len(re.findall(r"\w+", post["title"])) + len(re.findall(r"\w+", post["dek"]))
-    return n
+            chunks.append(content)
+    chunks.extend(post.get("takeaways", {}).get(lang, []))
+    for q, a in post.get("faq", {}).get(lang, []):
+        chunks += [q, a]
+    return " ".join(chunks)
 
 
-def read_minutes(post):
-    return max(2, math.ceil(word_count(post) / 200))
+def read_minutes(post, lang):
+    return max(2, round(count_words(post_text(post, lang)) / WPM[lang]))
 
 
-def body_html(post):
-    parts = []
-    for kind, content in post["body"]:
-        if kind == "p":
-            parts.append(f"<p>{content}</p>")
+def word_total(post, lang):
+    return count_words(post_text(post, lang))
+
+
+# ---------------------------------------------------------------------------
+# Body rendering
+# ---------------------------------------------------------------------------
+def render_body(post, lang, home, blogroot):
+    out, toc = [], []
+    for kind, content in post["body"][lang]:
+        if kind == "h2":
+            a = anchor(content)
+            toc.append((a, content))
+            out.append(f'<h2 id="{a}">{resolve(content, home, blogroot)}</h2>')
+        elif kind == "h3":
+            out.append(f'<h3 id="{anchor(content)}">{resolve(content, home, blogroot)}</h3>')
+        elif kind == "p":
+            out.append(f"<p>{resolve(content, home, blogroot)}</p>")
         elif kind == "ul":
-            items = "".join(f"<li>{li}</li>" for li in content)
-            parts.append(f"<ul>{items}</ul>")
+            items = "".join(f"<li>{resolve(li, home, blogroot)}</li>" for li in content)
+            out.append(f"<ul>{items}</ul>")
+        elif kind == "ol":
+            items = "".join(f"<li>{resolve(li, home, blogroot)}</li>" for li in content)
+            out.append(f"<ol>{items}</ol>")
+        elif kind == "checklist":
+            items = "".join(f"<li>{resolve(li, home, blogroot)}</li>" for li in content)
+            out.append(f'<ul class="post__checklist">{items}</ul>')
         elif kind == "q":
-            parts.append(f'<p class="post__question">{content}</p>')
-    return "\n        ".join(parts)
+            out.append(f'<blockquote class="post__pull">{resolve(content, home, blogroot)}</blockquote>')
+        elif kind == "note":
+            out.append(f'<aside class="post__note">{resolve(content, home, blogroot)}</aside>')
+        elif kind == "steps":
+            lis = "".join(
+                f'<li><strong>{resolve(t, home, blogroot)}</strong>'
+                f'<span>{resolve(b, home, blogroot)}</span></li>'
+                for t, b in content
+            )
+            out.append(f'<ol class="post__steps">{lis}</ol>')
+        elif kind == "table":
+            head = "".join(f"<th scope=\"col\">{h}</th>" for h in content["head"])
+            rows = "".join(
+                "<tr>" + "".join(f"<td>{resolve(c, home, blogroot)}</td>" for c in row) + "</tr>"
+                for row in content["rows"]
+            )
+            caption = f'<caption>{content["caption"]}</caption>' if content.get("caption") else ""
+            out.append(
+                '<div class="post__table-wrap"><table class="post__table">'
+                f"{caption}<thead><tr>{head}</tr></thead><tbody>{rows}</tbody></table></div>"
+            )
+        else:
+            raise ValueError(f"unknown block type {kind!r} in {post['slug']}")
+    return "\n        ".join(out), toc
 
 
-def fmt_date_human(iso):
-    months = ["January","February","March","April","May","June","July","August","September","October","November","December"]
-    y, m, d = iso.split("-")
-    return f"{months[int(m)-1]} {int(d)}, {y}"
+def render_toc(toc, lang):
+    if len(toc) < 3:
+        return ""
+    items = "".join(f'<li><a href="#{a}">{re.sub(r"<[^>]+>", "", t)}</a></li>' for a, t in toc)
+    return f"""<nav class="post__toc" aria-label="{LABELS[lang]['contents']}">
+    <p class="post__toc-title">{LABELS[lang]['contents']}</p>
+    <ol>{items}</ol>
+  </nav>"""
 
 
-HEAD = """<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{title}</title>
-<meta name="description" content="{description}">
-<link rel="canonical" href="{canonical}">
-<link rel="alternate" hreflang="en" href="{canonical}">
-<link rel="alternate" hreflang="x-default" href="{canonical}">
-
-<meta property="og:type" content="{og_type}">
-<meta property="og:site_name" content="Ganza Consulting">
-<meta property="og:locale" content="en_US">
-<meta property="og:url" content="{canonical}">
-<meta property="og:title" content="{title}">
-<meta property="og:description" content="{description}">
-<meta property="og:image" content="{og_image}">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="{title}">
-<meta name="twitter:description" content="{description}">
-<meta name="twitter:image" content="{og_image}">
-
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%230d0d0a'/%3E%3Ctext x='50' y='72' font-size='68' font-family='Arial Black,sans-serif' font-weight='900' fill='%23e8ff2e' text-anchor='middle'%3EG%3C/text%3E%3C/svg%3E">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="{p}css/style.css">
-<link rel="stylesheet" href="{p}css/builder.css">
-<link rel="stylesheet" href="{p}css/blog.css">
-{jsonld}</head>
-<body>
-
-<div class="ticker" aria-hidden="true">
-  <div class="ticker__track">
-    <span>NOW BOOKING Q4 2026&nbsp;&nbsp;—&nbsp;&nbsp;CONSULTING + AUTOMATION + PROJECT MANAGEMENT&nbsp;&nbsp;—&nbsp;&nbsp;NO TEMPLATES&nbsp;&nbsp;—&nbsp;&nbsp;NOW BOOKING Q4 2026&nbsp;&nbsp;—&nbsp;&nbsp;CONSULTING + AUTOMATION + PROJECT MANAGEMENT&nbsp;&nbsp;—&nbsp;&nbsp;NO TEMPLATES&nbsp;&nbsp;—&nbsp;&nbsp;</span>
-  </div>
-</div>
-
-<header class="site-header" id="top">
-  <div class="site-header__inner">
-    <a href="{p}en/index.html" class="logo">
-      <span class="logo__mark">G</span>
-      <span class="logo__text">GANZA<br>CONSULTING</span>
-    </a>
-
-    <nav class="nav" id="nav">
-      <a href="{p}en/index.html#services">Services</a>
-      <a href="{p}en/index.html#cases">Cases</a>
-      <a href="{p}en/index.html#pricing">Pricing</a>
-      <a href="{blogroot}">Blog</a>
-      <a href="{p}en/index.html#contact">Contact</a>
-    </nav>
-
-    <div class="header-actions">
-      <a class="btn btn--small btn--yellow" href="https://t.me/groovebliss" target="_blank" rel="noopener">TELEGRAM ↗</a>
-      <button class="burger" id="burger" aria-label="Menu" type="button">MENU</button>
-    </div>
-  </div>
-</header>
-"""
-
-FOOTER = """
-<footer class="footer" id="contact">
-  <div class="footer__top">
-    <h2>READY TO SORT<br>OUT THE CHAOS?<br>WRITE TO US.</h2>
-    <div class="footer__contacts">
-      <a class="contact-link" href="https://t.me/groovebliss" target="_blank" rel="noopener">
-        <span class="contact-link__label">TELEGRAM</span>
-        <span class="contact-link__value">@groovebliss ↗</span>
-      </a>
-      <a class="contact-link" href="https://www.linkedin.com/in/george-mercer-55520b388/" target="_blank" rel="noopener">
-        <span class="contact-link__label">LINKEDIN</span>
-        <span class="contact-link__value">george-mercer ↗</span>
-      </a>
-      <a class="contact-link" href="mailto:onegeorgemercer@gmail.com">
-        <span class="contact-link__label">EMAIL</span>
-        <span class="contact-link__value">onegeorgemercer@gmail.com ↗</span>
-      </a>
-    </div>
-  </div>
-
-  <div class="footer__bottom">
-    <p class="footer__joke">COPYRIGHT IS BORING</p>
-    <p class="footer__legal">© 2026 GANZA CONSULTING. ALL RIGHTS... WHATEVER.</p>
-  </div>
-</footer>
-
-<script src="{p}js/script.js"></script>
-</body>
-</html>
-"""
+def render_takeaways(post, lang):
+    items = post.get("takeaways", {}).get(lang, [])
+    if not items:
+        return ""
+    lis = "".join(f"<li>{i}</li>" for i in items)
+    return f"""<aside class="post__takeaways">
+    <p class="post__takeaways-title">{LABELS[lang]['takeaways']}</p>
+    <ul>{lis}</ul>
+  </aside>"""
 
 
-def make_head(title, description, canonical, og_image, jsonld, p, blogroot, og_type="website"):
-    return HEAD.format(title=title, description=description, canonical=canonical,
-                        og_image=og_image, jsonld=jsonld, p=p, blogroot=blogroot, og_type=og_type)
-
-
-# ---------------------------------------------------------------------------
-# BLOG INDEX
-# ---------------------------------------------------------------------------
-def build_index():
-    p = "../"
-    ordered = list(reversed(POSTS))  # newest first
-    cards = []
-    for post in ordered:
-        cards.append(f"""    <a class="post-card" href="{post['slug']}/">
-      <div class="post-card__meta">
-        <span class="post-card__tag">{esc(post['tag'])}</span>
-        <span>{read_minutes(post)} min read · {fmt_date_human(post['date'])}</span>
-      </div>
-      <h2>{esc(post['title'])}</h2>
-      <p class="post-card__excerpt">{esc(post['dek'])}</p>
-      <span class="post-card__cta">READ THE ARTICLE →</span>
-    </a>""")
-
-    jsonld = f"""<script type="application/ld+json">
-{{
-  "@context": "https://schema.org",
-  "@type": "Blog",
-  "name": "Ganza Consulting — Blog",
-  "url": "{SITE}/blog/",
-  "publisher": {{
-    "@type": "Organization",
-    "name": "Ganza Consulting"
-  }}
-}}
-</script>
-"""
-
-    html = make_head(
-        title=esc("Blog — Ganza Consulting | Notes on Consulting, Automation & Hard Problems"),
-        description=esc("Straight-talk essays on consulting, automation, project management and web development — no fluff, real cases, written by the person doing the work."),
-        canonical=f"{SITE}/blog/",
-        og_image=f"{SITE}/img/og-cover.png",
-        jsonld=jsonld,
-        p=p,
-        blogroot="./",
+def render_faq(post, lang, home, blogroot):
+    items = post.get("faq", {}).get(lang, [])
+    if not items:
+        return ""
+    blocks = "".join(
+        f"""<details class="faq-item">
+      <summary>{esc(q)}<span class="faq-item__icon" aria-hidden="true"></span></summary>
+      <p>{resolve(a, home, blogroot)}</p>
+    </details>"""
+        for q, a in items
     )
-    html += f"""
-<section class="blog-hero">
-  <span class="tag tag--blue">BLOG</span>
-  <h1>NOTES ON HARD PROBLEMS</h1>
-  <p class="blog-hero__intro">Consulting, automation, project management, web development — written by the person who actually does the work. No listicles, no recycled frameworks.</p>
-</section>
+    return f"""<section class="post__faq" id="faq">
+    <h2>{LABELS[lang]['faq']}</h2>
+    <div class="faq__list">{blocks}</div>
+  </section>"""
 
-<section class="blog__grid">
-{chr(10).join(cards)}
-</section>
-"""
-    html += FOOTER.format(p=p)
-    with open(os.path.join(ROOT, "blog", "index.html"), "w", encoding="utf-8") as f:
-        f.write(html)
-    print("wrote blog/index.html")
+
+def render_author(lang, home, p):
+    return f"""<section class="post__author">
+    <img src="{p}img/founder.png" width="96" height="96" alt="{esc(AUTHOR_NAME)}" loading="lazy" decoding="async">
+    <div>
+      <p class="post__author-label">{LABELS[lang]['author']}</p>
+      <p class="post__author-name">{esc(AUTHOR_NAME)}</p>
+      <p class="post__author-bio">{esc(AUTHOR_BIO[lang])}</p>
+      <p class="post__author-links">
+        <a href="{TELEGRAM}" target="_blank" rel="noopener" data-track="author-telegram">Telegram ↗</a>
+        <a href="{home}#about">{LABELS[lang]['nav_about']} ↗</a>
+      </p>
+    </div>
+  </section>"""
 
 
 # ---------------------------------------------------------------------------
-# POST PAGES
+# JSON-LD
 # ---------------------------------------------------------------------------
-def build_posts():
-    for i, post in enumerate(POSTS):
-        p = "../../"
-        canonical = f"{SITE}/blog/{post['slug']}/"
-        og_image = f"{SITE}/img/blog/{post['slug']}-cover.png"
+def article_graph(post, lang, canonical, blog_url, home_url):
+    body_words = word_total(post, lang)
+    graph = [
+        org_node(),
+        person_node(lang),
+        {
+            "@type": "BreadcrumbList",
+            "@id": f"{canonical}#breadcrumb",
+            "itemListElement": [
+                {"@type": "ListItem", "position": 1, "name": LABELS[lang]["home"], "item": home_url},
+                {"@type": "ListItem", "position": 2, "name": LABELS[lang]["blog"], "item": blog_url},
+                {"@type": "ListItem", "position": 3, "name": post["h1"][lang], "item": canonical},
+            ],
+        },
+        {
+            "@type": "BlogPosting",
+            "@id": f"{canonical}#article",
+            "headline": post["h1"][lang],
+            "alternativeHeadline": post["dek"][lang],
+            "description": post["description"][lang],
+            "articleSection": post["tag"][lang],
+            "keywords": post["keywords"][lang],
+            "inLanguage": lang,
+            "wordCount": body_words,
+            "timeRequired": f"PT{read_minutes(post, lang)}M",
+            "image": {
+                "@type": "ImageObject",
+                "url": f"{SITE}/img/blog/{post['cover']}",
+                "width": 1200, "height": 630,
+            },
+            "datePublished": post["date"],
+            "dateModified": post["updated"],
+            "author": {"@id": f"{SITE}/#george-mercer"},
+            "publisher": {"@id": f"{SITE}/#organization"},
+            "isPartOf": {"@id": f"{blog_url}#blog"},
+            "mainEntityOfPage": {"@type": "WebPage", "@id": canonical},
+        },
+    ]
+    faq = post.get("faq", {}).get(lang, [])
+    if faq:
+        graph.append({
+            "@type": "FAQPage",
+            "@id": f"{canonical}#faq",
+            "mainEntity": [
+                {"@type": "Question", "name": q,
+                 "acceptedAnswer": {"@type": "Answer", "text": re.sub(r"<[^>]+>", "", a)}}
+                for q, a in faq
+            ],
+        })
+    return graph
 
-        jsonld = f"""<script type="application/ld+json">
-{{
-  "@context": "https://schema.org",
-  "@type": "Article",
-  "headline": {json.dumps(post['title'])},
-  "description": {json.dumps(post['description'])},
-  "image": "{og_image}",
-  "datePublished": "{post['date']}",
-  "dateModified": "{post['date']}",
-  "author": {{
-    "@type": "Person",
-    "name": "George Mercer",
-    "url": "{SITE}/en/index.html#about"
-  }},
-  "publisher": {{
-    "@type": "Organization",
-    "name": "Ganza Consulting",
-    "logo": {{
-      "@type": "ImageObject",
-      "url": "{SITE}/img/og-cover.png"
-    }}
-  }},
-  "mainEntityOfPage": {{
-    "@type": "WebPage",
-    "@id": "{canonical}"
-  }}
-}}
-</script>
-"""
 
-        html = make_head(
-            title=esc(f"{post['title']} | Ganza Consulting"),
-            description=esc(post["description"]),
-            canonical=canonical,
-            og_image=og_image,
-            jsonld=jsonld,
-            p=p,
-            blogroot="../",
-            og_type="article",
+# ---------------------------------------------------------------------------
+# Article page
+# ---------------------------------------------------------------------------
+def build_post(post, posts, lang):
+    i = posts.index(post)
+    slug = post["slug"]
+    p = "../../" if lang == "en" else "../../../"
+    home = "../../"          # /blog/<slug>/ → /   and   /ru/blog/<slug>/ → /ru/
+    blogroot = "../"
+    prefix = "" if lang == "en" else "ru/"
+    canonical = f"{SITE}/{prefix}blog/{slug}/"
+    blog_url = f"{SITE}/{prefix}blog/"
+    home_url = f"{SITE}/" if lang == "en" else f"{SITE}/ru/"
+    alt_lang = "ru" if lang == "en" else "en"
+    alt_url = f"../../ru/blog/{slug}/" if lang == "en" else f"../../../blog/{slug}/"
+
+    body_html, toc = render_body(post, lang, home, blogroot)
+
+    extra_meta = "\n".join([
+        f'<meta property="article:published_time" content="{post["date"]}">',
+        f'<meta property="article:modified_time" content="{post["updated"]}">',
+        f'<meta property="article:author" content="{esc(AUTHOR_NAME)}">',
+        f'<meta property="article:section" content="{esc(post["tag"][lang])}">',
+    ] + [f'<meta property="article:tag" content="{esc(t)}">' for t in post["hashtags"]])
+
+    head = build_head(
+        lang=lang,
+        title=esc(f"{post['title'][lang]} | {BRAND}"),
+        description=esc(post["description"][lang]),
+        keywords=esc(post["keywords"][lang]),
+        canonical=canonical,
+        alt_urls={"en": f"{SITE}/blog/{slug}/", "ru": f"{SITE}/ru/blog/{slug}/"},
+        og_image=f"{SITE}/img/blog/{post['cover']}",
+        og_image_alt=esc(post["h1"][lang]),
+        og_type="article",
+        p=p,
+        jsonld=jsonld_block(article_graph(post, lang, canonical, blog_url, home_url)),
+        extra_meta=extra_meta,
+        css=("style", "builder", "blog"),
+        feed=f"{blog_url}feed.xml",
+    )
+
+    L = LABELS[lang]
+    prev_post = posts[i - 1] if i > 0 else posts[-1]
+    next_post = posts[i + 1] if i < len(posts) - 1 else posts[0]
+    tags_html = "".join(f'<span class="badge">#{h}</span>' for h in post["hashtags"])
+
+    related = [q for q in posts if q["slug"] in post.get("related", []) and q["slug"] != slug][:3]
+    related_html = ""
+    if related:
+        cards = "".join(
+            f"""<a class="related-card" href="../{r['slug']}/" data-track="related-{r['slug']}">
+        <span class="related-card__tag">{esc(r['tag'][lang])}</span>
+        <span class="related-card__title">{esc(r['h1'][lang])}</span>
+        <span class="related-card__meta">{read_minutes(r, lang)} {L['min_read']}</span>
+      </a>"""
+            for r in related
         )
+        related_html = f"""<section class="post__related">
+    <h2>{L['related']}</h2>
+    <div class="post__related-grid">{cards}</div>
+  </section>"""
 
-        prev_post = POSTS[i - 1] if i > 0 else POSTS[-1]
-        next_post = POSTS[i + 1] if i < len(POSTS) - 1 else POSTS[0]
+    updated_html = ""
+    if post["updated"] != post["date"]:
+        updated_html = f' · {L["updated"]} {fmt_date(post["updated"], lang)}'
 
-        tags_html = "".join(f'<span class="badge">#{h}</span>' for h in post["hashtags"])
+    html = head + "<body>\n" + ticker(lang)
+    html += header(lang, p, home, blogroot, alt_url, active="blog")
+    html += f"""
+<main class="post-wrap">
+<nav class="breadcrumbs" aria-label="Breadcrumb">
+  <a href="{home}">{L['home']}</a><span>/</span><a href="{blogroot}">{L['blog']}</a><span>/</span><span aria-current="page">{esc(post['h1'][lang])}</span>
+</nav>
 
-        html += f"""
 <article class="post">
-  <a class="post__back" href="../">← ALL ARTICLES</a>
   <div class="post__head">
     <div class="post__meta">
-      <span class="post__tag">{esc(post['tag'])}</span>
-      <span>{read_minutes(post)} min read · {fmt_date_human(post['date'])}</span>
+      <span class="post__tag">{esc(post['tag'][lang])}</span>
+      <span>{read_minutes(post, lang)} {L['min_read']} · {fmt_date(post['date'], lang)}{updated_html}</span>
     </div>
-    <h1>{esc(post['title'])}</h1>
-    <p class="post__dek">{esc(post['dek'])}</p>
+    <h1>{esc(post['h1'][lang])}</h1>
+    <p class="post__dek">{esc(post['dek'][lang])}</p>
   </div>
 
+  {render_toc(toc, lang)}
+
   <div class="post__body">
-        {body_html(post)}
+        {body_html}
   </div>
+
+  {render_takeaways(post, lang)}
+
+  {render_faq(post, lang, home, blogroot)}
 
   <div class="post__tags">{tags_html}</div>
 
+  {render_author(lang, home, p)}
+
   <div class="post__cta">
     <div class="post__cta-box">
-      <p>Have a problem like this one? We take on the single hard cases other consultants pass on.</p>
-      <a class="btn btn--yellow" href="https://t.me/groovebliss" target="_blank" rel="noopener">MESSAGE ON TELEGRAM →</a>
-      <a class="btn btn--outline" href="{p}en/index.html#pricing">SEE PRICING</a>
+      <p>{L['cta_text']}</p>
+      <a class="btn btn--yellow" href="{TELEGRAM}" target="_blank" rel="noopener" data-track="post-cta-telegram">{L['cta_tg']}</a>
+      <a class="btn btn--outline" href="{home}#pricing" data-track="post-cta-pricing">{L['cta_pricing']}</a>
     </div>
   </div>
 </article>
 
+{related_html}
+
 <nav class="post__nav">
-  <a class="post__nav-link" href="../{prev_post['slug']}/">
-    <span class="post__nav-label">← PREVIOUS</span>
-    <span class="post__nav-title">{esc(prev_post['title'])}</span>
+  <a class="post__nav-link" href="../{prev_post['slug']}/" data-track="post-prev">
+    <span class="post__nav-label">{L['prev']}</span>
+    <span class="post__nav-title">{esc(prev_post['h1'][lang])}</span>
   </a>
-  <a class="post__nav-link" href="../{next_post['slug']}/">
-    <span class="post__nav-label">NEXT →</span>
-    <span class="post__nav-title">{esc(next_post['title'])}</span>
+  <a class="post__nav-link" href="../{next_post['slug']}/" data-track="post-next">
+    <span class="post__nav-label">{L['next']}</span>
+    <span class="post__nav-title">{esc(next_post['h1'][lang])}</span>
   </a>
 </nav>
+</main>
 """
-        html += FOOTER.format(p=p)
+    html += footer(lang, p)
+    out = f"{prefix}blog/{slug}/index.html"
+    write(out, html)
+    return read_minutes(post, lang), word_total(post, lang)
 
-        post_dir = os.path.join(ROOT, "blog", post["slug"])
-        os.makedirs(post_dir, exist_ok=True)
-        with open(os.path.join(post_dir, "index.html"), "w", encoding="utf-8") as f:
-            f.write(html)
-        print("wrote blog/{}/index.html — {} min read".format(post["slug"], read_minutes(post)))
+
+# ---------------------------------------------------------------------------
+# Blog index
+# ---------------------------------------------------------------------------
+INDEX_COPY = {
+    "en": dict(
+        title="Blog — Consulting, Automation and Project Management, Without the Fluff | Ganza Consulting",
+        h1="NOTES ON HARD PROBLEMS",
+        description="Long-form, no-fluff articles on business consulting, process automation and AI, project management and web development — written from delivered engagements, not from a content calendar.",
+        keywords="business consulting blog, process automation articles, project management insights, digital transformation case studies, consulting advice for founders, AI automation guide",
+        intro="Long-form notes on consulting, automation, project management and web development — written by the person who does the work. Every article ends with something you can act on, not a list of things to consider.",
+        count="{n} articles · {mins} minutes of reading",
+    ),
+    "ru": dict(
+        title="Блог — консалтинг, автоматизация и проектный менеджмент без воды | Ganza Consulting",
+        h1="ЗАМЕТКИ О СЛОЖНЫХ ЗАДАЧАХ",
+        description="Большие статьи без воды о бизнес-консалтинге, автоматизации процессов и ИИ, проектном менеджменте и веб-разработке — по реальным проектам, а не по контент-плану.",
+        keywords="блог о бизнес-консалтинге, статьи об автоматизации процессов, проектный менеджмент статьи, цифровая трансформация кейсы, советы консультанта для основателей, внедрение ИИ в бизнес",
+        intro="Большие заметки о консалтинге, автоматизации, управлении проектами и веб-разработке — от человека, который сам делает работу. Каждая статья заканчивается тем, что можно применить, а не списком «вопросов к обсуждению».",
+        count="{n} статей · {mins} минут чтения",
+    ),
+}
+
+
+def build_index(posts, lang):
+    p = "../" if lang == "en" else "../../"
+    home = "../"
+    blogroot = "./"
+    prefix = "" if lang == "en" else "ru/"
+    canonical = f"{SITE}/{prefix}blog/"
+    alt_url = "../ru/blog/" if lang == "en" else "../../blog/"
+    L = LABELS[lang]
+    C = INDEX_COPY[lang]
+
+    ordered = list(reversed(posts))
+    total_mins = sum(read_minutes(x, lang) for x in ordered)
+
+    tags = []
+    for x in ordered:
+        if x["tag"][lang] not in tags:
+            tags.append(x["tag"][lang])
+    chips = f'<button class="blog-filter__btn is-active" type="button" data-filter="*">{L["filter_all"]}</button>'
+    chips += "".join(
+        f'<button class="blog-filter__btn" type="button" data-filter="{esc(t)}">{esc(t)}</button>'
+        for t in tags
+    )
+
+    cards = []
+    for x in ordered:
+        cards.append(f"""    <a class="post-card" href="{x['slug']}/" data-tag="{esc(x['tag'][lang])}" data-track="card-{x['slug']}">
+      <span class="post-card__cover">
+        <img src="{p}img/blog/{x['cover']}" width="1200" height="630" loading="lazy" decoding="async" alt="{esc(x['h1'][lang])}">
+      </span>
+      <span class="post-card__meta">
+        <span class="post-card__tag">{esc(x['tag'][lang])}</span>
+        <span>{read_minutes(x, lang)} {L['min_read']} · {fmt_date(x['date'], lang)}</span>
+      </span>
+      <h2>{esc(x['h1'][lang])}</h2>
+      <p class="post-card__excerpt">{esc(x['dek'][lang])}</p>
+      <span class="post-card__cta">{'READ THE ARTICLE →' if lang == 'en' else 'ЧИТАТЬ СТАТЬЮ →'}</span>
+    </a>""")
+
+    graph = [
+        org_node(),
+        person_node(lang),
+        {
+            "@type": "Blog",
+            "@id": f"{canonical}#blog",
+            "url": canonical,
+            "name": f"{BRAND} — {L['blog']}",
+            "description": C["description"],
+            "inLanguage": lang,
+            "publisher": {"@id": f"{SITE}/#organization"},
+            "author": {"@id": f"{SITE}/#george-mercer"},
+        },
+        {
+            "@type": "BreadcrumbList",
+            "@id": f"{canonical}#breadcrumb",
+            "itemListElement": [
+                {"@type": "ListItem", "position": 1, "name": L["home"],
+                 "item": f"{SITE}/" if lang == "en" else f"{SITE}/ru/"},
+                {"@type": "ListItem", "position": 2, "name": L["blog"], "item": canonical},
+            ],
+        },
+        {
+            "@type": "ItemList",
+            "@id": f"{canonical}#list",
+            "itemListElement": [
+                {"@type": "ListItem", "position": n + 1,
+                 "url": f"{SITE}/{prefix}blog/{x['slug']}/",
+                 "name": x["h1"][lang]}
+                for n, x in enumerate(ordered)
+            ],
+        },
+    ]
+
+    head = build_head(
+        lang=lang,
+        title=esc(C["title"]),
+        description=esc(C["description"]),
+        keywords=esc(C["keywords"]),
+        canonical=canonical,
+        alt_urls={"en": f"{SITE}/blog/", "ru": f"{SITE}/ru/blog/"},
+        og_image=f"{SITE}/img/og-cover.png",
+        og_image_alt=esc(C["h1"]),
+        og_type="website",
+        p=p,
+        jsonld=jsonld_block(graph),
+        css=("style", "builder", "blog"),
+        feed=f"{canonical}feed.xml",
+    )
+
+    html = head + "<body>\n" + ticker(lang)
+    html += header(lang, p, home, blogroot, alt_url, active="blog")
+    html += f"""
+<main>
+<section class="blog-hero">
+  <span class="tag tag--blue">{L['blog'].upper()}</span>
+  <h1>{C['h1']}</h1>
+  <p class="blog-hero__intro">{C['intro']}</p>
+  <p class="blog-hero__count">{C['count'].format(n=len(ordered), mins=total_mins)}</p>
+</section>
+
+<div class="blog-filter" role="group">{chips}</div>
+
+<section class="blog__grid">
+{chr(10).join(cards)}
+</section>
+</main>
+"""
+    html += footer(lang, p)
+    write(f"{prefix}blog/index.html", html)
+
+
+# ---------------------------------------------------------------------------
+# RSS
+# ---------------------------------------------------------------------------
+def build_feed(posts, lang):
+    prefix = "" if lang == "en" else "ru/"
+    blog_url = f"{SITE}/{prefix}blog/"
+    C = INDEX_COPY[lang]
+    items = []
+    for x in reversed(posts):
+        url = f"{blog_url}{x['slug']}/"
+        pub = datetime.datetime.strptime(x["date"], "%Y-%m-%d").strftime("%a, %d %b %Y 09:00:00 +0000")
+        items.append(f"""  <item>
+    <title>{esc(x['h1'][lang])}</title>
+    <link>{url}</link>
+    <guid isPermaLink="true">{url}</guid>
+    <pubDate>{pub}</pubDate>
+    <category>{esc(x['tag'][lang])}</category>
+    <description>{esc(x['description'][lang])}</description>
+  </item>""")
+    xml = f"""<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>{esc(BRAND)} — {LABELS[lang]['blog']}</title>
+  <link>{blog_url}</link>
+  <atom:link href="{blog_url}feed.xml" rel="self" type="application/rss+xml"/>
+  <description>{esc(C['description'])}</description>
+  <language>{lang}</language>
+  <lastBuildDate>{datetime.datetime.utcnow().strftime('%a, %d %b %Y %H:%M:%S +0000')}</lastBuildDate>
+{chr(10).join(items)}
+</channel>
+</rss>
+"""
+    write(f"{prefix}blog/feed.xml", xml)
+
+
+def main():
+    posts = load_posts()
+    if not posts:
+        raise SystemExit("no posts found in content/posts/")
+    report = []
+    for lang in LANGS:
+        for post in posts:
+            mins, words = build_post(post, posts, lang)
+            report.append((lang, post["slug"], mins, words))
+        build_index(posts, lang)
+        build_feed(posts, lang)
+
+    print(f"{len(posts)} articles × {len(LANGS)} languages\n")
+    print(f"{'lang':<5} {'slug':<44} {'min':>4} {'words':>7}")
+    for lang, slug, mins, words in report:
+        flag = "" if 7 <= mins <= 15 else "  <-- outside 7–15 min"
+        print(f"{lang:<5} {slug:<44} {mins:>4} {words:>7}{flag}")
 
 
 if __name__ == "__main__":
-    build_index()
-    build_posts()
+    main()

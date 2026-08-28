@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="ru" data-lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Как Lidl потерял €500 млн: разбор провала цифровой трансформации | Ganza Consulting</title>
+<meta name="description" content="Разбор отменённого внедрения SAP в Lidl: как доработка системы вместо изменения одного процесса и растущий разрыв между отчётами и реальностью сожгли около €500 млн — и пять проверок, ловящих тот же сценарий заранее.">
+<meta name="keywords" content="провал SAP в Lidl, проект eLWIS, кейс провала цифровой трансформации, провал внедрения ERP, риски доработки SAP, управление изменениями, управление ИТ-проектами, невозвратные издержки в ИТ">
+<meta name="author" content="George Mercer">
+<meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1">
+<meta name="theme-color" content="#0d0d0a">
+<link rel="canonical" href="https://anomerc.github.io/ganza-consulting-site/ru/blog/lidl-digital-transformation-failure/">
+<link rel="alternate" hreflang="en" href="https://anomerc.github.io/ganza-consulting-site/blog/lidl-digital-transformation-failure/">
+<link rel="alternate" hreflang="ru" href="https://anomerc.github.io/ganza-consulting-site/ru/blog/lidl-digital-transformation-failure/">
+<link rel="alternate" hreflang="x-default" href="https://anomerc.github.io/ganza-consulting-site/blog/lidl-digital-transformation-failure/">
+<link rel="alternate" type="application/rss+xml" title="Ganza Consulting — Блог" href="https://anomerc.github.io/ganza-consulting-site/ru/blog/feed.xml">
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Ganza Consulting">
+<meta property="og:locale" content="ru_RU">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:url" content="https://anomerc.github.io/ganza-consulting-site/ru/blog/lidl-digital-transformation-failure/">
+<meta property="og:title" content="Как Lidl потерял €500 млн: разбор провала цифровой трансформации | Ganza Consulting">
+<meta property="og:description" content="Разбор отменённого внедрения SAP в Lidl: как доработка системы вместо изменения одного процесса и растущий разрыв между отчётами и реальностью сожгли около €500 млн — и пять проверок, ловящих тот же сценарий заранее.">
+<meta property="og:image" content="https://anomerc.github.io/ganza-consulting-site/img/blog/lidl-digital-transformation-failure-cover.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Как Lidl потерял €500 млн: разбор провала цифровой трансформации">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Как Lidl потерял €500 млн: разбор провала цифровой трансформации | Ganza Consulting">
+<meta name="twitter:description" content="Разбор отменённого внедрения SAP в Lidl: как доработка системы вместо изменения одного процесса и растущий разрыв между отчётами и реальностью сожгли около €500 млн — и пять проверок, ловящих тот же сценарий заранее.">
+<meta name="twitter:image" content="https://anomerc.github.io/ganza-consulting-site/img/blog/lidl-digital-transformation-failure-cover.png">
+<meta property="article:published_time" content="2026-06-16">
+<meta property="article:modified_time" content="2026-08-27">
+<meta property="article:author" content="George Mercer">
+<meta property="article:section" content="Разбор кейса">
+<meta property="article:tag" content="DigitalTransformation">
+<meta property="article:tag" content="ProjectManagement">
+<meta property="article:tag" content="ChangeManagement">
+<meta property="article:tag" content="ERP">
+<meta property="article:tag" content="RiskManagement">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%230d0d0a'/%3E%3Ctext x='50' y='72' font-size='68' font-family='Arial Black,sans-serif' font-weight='900' fill='%23e8ff2e' text-anchor='middle'%3EG%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../../css/style.css">
+<link rel="stylesheet" href="../../../css/builder.css">
+<link rel="stylesheet" href="../../../css/blog.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://anomerc.github.io/ganza-consulting-site/#organization",
+      "name": "Ganza Consulting",
+      "url": "https://anomerc.github.io/ganza-consulting-site/",
+      "email": "onegeorgemercer@gmail.com",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://anomerc.github.io/ganza-consulting-site/img/og-cover.png",
+        "width": 1200,
+        "height": 630
+      },
+      "sameAs": [
+        "https://t.me/groovebliss",
+        "https://www.linkedin.com/in/george-mercer-55520b388/"
+      ]
+    },
+    {
+      "@type": "Person",
+      "@id": "https://anomerc.github.io/ganza-consulting-site/#george-mercer",
+      "name": "George Mercer",
+      "url": "https://anomerc.github.io/ganza-consulting-site/ru/#about",
+      "image": "https://anomerc.github.io/ganza-consulting-site/img/founder.png",
+      "description": "Независимый консультант и основатель Ganza Consulting. Берёт единичные сложные задачи, от которых отказываются другие: нетиповую автоматизацию, застрявшие проекты, запутанные процессы и нестандартную веб-разработку. Каждая статья здесь написана по реально сделанным проектам, а не по контент-плану.",
+      "jobTitle": "Независимый консультант",
+      "worksFor": {
+        "@id": "https://anomerc.github.io/ganza-consulting-site/#organization"
+      },
+      "sameAs": [
+        "https://t.me/groovebliss",
+        "https://www.linkedin.com/in/george-mercer-55520b388/"
+      ],
+      "knowsAbout": [
+        "Бизнес-консалтинг",
+        "Автоматизация процессов",
+        "Искусственный интеллект",
+        "Проектный менеджмент",
+        "Веб-разработка",
+        "Цифровая трансформация"
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://anomerc.github.io/ganza-consulting-site/ru/blog/lidl-digital-transformation-failure/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Главная",
+          "item": "https://anomerc.github.io/ganza-consulting-site/ru/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Блог",
+          "item": "https://anomerc.github.io/ganza-consulting-site/ru/blog/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Как Lidl потерял €500 млн: разбор провала цифровой трансформации",
+          "item": "https://anomerc.github.io/ganza-consulting-site/ru/blog/lidl-digital-transformation-failure/"
+        }
+      ]
+    },
+    {
+      "@type": "BlogPosting",
+      "@id": "https://anomerc.github.io/ganza-consulting-site/ru/blog/lidl-digital-transformation-failure/#article",
+      "headline": "Как Lidl потерял €500 млн: разбор провала цифровой трансформации",
+      "alternativeHeadline": "Проект eLWIS не провалился в один момент. Он уезжал в сторону семь лет — пока поддерживать его не стало дороже, чем признать мёртвым.",
+      "description": "Разбор отменённого внедрения SAP в Lidl: как доработка системы вместо изменения одного процесса и растущий разрыв между отчётами и реальностью сожгли около €500 млн — и пять проверок, ловящих тот же сценарий заранее.",
+      "articleSection": "Разбор кейса",
+      "keywords": "провал SAP в Lidl, проект eLWIS, кейс провала цифровой трансформации, провал внедрения ERP, риски доработки SAP, управление изменениями, управление ИТ-проектами, невозвратные издержки в ИТ",
+      "inLanguage": "ru",
+      "wordCount": 1633,
+      "timeRequired": "PT9M",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://anomerc.github.io/ganza-consulting-site/img/blog/lidl-digital-transformation-failure-cover.png",
+        "width": 1200,
+        "height": 630
+      },
+      "datePublished": "2026-06-16",
+      "dateModified": "2026-08-27",
+      "author": {
+        "@id": "https://anomerc.github.io/ganza-consulting-site/#george-mercer"
+      },
+      "publisher": {
+        "@id": "https://anomerc.github.io/ganza-consulting-site/#organization"
+      },
+      "isPartOf": {
+        "@id": "https://anomerc.github.io/ganza-consulting-site/ru/blog/#blog"
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://anomerc.github.io/ganza-consulting-site/ru/blog/lidl-digital-transformation-failure/"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://anomerc.github.io/ganza-consulting-site/ru/blog/lidl-digital-transformation-failure/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Почему провалилось внедрение SAP в Lidl?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Наиболее широко описанная первопричина: Lidl оценивал запасы по закупочной цене, тогда как розничный стандарт SAP построен вокруг оценки по розничной. Вместо изменения процесса компания доработала систему. Это отклонение затронуло закупки, ценообразование, пополнение и отчётность, сделало дороже каждое будущее обновление и вместе с отчётностью, мерившей активность вместо жизнеспособности, позволило программе дрейфовать семь лет."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Сколько стоил проект eLWIS?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Около €500 млн (часть источников называет цифры ближе к $580–600 млн) примерно за семь лет — со старта в 2011 году до отмены в 2018-м, после которой Lidl вернулся на собственную унаследованную систему товародвижения."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Это вина SAP?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Нет. Система работала так, как спроектирована; конфликт был между предпосылками стандартного продукта и процессом, который компания решила не менять. Тот же результат достижим на любой крупной платформе. Риск возник в момент решения дорабатывать, а не адаптироваться."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Какая проверка лучше всего предупреждает о таком сценарии?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Письменные условия остановки, согласованные до следующей вехи: конкретное измеримое условие, при котором программу прекращают. Если программа не может назвать такое условие, это не проект, а обязательство, — а обязательства не отменяют, их списывают."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Это относится только к крупным компаниям?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Нет. Механизм работает на любом масштабе: настройка CRM под непроверенные стадии продаж, автоматизация цепочки согласований ровно в текущем виде, переделка сайта на структуре, которую никто не защищает. В каждом случае короткий неприятный разговор о процессе меняется на длинный тихий поток технического долга."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Когда доработка стандартной системы всё-таки оправдана?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Когда отклонение действительно является источником конкурентного преимущества, изолировано от базовых моделей данных, имеет названного постоянного владельца, а стоимость накатывания двух следующих мажорных релизов вендора поверх него посчитана и принята. Если отсутствует хотя бы один из четырёх пунктов — доработка покупается в кредит."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<script src="../../../js/analytics.js" defer></script>
+</head>
+<body>
+<div class="ticker" aria-hidden="true">
+  <div class="ticker__track"><span>ПРИНИМАЕМ ПРОЕКТЫ НА Q4 2026&nbsp;&nbsp;—&nbsp;&nbsp;КОНСАЛТИНГ + АВТОМАТИЗАЦИЯ + ПРОЕКТНЫЙ МЕНЕДЖМЕНТ&nbsp;&nbsp;—&nbsp;&nbsp;БЕЗ ШАБЛОНОВ&nbsp;&nbsp;—&nbsp;&nbsp;ПРИНИМАЕМ ПРОЕКТЫ НА Q4 2026&nbsp;&nbsp;—&nbsp;&nbsp;КОНСАЛТИНГ + АВТОМАТИЗАЦИЯ + ПРОЕКТНЫЙ МЕНЕДЖМЕНТ&nbsp;&nbsp;—&nbsp;&nbsp;БЕЗ ШАБЛОНОВ&nbsp;&nbsp;—&nbsp;&nbsp;</span></div>
+</div>
+<header class="site-header" id="top">
+  <div class="site-header__inner">
+    <a href="../../" class="logo" data-track="logo">
+      <span class="logo__mark">G</span>
+      <span class="logo__text">GANZA<br>CONSULTING</span>
+    </a>
+
+    <nav class="nav" id="nav">
+      <a href="../../#services">Услуги</a>
+      <a href="../../#cases">Кейсы</a>
+      <a href="../../#pricing">Цены</a>
+      <a href="../" class="is-active">Блог</a>
+      <a href="../../#contact">Контакты</a>
+    </nav>
+
+    <div class="header-actions">
+      <a class="lang-switch" href="../../../blog/lidl-digital-transformation-failure/" hreflang="en" aria-label="Switch language" data-track="lang-switch">
+        <span class="lang-switch__opt is-active">RU</span>
+        <span class="lang-switch__sep">/</span>
+        <span class="lang-switch__opt">EN</span>
+      </a>
+      <a class="btn btn--small btn--yellow" href="https://t.me/groovebliss" target="_blank" rel="noopener" data-track="header-telegram">TELEGRAM ↗</a>
+      <button class="burger" id="burger" aria-label="Menu" type="button">МЕНЮ</button>
+    </div>
+  </div>
+</header>
+
+<main class="post-wrap">
+<nav class="breadcrumbs" aria-label="Breadcrumb">
+  <a href="../../">Главная</a><span>/</span><a href="../">Блог</a><span>/</span><span aria-current="page">Как Lidl потерял €500 млн: разбор провала цифровой трансформации</span>
+</nav>
+
+<article class="post">
+  <div class="post__head">
+    <div class="post__meta">
+      <span class="post__tag">Разбор кейса</span>
+      <span>9 мин чтения · 16 июня 2026 · Обновлено 27 августа 2026</span>
+    </div>
+    <h1>Как Lidl потерял €500 млн: разбор провала цифровой трансформации</h1>
+    <p class="post__dek">Проект eLWIS не провалился в один момент. Он уезжал в сторону семь лет — пока поддерживать его не стало дороже, чем признать мёртвым.</p>
+  </div>
+
+  <nav class="post__toc" aria-label="СОДЕРЖАНИЕ">
+    <p class="post__toc-title">СОДЕРЖАНИЕ</p>
+    <ol><li><a href="#hronologiya-korotko">Хронология, коротко</a></li><li><a href="#reshenie-zadavshee-napravlenie-otsenka-zapasov">Решение, задавшее направление: оценка запасов</a></li><li><a href="#pochemu-nikto-ne-ostanovil">Почему никто не остановил</a></li><li><a href="#chto-lidl-sdelal-pravilno">Что Lidl сделал правильно</a></li><li><a href="#pyat-proverok-kotorye-lovyat-etot-stsenariy-zaranee">Пять проверок, которые ловят этот сценарий заранее</a></li><li><a href="#perenosimaya-versiya-dlya-kompanii-kotoraya-ne-lidl">Переносимая версия — для компании, которая не Lidl</a></li></ol>
+  </nav>
+
+  <div class="post__body">
+        <p>В 2011 году Lidl запустил eLWIS — программу на SAP for Retail, которая должна была заменить собственную систему товародвижения в бизнесе, работающем примерно в 30 странах. В 2018 году компания отменила проект и вернулась на старую систему. Публично называемая стоимость — около <strong>€500 млн</strong>.</p>
+        <p>Короткая версия произошедшего — это не «SAP плохой» и не «в Lidl сидели некомпетентные люди». Это вот что: <strong>компания решила подогнать систему под один существующий процесс вместо того, чтобы изменить процесс, и следующие семь лет платила по этому решению сложный процент</strong>, пока отчётность оставалась спокойной.</p>
+        <p>Сочетание «доработка ради защиты конкурентного преимущества» плюс «управляющий слой, не видящий, как накапливается цена» — самый частый способ умирания больших трансформаций. Ниже: что происходило на самом деле, почему каждый шаг выглядел разумным в моменте и пять проверок, которые вскрыли бы это на годы раньше.</p>
+        <h2 id="hronologiya-korotko">Хронология, коротко</h2>
+        <div class="post__table-wrap"><table class="post__table"><caption>Lidl eLWIS — публично известные вехи</caption><thead><tr><th scope="col">Период</th><th scope="col">Что происходило</th></tr></thead><tbody><tr><td>2011</td><td>Старт программы. Цель — заменить унаследованную собственную систему товародвижения на SAP for Retail по всей группе.</td></tr><tr><td>2011–2016</td><td>Многолетняя разработка с большим объёмом доработок. Сроки сдвигаются. Объём остаётся.</td></tr><tr><td>≈2017</td><td>Сообщается об ограниченных запусках на небольших рынках — Австрия, Северная Ирландия, США. CEO Свен Зайдель уходит, проработав меньше трёх лет; примерно тогда же меняется руководство ИТ.</td></tr><tr><td>2018</td><td>Программа отменена. Lidl возвращается на прежнюю систему. Заявленные расходы ≈ €500 млн.</td></tr></tbody></table></div>
+        <p>Обратите внимание на форму этой таблицы. В ней нет катастрофы. Ни аварии, ни утечки, ни одного провального запуска. Провал целиком состоит из времени.</p>
+        <h2 id="reshenie-zadavshee-napravlenie-otsenka-zapasov">Решение, задавшее направление: оценка запасов</h2>
+        <p>Широко описанная техническая первопричина совсем не эффектна. Lidl оценивал запасы по <strong>закупочной цене</strong>. Розничный стандарт SAP построен вокруг оценки по <strong>розничной цене</strong>. Две защитимые учётные конвенции с несовместимыми настройками по умолчанию.</p>
+        <p>У Lidl была реальная причина держаться за свою: логика закупочной цены была вплетена в то, как компания вела переговоры, формировала цены и оценивала себя, и руководство не собиралось отказываться от того, что считало конкурентным преимуществом. Поэтому решили адаптировать систему под процесс, а не процесс под систему.</p>
+        <p>Само по себе это разумное бизнес-решение. Проблема в том, что оно означает структурно:</p>
+        <ul><li>Изменение базовой логики оценки — это не настройка. Оно тянется в закупки, пополнение, ценообразование, операции магазинов и отчётность, поэтому доработка становится не одним изменением, а постоянной боковой веткой, проходящей через всю систему.</li><li>Каждое обновление стандартного продукта теперь нужно заново сводить с этой веткой. Стоимость обновления перестаёт быть событием и превращается в постоянный налог.</li><li>Систему больше нельзя проверять по эталонному поведению вендора, потому что она ведёт себя иначе. Вы теряете самый дешёвый источник истины, который у вас был.</li><li>Люди, понимающие эту ветку, становятся узким местом — и за семь лет они меняют работу.</li></ul>
+        <blockquote class="post__pull">Доработка — это не расход. Это подписка, и цену продления никто не вписывает в обоснование проекта.</blockquote>
+        <p>Отсюда общее правило, которое иллюстрирует кейс: <em>дорогая часть доработки — никогда не сама доработка. Дорого стоит всё, что потом придётся с ней сводить, и так навсегда.</em></p>
+        <h2 id="pochemu-nikto-ne-ostanovil">Почему никто не остановил</h2>
+        <p>Семь лет — долгий срок, чтобы что-то не остановить. Здесь важно быть точным, потому что переносимая часть кейса — именно механизм.</p>
+        <h3 id="1-kazhdyy-shag-byl-lokalno-ratsionalnym">1. Каждый шаг был локально рациональным</h3>
+        <p>Никто никогда не утверждал решение «потратить €500 млн и отменить». Утверждали последовательность мелких разумных вещей: вот эту интеграцию, вон ту сверку, ещё квартал стабилизации. Каждая была дешевле, чем остановиться. Это и есть определяющее свойство дрейфа: в каждой отдельной точке продолжать дешевле — вплоть до момента, когда всё списывается целиком.</p>
+        <h3 id="2-otchetnost-merila-aktivnost-a-ne-zhiznesposobnost">2. Отчётность мерила активность, а не жизнеспособность</h3>
+        <p>Статус таких программ отслеживает закрытые задачи, сконфигурированные модули, пройденные вехи. Всё это может быть зелёным, пока ответ на вопрос «выдержит ли система наши крупнейшие рынки на реальных объёмах?» тихо ухудшается. Запуски, по сообщениям, работали на небольших рынках; именно на крупных и нагруженных доработанная архитектура упёрлась в потолок.</p>
+        <h3 id="3-na-puti-eskalatsii-stoyal-filtr">3. На пути эскалации стоял фильтр</h3>
+        <p>Инженеры поднимали вопросы архитектуры и масштабируемости. Разрыв между тем, что показывали дашборды, и тем, что видели практики, продолжал расти. Сигнал, прошедший через четыре слоя «давайте пока не будем эскалировать», доходит наверх в виде прилагательных, а не решений. Это тот же структурный сбой, что описан в статье про <a href="../infrastructure-inbreeding/">инфраструктурный инбридинг</a>: когда слой, поднимающий тревогу, и слой, её принимающий, разделяют одни предпосылки и одни стимулы, тревога превращается в шум.</p>
+        <h3 id="4-u-nevozvratnyh-izderzhek-bylo-litso">4. У невозвратных издержек было лицо</h3>
+        <p>К пятому году отмена означала, что конкретный руководитель публично признаёт списание девятизначной суммы. CEO ушёл в 2017-м на фоне сообщений о расхождениях по стратегии, руководство ИТ сменилось. Показательно частый сюжет: программа становится отменяемой только после ухода людей, с которыми она отождествлялась. Это организационный факт, а не технический.</p>
+        <h2 id="chto-lidl-sdelal-pravilno">Что Lidl сделал правильно</h2>
+        <p>Две вещи, и без них это была бы притча, а не разбор.</p>
+        <ul><li><strong>Они остановились.</strong> Списать €500 млн и вернуться на прежнюю систему было верным решением, принятым поздно. Множество похожих программ до этого решения не доходят вообще и продолжают кровоточить.</li><li><strong>Они сохранили запасной вариант.</strong> Старая собственная система продолжала работать — только поэтому отмена оказалась переживаемой. Выключить запасной контур раньше, чем замена доказала себя на полном объёме, — это как раз способ превратить провал проекта в операционный кризис.</li></ul>
+        <h2 id="pyat-proverok-kotorye-lovyat-etot-stsenariy-zaranee">Пять проверок, которые ловят этот сценарий заранее</h2>
+        <p>Ни одна из них не требует консультанта, нового инструмента или перепланирования. Все можно применить к текущей программе в этом месяце.</p>
+        <ol class="post__steps"><li><strong>Выпишите все отклонения от стандарта и постоянного владельца каждого</strong><span>Не список запросов на изменение, а список поведений, которые навсегда будут отличаться от продукта вендора. Если в этом списке больше нескольких пунктов, затрагивающих базовые модели данных, вы выбрали боковую ветку — независимо от того, произнёс это кто-нибудь вслух или нет.</span></li><li><strong>Посчитайте стоимость второго обновления, а не первого</strong><span>Спросите, во что обойдётся накатить два следующих мажорных релиза вендора поверх ваших отклонений. Если ответа нет ни у кого — эта цифра не ограничена, и она уже сидит в вашем бюджете.</span></li><li><strong>Определите условия остановки до следующей вехи, письменно</strong><span>«Если к дате X мы не сможем обработать объём трёх крупнейших рынков на тесте, эквивалентном продуктиву, мы останавливаемся и пересматриваем». Написано до наступления даты и тем, кто будет в комнате после неё. Критерии остановки, написанные после срыва срока, — это переговоры, а не критерии.</span></li><li><strong>Тестируйте там, где больно, а не там, где удобно</strong><span>Пилоты на маленьких рынках полезны для управления изменениями и бесполезны для доказательства пропускной способности. Ваш аналог «самого крупного и нагруженного рынка» — единственный пилот, отвечающий на вопрос о жизнеспособности.</span></li><li><strong>Спрашивайте практиков напрямую раз в квартал, мимо отчётной вертикали</strong><span>Один вопрос: «Что бы вы мне сказали, если бы за это ничего не было?» Задаёт человек с достаточными полномочиями, и ответ не проходит через слой, который оценивают. Это самая дешёвая система раннего предупреждения из существующих, и её почти никто не использует.</span></li></ol>
+        <aside class="post__note">Полезное практическое правило: если программа не может назвать условие, при котором её остановят, — это не проект, а обязательство. Обязательства не отменяют, их списывают.</aside>
+        <h2 id="perenosimaya-versiya-dlya-kompanii-kotoraya-ne-lidl">Переносимая версия — для компании, которая не Lidl</h2>
+        <p>Большинство читателей не внедряют SAP в 30 странах. Механизм отлично масштабируется вниз:</p>
+        <ul><li>Вы покупаете CRM и настраиваете её под существующие стадии продаж, не проверив, правильные ли это стадии. Через два года у каждой интеграции есть исключение специально для вас.</li><li>Вы автоматизируете цепочку согласований ровно в том виде, в каком она есть, потому что менять её означало бы разговор с руководителем отдела. Теперь неудобный шаг стал быстрым, постоянным и невидимым — это сценарий, описанный в статье <a href="../when-not-to-automate/">когда не нужно автоматизировать</a>.</li><li>Вы заказываете переделку сайта, которая воспроизводит текущую структуру, потому что «пользователи привыкли», и следующие три года обходите навигацию, которую никто не защищает.</li></ul>
+        <p>В каждой версии происходит одна и та же сделка: короткий неприятный разговор об изменении процесса заменяется на длинный тихий поток технического долга, который никогда не появляется отдельной строкой.</p>
+        <p>Большие трансформации редко ломаются от одного плохого решения. Они ломаются от накопленного расстояния между тем, что происходит на самом деле, и тем, что люди считают безопасным произнести вслух. И это расстояние измеримо — если кто-то готов спросить.</p>
+  </div>
+
+  <aside class="post__takeaways">
+    <p class="post__takeaways-title">ЧТО ЗАБРАТЬ С СОБОЙ</p>
+    <ul><li>Провал состоял из времени, а не из одной катастрофы: семь лет локально рациональных решений, каждое из которых было дешевле остановки.</li><li>Доработка базовой логики (оценка по закупочной цене вместо розничной) — не расход, а постоянный налог на каждое будущее обновление.</li><li>Отчётность мерила активность, пока жизнеспособность тихо ухудшалась; пилоты на малых рынках доказали управляемость изменениями, но не пропускную способность.</li><li>Пишите условия остановки до вехи, а не после срыва срока — иначе это переговоры.</li><li>Держите запасную систему живой, пока замена не докажет себя на полном продуктивном объёме.</li><li>Раз в квартал задавайте практикам один вопрос без последствий, мимо обычной отчётной вертикали. Это самая дешёвая система раннего предупреждения.</li></ul>
+  </aside>
+
+  <section class="post__faq" id="faq">
+    <h2>ЧАСТЫЕ ВОПРОСЫ</h2>
+    <div class="faq__list"><details class="faq-item">
+      <summary>Почему провалилось внедрение SAP в Lidl?<span class="faq-item__icon" aria-hidden="true"></span></summary>
+      <p>Наиболее широко описанная первопричина: Lidl оценивал запасы по закупочной цене, тогда как розничный стандарт SAP построен вокруг оценки по розничной. Вместо изменения процесса компания доработала систему. Это отклонение затронуло закупки, ценообразование, пополнение и отчётность, сделало дороже каждое будущее обновление и вместе с отчётностью, мерившей активность вместо жизнеспособности, позволило программе дрейфовать семь лет.</p>
+    </details><details class="faq-item">
+      <summary>Сколько стоил проект eLWIS?<span class="faq-item__icon" aria-hidden="true"></span></summary>
+      <p>Около €500 млн (часть источников называет цифры ближе к $580–600 млн) примерно за семь лет — со старта в 2011 году до отмены в 2018-м, после которой Lidl вернулся на собственную унаследованную систему товародвижения.</p>
+    </details><details class="faq-item">
+      <summary>Это вина SAP?<span class="faq-item__icon" aria-hidden="true"></span></summary>
+      <p>Нет. Система работала так, как спроектирована; конфликт был между предпосылками стандартного продукта и процессом, который компания решила не менять. Тот же результат достижим на любой крупной платформе. Риск возник в момент решения дорабатывать, а не адаптироваться.</p>
+    </details><details class="faq-item">
+      <summary>Какая проверка лучше всего предупреждает о таком сценарии?<span class="faq-item__icon" aria-hidden="true"></span></summary>
+      <p>Письменные условия остановки, согласованные до следующей вехи: конкретное измеримое условие, при котором программу прекращают. Если программа не может назвать такое условие, это не проект, а обязательство, — а обязательства не отменяют, их списывают.</p>
+    </details><details class="faq-item">
+      <summary>Это относится только к крупным компаниям?<span class="faq-item__icon" aria-hidden="true"></span></summary>
+      <p>Нет. Механизм работает на любом масштабе: настройка CRM под непроверенные стадии продаж, автоматизация цепочки согласований ровно в текущем виде, переделка сайта на структуре, которую никто не защищает. В каждом случае короткий неприятный разговор о процессе меняется на длинный тихий поток технического долга.</p>
+    </details><details class="faq-item">
+      <summary>Когда доработка стандартной системы всё-таки оправдана?<span class="faq-item__icon" aria-hidden="true"></span></summary>
+      <p>Когда отклонение действительно является источником конкурентного преимущества, изолировано от базовых моделей данных, имеет названного постоянного владельца, а стоимость накатывания двух следующих мажорных релизов вендора поверх него посчитана и принята. Если отсутствует хотя бы один из четырёх пунктов — доработка покупается в кредит.</p>
+    </details></div>
+  </section>
+
+  <div class="post__tags"><span class="badge">#DigitalTransformation</span><span class="badge">#ProjectManagement</span><span class="badge">#ChangeManagement</span><span class="badge">#ERP</span><span class="badge">#RiskManagement</span></div>
+
+  <section class="post__author">
+    <img src="../../../img/founder.png" width="96" height="96" alt="George Mercer" loading="lazy" decoding="async">
+    <div>
+      <p class="post__author-label">ОБ АВТОРЕ</p>
+      <p class="post__author-name">George Mercer</p>
+      <p class="post__author-bio">Независимый консультант и основатель Ganza Consulting. Берёт единичные сложные задачи, от которых отказываются другие: нетиповую автоматизацию, застрявшие проекты, запутанные процессы и нестандартную веб-разработку. Каждая статья здесь написана по реально сделанным проектам, а не по контент-плану.</p>
+      <p class="post__author-links">
+        <a href="https://t.me/groovebliss" target="_blank" rel="noopener" data-track="author-telegram">Telegram ↗</a>
+        <a href="../../#about">О нас ↗</a>
+      </p>
+    </div>
+  </section>
+
+  <div class="post__cta">
+    <div class="post__cta-box">
+      <p>Похожая задача? Мы берём единичные сложные случаи, за которые не берутся другие: фиксированный объём, письменный ответ и цифра, с которой можно работать.</p>
+      <a class="btn btn--yellow" href="https://t.me/groovebliss" target="_blank" rel="noopener" data-track="post-cta-telegram">НАПИСАТЬ В TELEGRAM →</a>
+      <a class="btn btn--outline" href="../../#pricing" data-track="post-cta-pricing">СМОТРЕТЬ ЦЕНЫ</a>
+    </div>
+  </div>
+</article>
+
+<section class="post__related">
+    <h2>ПО ТЕМЕ</h2>
+    <div class="post__related-grid"><a class="related-card" href="../infrastructure-inbreeding/" data-track="related-infrastructure-inbreeding">
+        <span class="related-card__tag">Управление</span>
+        <span class="related-card__title">Инфраструктурный инбридинг: почему повышать только своих — риск для компании</span>
+        <span class="related-card__meta">10 мин чтения</span>
+      </a><a class="related-card" href="../audit-nobody-reads/" data-track="related-audit-nobody-reads">
+        <span class="related-card__tag">Консалтинг</span>
+        <span class="related-card__title">Аудит, который никто не читает: почему отчёты не меняют бизнес</span>
+        <span class="related-card__meta">8 мин чтения</span>
+      </a><a class="related-card" href="../erp-implementation-failure-reasons/" data-track="related-erp-implementation-failure-reasons">
+        <span class="related-card__tag">Управление проектами</span>
+        <span class="related-card__title">Почему проваливаются внедрения ERP: 7 сценариев отказа и ранний сигнал каждого</span>
+        <span class="related-card__meta">9 мин чтения</span>
+      </a></div>
+  </section>
+
+<nav class="post__nav">
+  <a class="post__nav-link" href="../how-much-does-business-consulting-cost/" data-track="post-prev">
+    <span class="post__nav-label">← ПРЕДЫДУЩАЯ</span>
+    <span class="post__nav-title">Сколько стоит бизнес-консалтинг в 2026 году: ставки, модели оплаты и из чего складывается цена</span>
+  </a>
+  <a class="post__nav-link" href="../why-startups-need-consulting/" data-track="post-next">
+    <span class="post__nav-label">СЛЕДУЮЩАЯ →</span>
+    <span class="post__nav-title">Зачем стартапу консалтинг, даже если кажется, что денег на него нет</span>
+  </a>
+</nav>
+</main>
+
+<footer class="footer" id="contact">
+  <div class="footer__top">
+    <h2>ПОРА РАЗГРЕСТИ<br>ХАОС?<br>НАПИШИТЕ НАМ.</h2>
+    <div class="footer__contacts">
+      <a class="contact-link" href="https://t.me/groovebliss" target="_blank" rel="noopener" data-track="footer-telegram">
+        <span class="contact-link__label">TELEGRAM</span>
+        <span class="contact-link__value">@groovebliss ↗</span>
+      </a>
+      <a class="contact-link" href="https://www.linkedin.com/in/george-mercer-55520b388/" target="_blank" rel="noopener" data-track="footer-linkedin">
+        <span class="contact-link__label">LINKEDIN</span>
+        <span class="contact-link__value">george-mercer ↗</span>
+      </a>
+      <a class="contact-link" href="mailto:onegeorgemercer@gmail.com" data-track="footer-email">
+        <span class="contact-link__label">EMAIL</span>
+        <span class="contact-link__value">onegeorgemercer@gmail.com ↗</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="footer__bottom">
+    <p class="footer__joke">КОПИРАЙТ — СКУКА</p>
+    <p class="footer__legal">© 2026 GANZA CONSULTING. ВСЕ ПРАВА... НЕВАЖНО.</p>
+  </div>
+</footer>
+
+<script src="../../../js/script.js"></script>
+</body>
+</html>

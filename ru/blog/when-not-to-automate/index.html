@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="ru" data-lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Когда не нужно автоматизировать: скрытый риск автоматизации сломанных процессов | Ganza Consulting</title>
+<meta name="description" content="Шесть категорий процессов, которые не стоит автоматизировать, скрытые издержки, отсутствующие в любом обосновании проекта, и оценочная таблица: заслуживает ли процесс существовать в текущем виде.">
+<meta name="keywords" content="когда не нужно автоматизировать, риски автоматизации процессов, автоматизация сломанных процессов, ошибки внедрения ИИ, автоматизация бизнес-процессов, скрытые издержки автоматизации, стратегия автоматизации, провал RPA">
+<meta name="author" content="George Mercer">
+<meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1">
+<meta name="theme-color" content="#0d0d0a">
+<link rel="canonical" href="https://anomerc.github.io/ganza-consulting-site/ru/blog/when-not-to-automate/">
+<link rel="alternate" hreflang="en" href="https://anomerc.github.io/ganza-consulting-site/blog/when-not-to-automate/">
+<link rel="alternate" hreflang="ru" href="https://anomerc.github.io/ganza-consulting-site/ru/blog/when-not-to-automate/">
+<link rel="alternate" hreflang="x-default" href="https://anomerc.github.io/ganza-consulting-site/blog/when-not-to-automate/">
+<link rel="alternate" type="application/rss+xml" title="Ganza Consulting — Блог" href="https://anomerc.github.io/ganza-consulting-site/ru/blog/feed.xml">
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Ganza Consulting">
+<meta property="og:locale" content="ru_RU">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:url" content="https://anomerc.github.io/ganza-consulting-site/ru/blog/when-not-to-automate/">
+<meta property="og:title" content="Когда не нужно автоматизировать: скрытый риск автоматизации сломанных процессов | Ganza Consulting">
+<meta property="og:description" content="Шесть категорий процессов, которые не стоит автоматизировать, скрытые издержки, отсутствующие в любом обосновании проекта, и оценочная таблица: заслуживает ли процесс существовать в текущем виде.">
+<meta property="og:image" content="https://anomerc.github.io/ganza-consulting-site/img/blog/when-not-to-automate-cover.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Когда не нужно автоматизировать: скрытый риск автоматизации сломанных процессов">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Когда не нужно автоматизировать: скрытый риск автоматизации сломанных процессов | Ganza Consulting">
+<meta name="twitter:description" content="Шесть категорий процессов, которые не стоит автоматизировать, скрытые издержки, отсутствующие в любом обосновании проекта, и оценочная таблица: заслуживает ли процесс существовать в текущем виде.">
+<meta name="twitter:image" content="https://anomerc.github.io/ganza-consulting-site/img/blog/when-not-to-automate-cover.png">
+<meta property="article:published_time" content="2026-08-04">
+<meta property="article:modified_time" content="2026-08-27">
+<meta property="article:author" content="George Mercer">
+<meta property="article:section" content="Автоматизация и ИИ">
+<meta property="article:tag" content="Automation">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="ProcessOptimization">
+<meta property="article:tag" content="DigitalTransformation">
+<meta property="article:tag" content="Efficiency">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%230d0d0a'/%3E%3Ctext x='50' y='72' font-size='68' font-family='Arial Black,sans-serif' font-weight='900' fill='%23e8ff2e' text-anchor='middle'%3EG%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../../css/style.css">
+<link rel="stylesheet" href="../../../css/builder.css">
+<link rel="stylesheet" href="../../../css/blog.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://anomerc.github.io/ganza-consulting-site/#organization",
+      "name": "Ganza Consulting",
+      "url": "https://anomerc.github.io/ganza-consulting-site/",
+      "email": "onegeorgemercer@gmail.com",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://anomerc.github.io/ganza-consulting-site/img/og-cover.png",
+        "width": 1200,
+        "height": 630
+      },
+      "sameAs": [
+        "https://t.me/groovebliss",
+        "https://www.linkedin.com/in/george-mercer-55520b388/"
+      ]
+    },
+    {
+      "@type": "Person",
+      "@id": "https://anomerc.github.io/ganza-consulting-site/#george-mercer",
+      "name": "George Mercer",
+      "url": "https://anomerc.github.io/ganza-consulting-site/ru/#about",
+      "image": "https://anomerc.github.io/ganza-consulting-site/img/founder.png",
+      "description": "Независимый консультант и основатель Ganza Consulting. Берёт единичные сложные задачи, от которых отказываются другие: нетиповую автоматизацию, застрявшие проекты, запутанные процессы и нестандартную веб-разработку. Каждая статья здесь написана по реально сделанным проектам, а не по контент-плану.",
+      "jobTitle": "Независимый консультант",
+      "worksFor": {
+        "@id": "https://anomerc.github.io/ganza-consulting-site/#organization"
+      },
+      "sameAs": [
+        "https://t.me/groovebliss",
+        "https://www.linkedin.com/in/george-mercer-55520b388/"
+      ],
+      "knowsAbout": [
+        "Бизнес-консалтинг",
+        "Автоматизация процессов",
+        "Искусственный интеллект",
+        "Проектный менеджмент",
+        "Веб-разработка",
+        "Цифровая трансформация"
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://anomerc.github.io/ganza-consulting-site/ru/blog/when-not-to-automate/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Главная",
+          "item": "https://anomerc.github.io/ganza-consulting-site/ru/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Блог",
+          "item": "https://anomerc.github.io/ganza-consulting-site/ru/blog/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Когда не нужно автоматизировать: скрытый риск автоматизации сломанных процессов",
+          "item": "https://anomerc.github.io/ganza-consulting-site/ru/blog/when-not-to-automate/"
+        }
+      ]
+    },
+    {
+      "@type": "BlogPosting",
+      "@id": "https://anomerc.github.io/ganza-consulting-site/ru/blog/when-not-to-automate/#article",
+      "headline": "Когда не нужно автоматизировать: скрытый риск автоматизации сломанных процессов",
+      "alternativeHeadline": "Автоматизация сломанного процесса его не чинит. Она заставляет сломанную версию работать быстрее, стабильнее и гораздо незаметнее.",
+      "description": "Шесть категорий процессов, которые не стоит автоматизировать, скрытые издержки, отсутствующие в любом обосновании проекта, и оценочная таблица: заслуживает ли процесс существовать в текущем виде.",
+      "articleSection": "Автоматизация и ИИ",
+      "keywords": "когда не нужно автоматизировать, риски автоматизации процессов, автоматизация сломанных процессов, ошибки внедрения ИИ, автоматизация бизнес-процессов, скрытые издержки автоматизации, стратегия автоматизации, провал RPA",
+      "inLanguage": "ru",
+      "wordCount": 1652,
+      "timeRequired": "PT9M",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://anomerc.github.io/ganza-consulting-site/img/blog/when-not-to-automate-cover.png",
+        "width": 1200,
+        "height": 630
+      },
+      "datePublished": "2026-08-04",
+      "dateModified": "2026-08-27",
+      "author": {
+        "@id": "https://anomerc.github.io/ganza-consulting-site/#george-mercer"
+      },
+      "publisher": {
+        "@id": "https://anomerc.github.io/ganza-consulting-site/#organization"
+      },
+      "isPartOf": {
+        "@id": "https://anomerc.github.io/ganza-consulting-site/ru/blog/#blog"
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://anomerc.github.io/ganza-consulting-site/ru/blog/when-not-to-automate/"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://anomerc.github.io/ganza-consulting-site/ru/blog/when-not-to-automate/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Что происходит, если автоматизировать сломанный процесс?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Он начинает работать быстрее, ошибается систематически, а не случайно, и перестаёт порождать жалобы, которые и сообщали о плохой конструкции. За пару кварталов его результат начинают потреблять другие системы, и починка превращается из разговора в проект миграции."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Как понять, стоит ли автоматизировать процесс?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Оцените его по шести измерениям: стабильность в ближайшие 18 месяцев, одинаково ли его описывают два человека, доля исключений, цена неверного результата, проверяет ли кто-то выход и был бы нужен процесс, если бы починили источник проблемы. Низкие оценки означают сначала переработку."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "При какой доле исключений автоматизация — плохая идея?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Рабочее правило: меньше 5% обычно чисто, 5–20% зависит от цены исключения, выше 20% вы построите три процесса — автоматизацию, ручной запасной путь и сверку между ними."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Меняет ли ИИ эти расчёты?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Он меняет то, что технически автоматизируемо, а не то, что стоит автоматизировать. Шаги на ИИ добавляют издержку, которой нет в классическом обосновании: точность на старте не константа, поэтому нужны регулярные выборочные проверки, а не разовый приёмочный тест."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Какая скрытая издержка автоматизации самая опасная?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Тихий отказ. Все прочие издержки ограничены и примерно оцениваемы; процесс, переставший быть верным и не сообщивший об этом, накапливает ущерб, пока кто-нибудь случайно не заметит. Поэтому ответ про мониторинг должен быть условием выхода в продуктив."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Бывает ли правильным автоматизировать процесс, который планируется менять?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Редко и только если автоматизация сознательно одноразовая и оценена как таковая. Разработка под спецификацию с известным сроком годности — это осознанно купленный технический долг: допустимо, когда об этом сказано вслух, и вредно, когда подаётся как постоянное решение."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<script src="../../../js/analytics.js" defer></script>
+</head>
+<body>
+<div class="ticker" aria-hidden="true">
+  <div class="ticker__track"><span>ПРИНИМАЕМ ПРОЕКТЫ НА Q4 2026&nbsp;&nbsp;—&nbsp;&nbsp;КОНСАЛТИНГ + АВТОМАТИЗАЦИЯ + ПРОЕКТНЫЙ МЕНЕДЖМЕНТ&nbsp;&nbsp;—&nbsp;&nbsp;БЕЗ ШАБЛОНОВ&nbsp;&nbsp;—&nbsp;&nbsp;ПРИНИМАЕМ ПРОЕКТЫ НА Q4 2026&nbsp;&nbsp;—&nbsp;&nbsp;КОНСАЛТИНГ + АВТОМАТИЗАЦИЯ + ПРОЕКТНЫЙ МЕНЕДЖМЕНТ&nbsp;&nbsp;—&nbsp;&nbsp;БЕЗ ШАБЛОНОВ&nbsp;&nbsp;—&nbsp;&nbsp;</span></div>
+</div>
+<header class="site-header" id="top">
+  <div class="site-header__inner">
+    <a href="../../" class="logo" data-track="logo">
+      <span class="logo__mark">G</span>
+      <span class="logo__text">GANZA<br>CONSULTING</span>
+    </a>
+
+    <nav class="nav" id="nav">
+      <a href="../../#services">Услуги</a>
+      <a href="../../#cases">Кейсы</a>
+      <a href="../../#pricing">Цены</a>
+      <a href="../" class="is-active">Блог</a>
+      <a href="../../#contact">Контакты</a>
+    </nav>
+
+    <div class="header-actions">
+      <a class="lang-switch" href="../../../blog/when-not-to-automate/" hreflang="en" aria-label="Switch language" data-track="lang-switch">
+        <span class="lang-switch__opt is-active">RU</span>
+        <span class="lang-switch__sep">/</span>
+        <span class="lang-switch__opt">EN</span>
+      </a>
+      <a class="btn btn--small btn--yellow" href="https://t.me/groovebliss" target="_blank" rel="noopener" data-track="header-telegram">TELEGRAM ↗</a>
+      <button class="burger" id="burger" aria-label="Menu" type="button">МЕНЮ</button>
+    </div>
+  </div>
+</header>
+
+<main class="post-wrap">
+<nav class="breadcrumbs" aria-label="Breadcrumb">
+  <a href="../../">Главная</a><span>/</span><a href="../">Блог</a><span>/</span><span aria-current="page">Когда не нужно автоматизировать: скрытый риск автоматизации сломанных процессов</span>
+</nav>
+
+<article class="post">
+  <div class="post__head">
+    <div class="post__meta">
+      <span class="post__tag">Автоматизация и ИИ</span>
+      <span>9 мин чтения · 4 августа 2026 · Обновлено 27 августа 2026</span>
+    </div>
+    <h1>Когда не нужно автоматизировать: скрытый риск автоматизации сломанных процессов</h1>
+    <p class="post__dek">Автоматизация сломанного процесса его не чинит. Она заставляет сломанную версию работать быстрее, стабильнее и гораздо незаметнее.</p>
+  </div>
+
+  <nav class="post__toc" aria-label="СОДЕРЖАНИЕ">
+    <p class="post__toc-title">СОДЕРЖАНИЕ</p>
+    <ol><li><a href="#pochemu-ruchnaya-bol-eto-funktsiya">Почему ручная боль — это функция</a></li><li><a href="#shest-veschey-kotorye-ne-nado-avtomatizirovat">Шесть вещей, которые не надо автоматизировать</a></li><li><a href="#razobrannyy-primer-ii-menedzher-kotorogo-ne-stali-delat">Разобранный пример: ИИ-менеджер, которого не стали делать</a></li><li><a href="#izderzhki-kotorye-nikogda-ne-popadayut-v-obosnovanie">Издержки, которые никогда не попадают в обоснование</a></li><li><a href="#otsenochnaya-tablitsa-dlya-resheniya">Оценочная таблица для решения</a></li><li><a href="#kak-avtomatizirovat-to-chto-avtomatizirovat-nuzhno">Как автоматизировать то, что автоматизировать нужно</a></li><li><a href="#kogda-avtomatizatsiya-tochno-umestna">Когда автоматизация точно уместна</a></li></ol>
+  </nav>
+
+  <div class="post__body">
+        <p>Любое предложение по автоматизации звучит одинаково: «сэкономим вам X часов в неделю». Почти ни одно из них не спрашивает, должен ли автоматизируемый процесс вообще существовать.</p>
+        <p>Именно в этом разрыве и умирает большая часть денег на автоматизацию. <strong>Автоматизация сломанного процесса его не чинит. Она заставляет сломанную версию работать быстрее, стабильнее и куда незаметнее</strong> — потому что теперь никому не приходится страдать вручную, а ручное страдание было единственным сигналом, что всё плохо.</p>
+        <p>Эта статья про второй вопрос, который идёт до «можно ли это автоматизировать»: <em>заслуживает ли процесс существовать в текущем виде вообще?</em></p>
+        <h2 id="pochemu-ruchnaya-bol-eto-funktsiya">Почему ручная боль — это функция</h2>
+        <p>Плохой ручной процесс генерирует непрерывный распределённый поток жалоб. Кто-то перебивает данные между двумя системами и говорит об этом. Кто-то бегает за тремя согласованиями и говорит об этом. Трение раздражает — и одновременно является вашим единственным работающим измерением того, насколько плоха конструкция.</p>
+        <p>Автоматизируйте его как есть — и жалобы прекратятся за ночь. Ничего не улучшилось: вы убрали датчик. Теперь процесс:</p>
+        <ul><li><strong>Быстрее</strong> — значит, производит больше того, что производит, включая ошибки.</li><li><strong>Стабильнее</strong> — значит, ошибки стали систематическими вместо случайных, а такие заметить труднее и надстроить над ними проще.</li><li><strong>Невидим</strong> — потому что его никто не трогает и о нём никто не думает.</li><li><strong>Несущий</strong> — потому что за пару кварталов от его результата начинают зависеть другие вещи.</li></ul>
+        <p>Последний пункт — самый дорогой. Плохой ручной процесс меняется разговором. Плохой автоматизированный процесс, результат которого потребляют три другие системы, — это проект миграции.</p>
+        <blockquote class="post__pull">Ручное трение дорогое и честное. Автоматизированное трение дешёвое и молчаливое. Молчаливое хуже.</blockquote>
+        <h2 id="shest-veschey-kotorye-ne-nado-avtomatizirovat">Шесть вещей, которые не надо автоматизировать</h2>
+        <h3 id="1-protsess-kotoryy-nikto-ne-mozhet-opisat-tselikom">1. Процесс, который никто не может описать целиком</h3>
+        <p>Если три человека дают три разные версии того, что происходит после четвёртого шага, у вас не процесс, а привычка с местными вариациями. Автоматизация замораживает одну произвольную версию — обычно ту, чей носитель был в комнате при сборе требований. Сначала карта. В половине случаев само составление карты снимает потребность в автоматизации.</p>
+        <h3 id="2-protsess-suschestvuyuschiy-tolko-iz-za-drugogo-slomannogo-">2. Процесс, существующий только из-за другого сломанного процесса</h3>
+        <p>Классика — шаги сверки. Команда тратит шесть часов в неделю на сопоставление двух отчётов, которые расходятся. Автоматизация сопоставления — реальная экономия и одновременно постоянное обязательство сохранять расхождение. Почините источник, и процесс исчезнет целиком: это экономия 100%, а не 80%.</p>
+        <h3 id="3-rabota-s-suzhdeniem-pereodetaya-v-rutinu">3. Работа с суждением, переодетая в рутину</h3>
+        <p>Некоторые задачи издалека выглядят повторяющимися, а внутри содержат несколько решений с высокими последствиями. Классификация необычной жалобы, решение о том, стоит ли эскалировать исключение по поставке, согласование нестандартной скидки. Объём выглядит как повторяемость. Значение имеет распределение последствий, а не средний случай.</p>
+        <h3 id="4-protsess-kotoryy-vot-vot-izmenitsya-po-vneshnim-prichinam">4. Процесс, который вот-вот изменится по внешним причинам</h3>
+        <p>Новое регулирование, миграция системы, смена ценовой модели в ближайшие два квартала. Автоматизация, построенная под спецификацию с известным сроком годности, — это осознанно купленный технический долг.</p>
+        <h3 id="5-vse-gde-dolya-isklyucheniy-vyshe-primerno-20">5. Всё, где доля исключений выше примерно 20%</h3>
+        <p>Выше этого порога обработка исключений становится самой системой: вы строите автоматизацию, потом ручной процесс для того, что она не умеет, потом сверку между ними. Три процесса вместо одного. Ниже 5% исключений автоматизация обычно чистая; между 5 и 20% всё зависит от цены исключения; выше 20% — сначала переработайте процесс.</p>
+        <h3 id="6-vse-chey-rezultat-nikto-ne-proveryaet">6. Всё, чей результат никто не проверяет</h3>
+        <p>Если сейчас результат не читает ни один человек, автоматизация убирает последнюю возможность заметить ошибку. Перед автоматизацией спросите, кто смотрит на выход и что он сделает, если там будет неправильно. Если честный ответ «никто» и «ничего» — вы собираетесь поставить на поток неконтролируемый процесс.</p>
+        <h2 id="razobrannyy-primer-ii-menedzher-kotorogo-ne-stali-delat">Разобранный пример: ИИ-менеджер, которого не стали делать</h2>
+        <p>Мы однажды оценивали замену штатного координатора на ИИ-ассистента, который вёл бы расчёты, подготовку документов и координацию логистики. На бумаге кейс был сильный: большой объём, внешне рутинная работа, ясно определённые входы.</p>
+        <p>Что показала карта процесса:</p>
+        <ul><li>Около 80% работы было настоящей рутиной — подставить цифры в шаблон, отформатировать документы, отправить стандартные напоминания, узнать статус.</li><li>Примерно 20% — небольшое число решений: какое исключение поставщика принять, когда запрос клиента требует другого коммерческого ответа, когда задержку нужно эскалировать и кому.</li><li>Практически весь <em>риск</em> жил в этих 20%. Ошибка в рутинной части приводила к переделке. Ошибка в решении стоила денег или клиента.</li></ul>
+        <p>Поэтому честный ответ был не «да, автоматизируем роль». Он был такой: автоматизировать 80% чистой рутины, оставить 20% ровно там, где они были, и — что важно — сделать так, чтобы автоматизированная часть формировала видимую очередь для человека: решения приходят с контекстом, а не тонут.</p>
+        <p>Экономия оказалась меньше, чем в исходном предложении, и она выдержала проверку временем. Полная автоматизация дала бы более красивую цифру в обосновании и худший результат во втором квартале.</p>
+        <h2 id="izderzhki-kotorye-nikogda-ne-popadayut-v-obosnovanie">Издержки, которые никогда не попадают в обоснование</h2>
+        <div class="post__table-wrap"><table class="post__table"><caption>Реальные, повторяющиеся и обычно пропускаемые издержки автоматизации</caption><thead><tr><th scope="col">Издержка</th><th scope="col">Почему её пропускают</th><th scope="col">Примерный размер</th></tr></thead><tbody><tr><td>Поддержка при изменениях в смежных системах</td><td>Это чужие release notes</td><td>10–20% стоимости разработки в год, постоянно</td></tr><tr><td>Обработка исключений</td><td>Оценивается по счастливому пути</td><td>Часто превышает саму разработку при доле исключений >10%</td></tr><tr><td>Тихий отказ</td><td>Никто не закладывает бюджет на то, что о себе не сообщает</td><td>Не ограничена до момента обнаружения; растёт со временем детекции</td></tr><tr><td>Потеря знания</td><td>Люди, понимавшие ручную версию, перестают ею заниматься</td><td>Проявляется через 12–24 месяца как невозможность изменить процесс</td></tr><tr><td>Владение</td><td>При передаче никто не назначен</td><td>Автоматизация тихо становится ничьей задачей и гниёт</td></tr><tr><td>Дрейф модели (шаги на ИИ)</td><td>Точность на старте считается константой</td><td>Требует регулярных выборочных проверок, а не разового теста</td></tr></tbody></table></div>
+        <aside class="post__note">Одно правило снимает большую часть этого: ничто не выходит в продуктив без названного владельца и ответа на вопрос «как мы узнаем, что это перестало быть верным?». Если ни того, ни другого нет — вы разворачиваете не автоматизацию, а неконтролируемую зависимость.</aside>
+        <h2 id="otsenochnaya-tablitsa-dlya-resheniya">Оценочная таблица для решения</h2>
+        <p>Перед тем как что-либо строить, оцените процесс от 0 до 2 по каждой строке. Меньше 7 из 12 — сначала переработка.</p>
+        <ul class="post__checklist"><li><strong>Стабильность:</strong> будет ли процесс по существу таким же через 18 месяцев? (0 — изменение уже запланировано)</li><li><strong>Определённость:</strong> могут ли два человека независимо описать его одинаково? (0 — версии расходятся после третьего шага)</li><li><strong>Доля исключений:</strong> меньше 5% = 2, 5–20% = 1, больше 20% = 0</li><li><strong>Распределение последствий:</strong> дёшево ли исправить неверный результат? (0 — неверный результат стоит клиента или штрафа)</li><li><strong>Проверяемость:</strong> читает ли кто-то результат и заметит ли ошибку? (0 — не смотрит никто)</li><li><strong>Необходимость:</strong> был бы нужен процесс, если бы починили источник проблемы? (0 — существует только как компенсация)</li></ul>
+        <p>Настоящая функция этой таблицы — заставить произойти один конкретный разговор: тот, где кто-то вслух говорит, что процесс существует только из-за решения, которое никто не хочет пересматривать. Именно этого разговора в масштабе избежали в кейсе из статьи <a href="../lidl-digital-transformation-failure/">про €500 миллионов</a>.</p>
+        <h2 id="kak-avtomatizirovat-to-chto-avtomatizirovat-nuzhno">Как автоматизировать то, что автоматизировать нужно</h2>
+        <ol class="post__steps"><li><strong>Составьте карту процесса наблюдением, а не интервью</strong><span>Смотрите, как это происходит, или читайте логи. То, что люди описывают, и то, что люди делают, расходятся ровно в тех местах, где ломается автоматизация.</span></li><li><strong>Явно разделите рутину и суждение</strong><span>Проведите линию и дайте людям, которые делают работу, поспорить о том, где она проходит. Этот спор и есть документ требований.</span></li><li><strong>Удаляйте до того, как строить</strong><span>По каждому шагу спросите, что будет, если он просто перестанет выполняться. Шагов, честно переживающих этот вопрос, обычно меньше, чем на карте.</span></li><li><strong>Автоматизируйте рутину и маршрутизируйте решения вместе с контекстом</strong><span>Человек должен получать решение со всем необходимым, чтобы его принять, а не уведомление о том, что что-то требует внимания.</span></li><li><strong>Настройте наблюдаемость до запуска</strong><span>Определите сигнал, показывающий, что всё ещё работает: выборочная проверка, оповещение об аномалии объёма, еженедельный разбор исключений. Автоматизация без детектора — это ставка на то, что ничего не изменится.</span></li><li><strong>Назначьте владельца и дату пересмотра</strong><span>Через полгода кто-то заново проверяет, заслуживает ли процесс существовать. Ставьте это в календарь, а не в документ.</span></li></ol>
+        <h2 id="kogda-avtomatizatsiya-tochno-umestna">Когда автоматизация точно уместна</h2>
+        <p>Всё вышесказанное — не аргумент против автоматизации: именно эта дисциплина и делает её работающей. Автоматизируйте уверенно, когда процесс стабилен, описуем, с малой долей исключений, проверяем и был бы нужен даже в хорошо устроенной версии компании. При этих условиях экономия реальна, накапливается, а стоимость поддержки остаётся соразмерной. Что делать в первую очередь в такой ситуации — в <a href="../small-business-automation-guide/">руководстве по автоматизации малого бизнеса</a>.</p>
+        <p>Вопрос, который стоит задать перед любым проектом автоматизации, звучит не «можно ли это автоматизировать». Он звучит так: <strong>если я автоматизирую это ровно в том виде, в каком оно есть сегодня, буду ли я гордиться тем, что выпустил?</strong></p>
+  </div>
+
+  <aside class="post__takeaways">
+    <p class="post__takeaways-title">ЧТО ЗАБРАТЬ С СОБОЙ</p>
+    <ul><li>Ручное трение — единственное работающее измерение того, насколько плоха конструкция процесса; автоматизация как есть убирает датчик, а не проблему.</li><li>Не автоматизируйте процесс, который никто не может описать целиком, процесс, существующий только как компенсация другого сломанного, и работу с суждением, издалека похожую на рутину.</li><li>Практический порог — доля исключений: меньше 5% обычно чисто, больше 20% означает переработку до автоматизации.</li><li>Издержки, отсутствующие в любом обосновании: поддержка, обработка исключений, тихий отказ, потеря знания, владение и дрейф модели.</li><li>Автоматизируйте рутинные 80% и направляйте оставшиеся 20% человеку вместе с полным контекстом, а не голым уведомлением.</li><li>Ничто не выходит в продуктив без названного владельца и ответа на вопрос «как мы узнаем, что это перестало быть верным?».</li></ul>
+  </aside>
+
+  <section class="post__faq" id="faq">
+    <h2>ЧАСТЫЕ ВОПРОСЫ</h2>
+    <div class="faq__list"><details class="faq-item">
+      <summary>Что происходит, если автоматизировать сломанный процесс?<span class="faq-item__icon" aria-hidden="true"></span></summary>
+      <p>Он начинает работать быстрее, ошибается систематически, а не случайно, и перестаёт порождать жалобы, которые и сообщали о плохой конструкции. За пару кварталов его результат начинают потреблять другие системы, и починка превращается из разговора в проект миграции.</p>
+    </details><details class="faq-item">
+      <summary>Как понять, стоит ли автоматизировать процесс?<span class="faq-item__icon" aria-hidden="true"></span></summary>
+      <p>Оцените его по шести измерениям: стабильность в ближайшие 18 месяцев, одинаково ли его описывают два человека, доля исключений, цена неверного результата, проверяет ли кто-то выход и был бы нужен процесс, если бы починили источник проблемы. Низкие оценки означают сначала переработку.</p>
+    </details><details class="faq-item">
+      <summary>При какой доле исключений автоматизация — плохая идея?<span class="faq-item__icon" aria-hidden="true"></span></summary>
+      <p>Рабочее правило: меньше 5% обычно чисто, 5–20% зависит от цены исключения, выше 20% вы построите три процесса — автоматизацию, ручной запасной путь и сверку между ними.</p>
+    </details><details class="faq-item">
+      <summary>Меняет ли ИИ эти расчёты?<span class="faq-item__icon" aria-hidden="true"></span></summary>
+      <p>Он меняет то, что технически автоматизируемо, а не то, что стоит автоматизировать. Шаги на ИИ добавляют издержку, которой нет в классическом обосновании: точность на старте не константа, поэтому нужны регулярные выборочные проверки, а не разовый приёмочный тест.</p>
+    </details><details class="faq-item">
+      <summary>Какая скрытая издержка автоматизации самая опасная?<span class="faq-item__icon" aria-hidden="true"></span></summary>
+      <p>Тихий отказ. Все прочие издержки ограничены и примерно оцениваемы; процесс, переставший быть верным и не сообщивший об этом, накапливает ущерб, пока кто-нибудь случайно не заметит. Поэтому ответ про мониторинг должен быть условием выхода в продуктив.</p>
+    </details><details class="faq-item">
+      <summary>Бывает ли правильным автоматизировать процесс, который планируется менять?<span class="faq-item__icon" aria-hidden="true"></span></summary>
+      <p>Редко и только если автоматизация сознательно одноразовая и оценена как таковая. Разработка под спецификацию с известным сроком годности — это осознанно купленный технический долг: допустимо, когда об этом сказано вслух, и вредно, когда подаётся как постоянное решение.</p>
+    </details></div>
+  </section>
+
+  <div class="post__tags"><span class="badge">#Automation</span><span class="badge">#AI</span><span class="badge">#ProcessOptimization</span><span class="badge">#DigitalTransformation</span><span class="badge">#Efficiency</span></div>
+
+  <section class="post__author">
+    <img src="../../../img/founder.png" width="96" height="96" alt="George Mercer" loading="lazy" decoding="async">
+    <div>
+      <p class="post__author-label">ОБ АВТОРЕ</p>
+      <p class="post__author-name">George Mercer</p>
+      <p class="post__author-bio">Независимый консультант и основатель Ganza Consulting. Берёт единичные сложные задачи, от которых отказываются другие: нетиповую автоматизацию, застрявшие проекты, запутанные процессы и нестандартную веб-разработку. Каждая статья здесь написана по реально сделанным проектам, а не по контент-плану.</p>
+      <p class="post__author-links">
+        <a href="https://t.me/groovebliss" target="_blank" rel="noopener" data-track="author-telegram">Telegram ↗</a>
+        <a href="../../#about">О нас ↗</a>
+      </p>
+    </div>
+  </section>
+
+  <div class="post__cta">
+    <div class="post__cta-box">
+      <p>Похожая задача? Мы берём единичные сложные случаи, за которые не берутся другие: фиксированный объём, письменный ответ и цифра, с которой можно работать.</p>
+      <a class="btn btn--yellow" href="https://t.me/groovebliss" target="_blank" rel="noopener" data-track="post-cta-telegram">НАПИСАТЬ В TELEGRAM →</a>
+      <a class="btn btn--outline" href="../../#pricing" data-track="post-cta-pricing">СМОТРЕТЬ ЦЕНЫ</a>
+    </div>
+  </div>
+</article>
+
+<section class="post__related">
+    <h2>ПО ТЕМЕ</h2>
+    <div class="post__related-grid"><a class="related-card" href="../lidl-digital-transformation-failure/" data-track="related-lidl-digital-transformation-failure">
+        <span class="related-card__tag">Разбор кейса</span>
+        <span class="related-card__title">Как Lidl потерял €500 млн: разбор провала цифровой трансформации</span>
+        <span class="related-card__meta">9 мин чтения</span>
+      </a><a class="related-card" href="../audit-nobody-reads/" data-track="related-audit-nobody-reads">
+        <span class="related-card__tag">Консалтинг</span>
+        <span class="related-card__title">Аудит, который никто не читает: почему отчёты не меняют бизнес</span>
+        <span class="related-card__meta">8 мин чтения</span>
+      </a><a class="related-card" href="../small-business-automation-guide/" data-track="related-small-business-automation-guide">
+        <span class="related-card__tag">Автоматизация и ИИ</span>
+        <span class="related-card__title">Автоматизация малого бизнеса: что автоматизировать первым, а что не трогать</span>
+        <span class="related-card__meta">9 мин чтения</span>
+      </a></div>
+  </section>
+
+<nav class="post__nav">
+  <a class="post__nav-link" href="../erp-implementation-failure-reasons/" data-track="post-prev">
+    <span class="post__nav-label">← ПРЕДЫДУЩАЯ</span>
+    <span class="post__nav-title">Почему проваливаются внедрения ERP: 7 сценариев отказа и ранний сигнал каждого</span>
+  </a>
+  <a class="post__nav-link" href="../multilingual-website-not-converting/" data-track="post-next">
+    <span class="post__nav-label">СЛЕДУЮЩАЯ →</span>
+    <span class="post__nav-title">Почему многоязычный сайт не конвертирует (дело не в переводе)</span>
+  </a>
+</nav>
+</main>
+
+<footer class="footer" id="contact">
+  <div class="footer__top">
+    <h2>ПОРА РАЗГРЕСТИ<br>ХАОС?<br>НАПИШИТЕ НАМ.</h2>
+    <div class="footer__contacts">
+      <a class="contact-link" href="https://t.me/groovebliss" target="_blank" rel="noopener" data-track="footer-telegram">
+        <span class="contact-link__label">TELEGRAM</span>
+        <span class="contact-link__value">@groovebliss ↗</span>
+      </a>
+      <a class="contact-link" href="https://www.linkedin.com/in/george-mercer-55520b388/" target="_blank" rel="noopener" data-track="footer-linkedin">
+        <span class="contact-link__label">LINKEDIN</span>
+        <span class="contact-link__value">george-mercer ↗</span>
+      </a>
+      <a class="contact-link" href="mailto:onegeorgemercer@gmail.com" data-track="footer-email">
+        <span class="contact-link__label">EMAIL</span>
+        <span class="contact-link__value">onegeorgemercer@gmail.com ↗</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="footer__bottom">
+    <p class="footer__joke">КОПИРАЙТ — СКУКА</p>
+    <p class="footer__legal">© 2026 GANZA CONSULTING. ВСЕ ПРАВА... НЕВАЖНО.</p>
+  </div>
+</footer>
+
+<script src="../../../js/script.js"></script>
+</body>
+</html>

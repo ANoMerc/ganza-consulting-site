@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>Ganza Consulting — Blog</title>
+  <link>https://anomerc.github.io/ganza-consulting-site/blog/</link>
+  <atom:link href="https://anomerc.github.io/ganza-consulting-site/blog/feed.xml" rel="self" type="application/rss+xml"/>
+  <description>Long-form, no-fluff articles on business consulting, process automation and AI, project management and web development — written from delivered engagements, not from a content calendar.</description>
+  <language>en</language>
+  <lastBuildDate>Thu, 27 Aug 2026 23:56:01 +0000</lastBuildDate>
+  <item>
+    <title>The Consulting Retainer Trap: Why Monthly Retainers Rarely Solve Real Problems</title>
+    <link>https://anomerc.github.io/ganza-consulting-site/blog/consulting-retainer-trap/</link>
+    <guid isPermaLink="true">https://anomerc.github.io/ganza-consulting-site/blog/consulting-retainer-trap/</guid>
+    <pubDate>Tue, 25 Aug 2026 09:00:00 +0000</pubDate>
+    <category>Consulting</category>
+    <description>Why most consulting retainers become a subscription to activity, the three cases where a retainer is genuinely the right structure, four signs yours has drifted, and the renewal conversation that fixes it.</description>
+  </item>
+  <item>
+    <title>Small Business Automation: What to Automate First (and What to Leave Alone)</title>
+    <link>https://anomerc.github.io/ganza-consulting-site/blog/small-business-automation-guide/</link>
+    <guid isPermaLink="true">https://anomerc.github.io/ganza-consulting-site/blog/small-business-automation-guide/</guid>
+    <pubDate>Thu, 20 Aug 2026 09:00:00 +0000</pubDate>
+    <category>Automation &amp; AI</category>
+    <description>How to rank automation candidates by payback rather than by annoyance, the five that work for small teams, build-vs-buy-vs-no-code trade-offs, a 90-day sequence, and where AI actually helps in 2026.</description>
+  </item>
+  <item>
+    <title>Why Your Multilingual Website Isn&#x27;t Converting (It&#x27;s Not About Translation)</title>
+    <link>https://anomerc.github.io/ganza-consulting-site/blog/multilingual-website-not-converting/</link>
+    <guid isPermaLink="true">https://anomerc.github.io/ganza-consulting-site/blog/multilingual-website-not-converting/</guid>
+    <pubDate>Thu, 13 Aug 2026 09:00:00 +0000</pubDate>
+    <category>Web Development</category>
+    <description>Layout that breaks on longer strings, trust signals that don&#x27;t transfer, payment expectations, hreflang mistakes that hide half your site from search — the technical and cultural reasons a translated site still doesn&#x27;t sell.</description>
+  </item>
+  <item>
+    <title>When Not to Automate: The Hidden Risk of Automating Broken Processes</title>
+    <link>https://anomerc.github.io/ganza-consulting-site/blog/when-not-to-automate/</link>
+    <guid isPermaLink="true">https://anomerc.github.io/ganza-consulting-site/blog/when-not-to-automate/</guid>
+    <pubDate>Tue, 04 Aug 2026 09:00:00 +0000</pubDate>
+    <category>Automation &amp; AI</category>
+    <description>Six categories of process that should not be automated, the hidden costs missing from every business case, and a scorecard for deciding whether a process deserves to survive in its current form at all.</description>
+  </item>
+  <item>
+    <title>Why ERP Implementations Fail: 7 Failure Modes and the Early Signal for Each</title>
+    <link>https://anomerc.github.io/ganza-consulting-site/blog/erp-implementation-failure-reasons/</link>
+    <guid isPermaLink="true">https://anomerc.github.io/ganza-consulting-site/blog/erp-implementation-failure-reasons/</guid>
+    <pubDate>Tue, 28 Jul 2026 09:00:00 +0000</pubDate>
+    <category>Project Management</category>
+    <description>Seven recurring ERP failure modes drawn from publicly documented cases, the early warning signal each produces, cheap countermeasures, and a pre-go-live checklist that catches most of them.</description>
+  </item>
+  <item>
+    <title>The One-Person Consulting Studio: When Small Beats Big (and When It Doesn&#x27;t)</title>
+    <link>https://anomerc.github.io/ganza-consulting-site/blog/one-person-consulting-studio/</link>
+    <guid isPermaLink="true">https://anomerc.github.io/ganza-consulting-site/blog/one-person-consulting-studio/</guid>
+    <pubDate>Tue, 21 Jul 2026 09:00:00 +0000</pubDate>
+    <category>Consulting</category>
+    <description>How agency economics create the gap between who sells the work and who does it, where a one-person studio is genuinely better, where it is genuinely worse, and what continuity guarantees to demand from either.</description>
+  </item>
+  <item>
+    <title>The Audit Nobody Reads: Why Most Business Audits Fail to Drive Change</title>
+    <link>https://anomerc.github.io/ganza-consulting-site/blog/audit-nobody-reads/</link>
+    <guid isPermaLink="true">https://anomerc.github.io/ganza-consulting-site/blog/audit-nobody-reads/</guid>
+    <pubDate>Tue, 14 Jul 2026 09:00:00 +0000</pubDate>
+    <category>Consulting</category>
+    <description>Why a correct 60-slide audit changes nothing, the structural reasons consultants write them that way, and how to specify a business audit that produces a decision instead of a PDF.</description>
+  </item>
+  <item>
+    <title>How to Choose a Business Consultant: 9 Questions That Separate Expertise From a Good Deck</title>
+    <link>https://anomerc.github.io/ganza-consulting-site/blog/how-to-choose-a-consultant/</link>
+    <guid isPermaLink="true">https://anomerc.github.io/ganza-consulting-site/blog/how-to-choose-a-consultant/</guid>
+    <pubDate>Tue, 07 Jul 2026 09:00:00 +0000</pubDate>
+    <category>Consulting</category>
+    <description>Nine questions to ask a consultant before signing, what a good and a bad answer sound like for each, the proposal red flags worth walking away from, and how to structure a low-risk first engagement.</description>
+  </item>
+  <item>
+    <title>Why Startups Need Consulting (Even the Ones That Think They Can&#x27;t Afford It)</title>
+    <link>https://anomerc.github.io/ganza-consulting-site/blog/why-startups-need-consulting/</link>
+    <guid isPermaLink="true">https://anomerc.github.io/ganza-consulting-site/blog/why-startups-need-consulting/</guid>
+    <pubDate>Tue, 30 Jun 2026 09:00:00 +0000</pubDate>
+    <category>Startups</category>
+    <description>The runway maths behind hiring outside expertise at seed stage, the four moments when it pays for itself, how to scope an engagement so it can&#x27;t drift into a retainer, and when a founder genuinely shouldn&#x27;t hire anyone.</description>
+  </item>
+  <item>
+    <title>How Lidl Lost €500 Million: A Case Study in Digital Transformation Failure</title>
+    <link>https://anomerc.github.io/ganza-consulting-site/blog/lidl-digital-transformation-failure/</link>
+    <guid isPermaLink="true">https://anomerc.github.io/ganza-consulting-site/blog/lidl-digital-transformation-failure/</guid>
+    <pubDate>Tue, 16 Jun 2026 09:00:00 +0000</pubDate>
+    <category>Case Study</category>
+    <description>A breakdown of Lidl&#x27;s abandoned SAP rollout: how customising software instead of changing one process, plus a widening gap between reports and reality, burned roughly €500 million — and the five checks that catch the same drift early.</description>
+  </item>
+  <item>
+    <title>How Much Does Business Consulting Cost in 2026? Rates, Models and What Drives the Number</title>
+    <link>https://anomerc.github.io/ganza-consulting-site/blog/how-much-does-business-consulting-cost/</link>
+    <guid isPermaLink="true">https://anomerc.github.io/ganza-consulting-site/blog/how-much-does-business-consulting-cost/</guid>
+    <pubDate>Tue, 09 Jun 2026 09:00:00 +0000</pubDate>
+    <category>Pricing</category>
+    <description>Real 2026 benchmarks for consulting rates by supplier type, the four pricing models and what each one optimises, the seven factors that move a quote, and how to read a proposal for padding.</description>
+  </item>
+  <item>
+    <title>Infrastructure Inbreeding: Why Promoting Only From Within Puts Your Company at Risk</title>
+    <link>https://anomerc.github.io/ganza-consulting-site/blog/infrastructure-inbreeding/</link>
+    <guid isPermaLink="true">https://anomerc.github.io/ganza-consulting-site/blog/infrastructure-inbreeding/</guid>
+    <pubDate>Tue, 02 Jun 2026 09:00:00 +0000</pubDate>
+    <category>Leadership</category>
+    <description>Why a closed leadership pipeline quietly erodes a company&#x27;s ability to adapt, the five symptoms that show up before the numbers move, and a diagnostic you can run on your own org chart in 20 minutes.</description>
+  </item>
+</channel>
+</rss>

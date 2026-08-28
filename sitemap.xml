@@ -3,63 +3,254 @@
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://anomerc.github.io/ganza-consulting-site/</loc>
-    <xhtml:link rel="alternate" hreflang="ru" href="https://anomerc.github.io/ganza-consulting-site/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://anomerc.github.io/ganza-consulting-site/en/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://anomerc.github.io/ganza-consulting-site/"/>
+    <lastmod>2026-08-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://anomerc.github.io/ganza-consulting-site/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://anomerc.github.io/ganza-consulting-site/ru/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://anomerc.github.io/ganza-consulting-site/"/>
   </url>
   <url>
-    <loc>https://anomerc.github.io/ganza-consulting-site/en/</loc>
-    <xhtml:link rel="alternate" hreflang="ru" href="https://anomerc.github.io/ganza-consulting-site/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://anomerc.github.io/ganza-consulting-site/en/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://anomerc.github.io/ganza-consulting-site/"/>
+    <loc>https://anomerc.github.io/ganza-consulting-site/ru/</loc>
+    <lastmod>2026-08-27</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://anomerc.github.io/ganza-consulting-site/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://anomerc.github.io/ganza-consulting-site/ru/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://anomerc.github.io/ganza-consulting-site/"/>
   </url>
   <url>
     <loc>https://anomerc.github.io/ganza-consulting-site/blog/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <lastmod>2026-08-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://anomerc.github.io/ganza-consulting-site/blog/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://anomerc.github.io/ganza-consulting-site/ru/blog/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://anomerc.github.io/ganza-consulting-site/blog/"/>
   </url>
   <url>
-    <loc>https://anomerc.github.io/ganza-consulting-site/blog/infrastructure-inbreeding/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://anomerc.github.io/ganza-consulting-site/blog/lidl-digital-transformation-failure/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://anomerc.github.io/ganza-consulting-site/blog/why-startups-need-consulting/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://anomerc.github.io/ganza-consulting-site/blog/audit-nobody-reads/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://anomerc.github.io/ganza-consulting-site/blog/one-person-consulting-studio/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://anomerc.github.io/ganza-consulting-site/blog/when-not-to-automate/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://anomerc.github.io/ganza-consulting-site/blog/multilingual-website-not-converting/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://anomerc.github.io/ganza-consulting-site/ru/blog/</loc>
+    <lastmod>2026-08-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://anomerc.github.io/ganza-consulting-site/blog/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://anomerc.github.io/ganza-consulting-site/ru/blog/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://anomerc.github.io/ganza-consulting-site/blog/"/>
   </url>
   <url>
     <loc>https://anomerc.github.io/ganza-consulting-site/blog/consulting-retainer-trap/</loc>
+    <lastmod>2026-08-27</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://anomerc.github.io/ganza-consulting-site/blog/consulting-retainer-trap/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://anomerc.github.io/ganza-consulting-site/ru/blog/consulting-retainer-trap/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://anomerc.github.io/ganza-consulting-site/blog/consulting-retainer-trap/"/>
+  </url>
+  <url>
+    <loc>https://anomerc.github.io/ganza-consulting-site/ru/blog/consulting-retainer-trap/</loc>
+    <lastmod>2026-08-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://anomerc.github.io/ganza-consulting-site/blog/consulting-retainer-trap/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://anomerc.github.io/ganza-consulting-site/ru/blog/consulting-retainer-trap/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://anomerc.github.io/ganza-consulting-site/blog/consulting-retainer-trap/"/>
+  </url>
+  <url>
+    <loc>https://anomerc.github.io/ganza-consulting-site/blog/small-business-automation-guide/</loc>
+    <lastmod>2026-08-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://anomerc.github.io/ganza-consulting-site/blog/small-business-automation-guide/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://anomerc.github.io/ganza-consulting-site/ru/blog/small-business-automation-guide/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://anomerc.github.io/ganza-consulting-site/blog/small-business-automation-guide/"/>
+  </url>
+  <url>
+    <loc>https://anomerc.github.io/ganza-consulting-site/ru/blog/small-business-automation-guide/</loc>
+    <lastmod>2026-08-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://anomerc.github.io/ganza-consulting-site/blog/small-business-automation-guide/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://anomerc.github.io/ganza-consulting-site/ru/blog/small-business-automation-guide/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://anomerc.github.io/ganza-consulting-site/blog/small-business-automation-guide/"/>
+  </url>
+  <url>
+    <loc>https://anomerc.github.io/ganza-consulting-site/blog/multilingual-website-not-converting/</loc>
+    <lastmod>2026-08-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://anomerc.github.io/ganza-consulting-site/blog/multilingual-website-not-converting/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://anomerc.github.io/ganza-consulting-site/ru/blog/multilingual-website-not-converting/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://anomerc.github.io/ganza-consulting-site/blog/multilingual-website-not-converting/"/>
+  </url>
+  <url>
+    <loc>https://anomerc.github.io/ganza-consulting-site/ru/blog/multilingual-website-not-converting/</loc>
+    <lastmod>2026-08-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://anomerc.github.io/ganza-consulting-site/blog/multilingual-website-not-converting/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://anomerc.github.io/ganza-consulting-site/ru/blog/multilingual-website-not-converting/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://anomerc.github.io/ganza-consulting-site/blog/multilingual-website-not-converting/"/>
+  </url>
+  <url>
+    <loc>https://anomerc.github.io/ganza-consulting-site/blog/when-not-to-automate/</loc>
+    <lastmod>2026-08-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://anomerc.github.io/ganza-consulting-site/blog/when-not-to-automate/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://anomerc.github.io/ganza-consulting-site/ru/blog/when-not-to-automate/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://anomerc.github.io/ganza-consulting-site/blog/when-not-to-automate/"/>
+  </url>
+  <url>
+    <loc>https://anomerc.github.io/ganza-consulting-site/ru/blog/when-not-to-automate/</loc>
+    <lastmod>2026-08-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://anomerc.github.io/ganza-consulting-site/blog/when-not-to-automate/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://anomerc.github.io/ganza-consulting-site/ru/blog/when-not-to-automate/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://anomerc.github.io/ganza-consulting-site/blog/when-not-to-automate/"/>
+  </url>
+  <url>
+    <loc>https://anomerc.github.io/ganza-consulting-site/blog/erp-implementation-failure-reasons/</loc>
+    <lastmod>2026-08-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://anomerc.github.io/ganza-consulting-site/blog/erp-implementation-failure-reasons/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://anomerc.github.io/ganza-consulting-site/ru/blog/erp-implementation-failure-reasons/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://anomerc.github.io/ganza-consulting-site/blog/erp-implementation-failure-reasons/"/>
+  </url>
+  <url>
+    <loc>https://anomerc.github.io/ganza-consulting-site/ru/blog/erp-implementation-failure-reasons/</loc>
+    <lastmod>2026-08-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://anomerc.github.io/ganza-consulting-site/blog/erp-implementation-failure-reasons/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://anomerc.github.io/ganza-consulting-site/ru/blog/erp-implementation-failure-reasons/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://anomerc.github.io/ganza-consulting-site/blog/erp-implementation-failure-reasons/"/>
+  </url>
+  <url>
+    <loc>https://anomerc.github.io/ganza-consulting-site/blog/one-person-consulting-studio/</loc>
+    <lastmod>2026-08-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://anomerc.github.io/ganza-consulting-site/blog/one-person-consulting-studio/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://anomerc.github.io/ganza-consulting-site/ru/blog/one-person-consulting-studio/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://anomerc.github.io/ganza-consulting-site/blog/one-person-consulting-studio/"/>
+  </url>
+  <url>
+    <loc>https://anomerc.github.io/ganza-consulting-site/ru/blog/one-person-consulting-studio/</loc>
+    <lastmod>2026-08-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://anomerc.github.io/ganza-consulting-site/blog/one-person-consulting-studio/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://anomerc.github.io/ganza-consulting-site/ru/blog/one-person-consulting-studio/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://anomerc.github.io/ganza-consulting-site/blog/one-person-consulting-studio/"/>
+  </url>
+  <url>
+    <loc>https://anomerc.github.io/ganza-consulting-site/blog/audit-nobody-reads/</loc>
+    <lastmod>2026-08-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://anomerc.github.io/ganza-consulting-site/blog/audit-nobody-reads/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://anomerc.github.io/ganza-consulting-site/ru/blog/audit-nobody-reads/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://anomerc.github.io/ganza-consulting-site/blog/audit-nobody-reads/"/>
+  </url>
+  <url>
+    <loc>https://anomerc.github.io/ganza-consulting-site/ru/blog/audit-nobody-reads/</loc>
+    <lastmod>2026-08-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://anomerc.github.io/ganza-consulting-site/blog/audit-nobody-reads/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://anomerc.github.io/ganza-consulting-site/ru/blog/audit-nobody-reads/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://anomerc.github.io/ganza-consulting-site/blog/audit-nobody-reads/"/>
+  </url>
+  <url>
+    <loc>https://anomerc.github.io/ganza-consulting-site/blog/how-to-choose-a-consultant/</loc>
+    <lastmod>2026-08-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://anomerc.github.io/ganza-consulting-site/blog/how-to-choose-a-consultant/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://anomerc.github.io/ganza-consulting-site/ru/blog/how-to-choose-a-consultant/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://anomerc.github.io/ganza-consulting-site/blog/how-to-choose-a-consultant/"/>
+  </url>
+  <url>
+    <loc>https://anomerc.github.io/ganza-consulting-site/ru/blog/how-to-choose-a-consultant/</loc>
+    <lastmod>2026-08-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://anomerc.github.io/ganza-consulting-site/blog/how-to-choose-a-consultant/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://anomerc.github.io/ganza-consulting-site/ru/blog/how-to-choose-a-consultant/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://anomerc.github.io/ganza-consulting-site/blog/how-to-choose-a-consultant/"/>
+  </url>
+  <url>
+    <loc>https://anomerc.github.io/ganza-consulting-site/blog/why-startups-need-consulting/</loc>
+    <lastmod>2026-08-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://anomerc.github.io/ganza-consulting-site/blog/why-startups-need-consulting/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://anomerc.github.io/ganza-consulting-site/ru/blog/why-startups-need-consulting/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://anomerc.github.io/ganza-consulting-site/blog/why-startups-need-consulting/"/>
+  </url>
+  <url>
+    <loc>https://anomerc.github.io/ganza-consulting-site/ru/blog/why-startups-need-consulting/</loc>
+    <lastmod>2026-08-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://anomerc.github.io/ganza-consulting-site/blog/why-startups-need-consulting/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://anomerc.github.io/ganza-consulting-site/ru/blog/why-startups-need-consulting/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://anomerc.github.io/ganza-consulting-site/blog/why-startups-need-consulting/"/>
+  </url>
+  <url>
+    <loc>https://anomerc.github.io/ganza-consulting-site/blog/lidl-digital-transformation-failure/</loc>
+    <lastmod>2026-08-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://anomerc.github.io/ganza-consulting-site/blog/lidl-digital-transformation-failure/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://anomerc.github.io/ganza-consulting-site/ru/blog/lidl-digital-transformation-failure/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://anomerc.github.io/ganza-consulting-site/blog/lidl-digital-transformation-failure/"/>
+  </url>
+  <url>
+    <loc>https://anomerc.github.io/ganza-consulting-site/ru/blog/lidl-digital-transformation-failure/</loc>
+    <lastmod>2026-08-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://anomerc.github.io/ganza-consulting-site/blog/lidl-digital-transformation-failure/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://anomerc.github.io/ganza-consulting-site/ru/blog/lidl-digital-transformation-failure/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://anomerc.github.io/ganza-consulting-site/blog/lidl-digital-transformation-failure/"/>
+  </url>
+  <url>
+    <loc>https://anomerc.github.io/ganza-consulting-site/blog/how-much-does-business-consulting-cost/</loc>
+    <lastmod>2026-08-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://anomerc.github.io/ganza-consulting-site/blog/how-much-does-business-consulting-cost/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://anomerc.github.io/ganza-consulting-site/ru/blog/how-much-does-business-consulting-cost/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://anomerc.github.io/ganza-consulting-site/blog/how-much-does-business-consulting-cost/"/>
+  </url>
+  <url>
+    <loc>https://anomerc.github.io/ganza-consulting-site/ru/blog/how-much-does-business-consulting-cost/</loc>
+    <lastmod>2026-08-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://anomerc.github.io/ganza-consulting-site/blog/how-much-does-business-consulting-cost/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://anomerc.github.io/ganza-consulting-site/ru/blog/how-much-does-business-consulting-cost/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://anomerc.github.io/ganza-consulting-site/blog/how-much-does-business-consulting-cost/"/>
+  </url>
+  <url>
+    <loc>https://anomerc.github.io/ganza-consulting-site/blog/infrastructure-inbreeding/</loc>
+    <lastmod>2026-08-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://anomerc.github.io/ganza-consulting-site/blog/infrastructure-inbreeding/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://anomerc.github.io/ganza-consulting-site/ru/blog/infrastructure-inbreeding/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://anomerc.github.io/ganza-consulting-site/blog/infrastructure-inbreeding/"/>
+  </url>
+  <url>
+    <loc>https://anomerc.github.io/ganza-consulting-site/ru/blog/infrastructure-inbreeding/</loc>
+    <lastmod>2026-08-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://anomerc.github.io/ganza-consulting-site/blog/infrastructure-inbreeding/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://anomerc.github.io/ganza-consulting-site/ru/blog/infrastructure-inbreeding/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://anomerc.github.io/ganza-consulting-site/blog/infrastructure-inbreeding/"/>
   </url>
 </urlset>

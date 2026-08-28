@@ -238,6 +238,7 @@
 
   function renderStep() {
     var step = STEPS[stepIndex];
+    if (window.ganzaTrack) window.ganzaTrack("builder", "step-" + (stepIndex + 1) + "-" + step.key, stepIndex + 1);
 
     els.progressBar.style.width = Math.round(((stepIndex + 1) / STEPS.length) * 100) + "%";
     els.progressLabel.textContent =
@@ -294,6 +295,7 @@
   }
 
   function showResult() {
+    if (window.ganzaTrack) window.ganzaTrack("builder", "result-shown", STEPS.length + 1);
     lastResult = calculate(state);
     els.stepWrap.hidden = true;
     els.progressWrap.hidden = true;
