@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en" data-lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Why ERP Implementations Fail: 7 Failure Modes</title>
+<meta name="description" content="Seven recurring ERP failure modes from publicly documented cases, the early signal each emits, and a pre-go-live checklist that catches most of them.">
+<meta name="keywords" content="ERP implementation failure, why ERP projects fail, SAP implementation risks, ERP go-live checklist, data migration failure, change management ERP, ERP project governance, system implementation risk">
+<meta name="author" content="George Mercer">
+<meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1">
+<meta name="theme-color" content="#0b0b09">
+<link rel="canonical" href="https://anomerc.github.io/ganza-consulting-site/en/blog/erp-implementation-failure-reasons/">
+<link rel="alternate" hreflang="ru" href="https://anomerc.github.io/ganza-consulting-site/blog/erp-implementation-failure-reasons/">
+<link rel="alternate" hreflang="en" href="https://anomerc.github.io/ganza-consulting-site/en/blog/erp-implementation-failure-reasons/">
+<link rel="alternate" hreflang="x-default" href="https://anomerc.github.io/ganza-consulting-site/blog/erp-implementation-failure-reasons/">
+<link rel="alternate" type="application/rss+xml" title="Ganza Consulting — Blog" href="https://anomerc.github.io/ganza-consulting-site/en/blog/feed.xml">
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Ganza Consulting">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="ru_RU">
+<meta property="og:url" content="https://anomerc.github.io/ganza-consulting-site/en/blog/erp-implementation-failure-reasons/">
+<meta property="og:title" content="Why ERP Implementations Fail: 7 Failure Modes">
+<meta property="og:description" content="Seven recurring ERP failure modes from publicly documented cases, the early signal each emits, and a pre-go-live checklist that catches most of them.">
+<meta property="og:image" content="https://anomerc.github.io/ganza-consulting-site/assets/img/blog/erp-implementation-failure-reasons-cover.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Why ERP Implementations Fail: 7 Failure Modes and the Early Signal for Each">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Why ERP Implementations Fail: 7 Failure Modes">
+<meta name="twitter:description" content="Seven recurring ERP failure modes from publicly documented cases, the early signal each emits, and a pre-go-live checklist that catches most of them.">
+<meta name="twitter:image" content="https://anomerc.github.io/ganza-consulting-site/assets/img/blog/erp-implementation-failure-reasons-cover.png">
+<meta property="article:published_time" content="2026-07-28">
+<meta property="article:modified_time" content="2026-08-27">
+<meta property="article:section" content="Project Management">
+<meta property="article:tag" content="ERP">
+<meta property="article:tag" content="ProjectManagement">
+<meta property="article:tag" content="DigitalTransformation">
+<meta property="article:tag" content="ChangeManagement">
+<meta property="article:tag" content="RiskManagement">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230b0b09'/%3E%3Ctext x='50' y='73' font-size='66' font-family='Arial Black,sans-serif' font-weight='900' fill='%23e8ff2e' text-anchor='middle'%3EG%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../../assets/css/base.css">
+<link rel="stylesheet" href="../../../assets/css/builder.css">
+<link rel="stylesheet" href="../../../assets/css/blog.css">
+<link rel="stylesheet" href="../../../assets/css/glass.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://anomerc.github.io/ganza-consulting-site/#organization",
+      "name": "Ganza Consulting",
+      "url": "https://anomerc.github.io/ganza-consulting-site/",
+      "email": "onegeorgemercer@gmail.com",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://anomerc.github.io/ganza-consulting-site/assets/img/og-cover.png",
+        "width": 1200,
+        "height": 630
+      },
+      "sameAs": [
+        "https://t.me/groovebliss",
+        "https://www.linkedin.com/in/george-mercer-55520b388/"
+      ]
+    },
+    {
+      "@type": "Person",
+      "@id": "https://anomerc.github.io/ganza-consulting-site/#george-mercer",
+      "name": "George Mercer",
+      "url": "https://anomerc.github.io/ganza-consulting-site/en/#about",
+      "image": "https://anomerc.github.io/ganza-consulting-site/assets/img/founder.jpg",
+      "description": "Independent consultant and founder of Ganza Consulting. Works on the single hard problems other firms decline: non-standard automation, stalled projects, messy processes and custom web builds. Every article here is written from engagements that were actually delivered — not from a content calendar.",
+      "jobTitle": "Independent consultant",
+      "worksFor": {
+        "@id": "https://anomerc.github.io/ganza-consulting-site/#organization"
+      },
+      "sameAs": [
+        "https://t.me/groovebliss",
+        "https://www.linkedin.com/in/george-mercer-55520b388/"
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://anomerc.github.io/ganza-consulting-site/en/blog/erp-implementation-failure-reasons/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://anomerc.github.io/ganza-consulting-site/en/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Blog",
+          "item": "https://anomerc.github.io/ganza-consulting-site/en/blog/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Why ERP Implementations Fail: 7 Failure Modes and the Early Signal for Each",
+          "item": "https://anomerc.github.io/ganza-consulting-site/en/blog/erp-implementation-failure-reasons/"
+        }
+      ]
+    },
+    {
+      "@type": "BlogPosting",
+      "@id": "https://anomerc.github.io/ganza-consulting-site/en/blog/erp-implementation-failure-reasons/#article",
+      "headline": "Why ERP Implementations Fail: 7 Failure Modes and the Early Signal for Each",
+      "alternativeHeadline": "The publicly documented disasters share a small number of mechanisms. Each one emits a specific signal months before the write-off — if anyone is watching for it.",
+      "description": "Seven recurring ERP failure modes from publicly documented cases, the early signal each emits, and a pre-go-live checklist that catches most of them.",
+      "articleSection": "Project Management",
+      "keywords": "ERP implementation failure, why ERP projects fail, SAP implementation risks, ERP go-live checklist, data migration failure, change management ERP, ERP project governance, system implementation risk",
+      "inLanguage": "en",
+      "wordCount": 1460,
+      "timeRequired": "PT10M",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://anomerc.github.io/ganza-consulting-site/assets/img/blog/erp-implementation-failure-reasons-cover.png",
+        "width": 1200,
+        "height": 630
+      },
+      "datePublished": "2026-07-28",
+      "dateModified": "2026-08-27",
+      "author": {
+        "@id": "https://anomerc.github.io/ganza-consulting-site/#george-mercer"
+      },
+      "publisher": {
+        "@id": "https://anomerc.github.io/ganza-consulting-site/#organization"
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://anomerc.github.io/ganza-consulting-site/en/blog/erp-implementation-failure-reasons/"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://anomerc.github.io/ganza-consulting-site/en/blog/erp-implementation-failure-reasons/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is the most common reason ERP implementations fail?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Customising the product to preserve an existing process instead of changing the process. Each deviation looks individually justified, but together they create a permanent branch that makes every future upgrade more expensive and removes the vendor's reference behaviour as a source of truth."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How early can an ERP failure be detected?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Usually two to four quarters before it appears in status reporting. The reliable early signals are a growing deviation register touching core data models, scope being cut in test phases rather than build phases, no peak-volume performance test, and a persistent gap between green status reports and pessimistic practitioner conversations."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why is data migration such a common failure point?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Because it is scoped as a technical transfer when it is really a business exercise in deciding what records mean — which duplicates are the same customer, which prices are still valid, which codes are dead. Without a business owner per data domain signing off on quality thresholds, those decisions get made implicitly by whoever writes the migration script."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Should we go live big-bang or phased?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Either can work; what matters more is whether the fallback stays viable through a full business cycle and whether a tested rollback procedure exists. Big-bang without a rollback is the configuration that turns a project failure into an operational crisis."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How much productivity loss should we plan for after go-live?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "As a planning assumption, 20–40% in affected functions for four to eight weeks. Plans that assume a return to baseline within days are the ones that generate the workarounds and shadow processes that outlive the project."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What single practice most reduces the risk?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Written kill criteria agreed before each milestone: a specific, measurable condition under which the programme stops. Almost every documented failure could have been stopped for a fraction of its final cost, and almost none were, because continuing was always locally cheaper than stopping."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<script src="../../../assets/js/analytics.js" defer></script>
+</head>
+<body class="page-article">
+<div class="ticker" aria-hidden="true">
+  <div class="ticker__track"><span>NOW BOOKING Q4 2026&nbsp;&nbsp;—&nbsp;&nbsp;CONSULTING + AUTOMATION + PROJECT MANAGEMENT&nbsp;&nbsp;—&nbsp;&nbsp;NO TEMPLATES&nbsp;&nbsp;—&nbsp;&nbsp;NOW BOOKING Q4 2026&nbsp;&nbsp;—&nbsp;&nbsp;CONSULTING + AUTOMATION + PROJECT MANAGEMENT&nbsp;&nbsp;—&nbsp;&nbsp;NO TEMPLATES&nbsp;&nbsp;—&nbsp;&nbsp;</span></div>
+</div>
+<header class="site-header" id="top">
+  <div class="site-header__inner">
+    <a href="../../../en/" class="logo" data-track="logo">
+      <span class="logo__mark">G</span>
+      <span class="logo__text">GANZA<br>CONSULTING</span>
+    </a>
+
+    <nav class="nav" id="nav" aria-label="Main navigation">
+      <a href="../../../en/services">Services</a>
+      <a href="../../../en/cases">Cases</a>
+      <a href="../../../en/blog" class="is-active">Blog</a>
+      <a href="../../../en/#contact">Contact</a>
+    </nav>
+
+    <div class="header-actions">
+      <a class="lang-switch" href="../../../blog/erp-implementation-failure-reasons/" hreflang="ru"
+         aria-label="Switch language" data-track="lang-switch"><span class="lang-switch__opt">RU</span><span class="lang-switch__sep">/</span><span class="lang-switch__opt is-active">EN</span></a>
+      <a class="btn btn--small btn--yellow" href="https://t.me/groovebliss" target="_blank" rel="noopener" data-track="header-telegram">TELEGRAM ↗</a>
+      <button class="burger" id="burger" aria-label="MENU" type="button">MENU</button>
+    </div>
+  </div>
+</header>
+
+<main id="content" class="post-wrap">
+<nav class="breadcrumbs" aria-label="Breadcrumb">
+  <a href="../../../en/">Home</a><span>/</span><a href="../../../en/blog/">Blog</a><span>/</span><span aria-current="page">Why ERP Implementations Fail: 7 Failure Modes and the Early Signal for Each</span>
+</nav>
+
+<article class="post">
+  <div class="post__head">
+    <div class="post__meta">
+      <span class="post__tag">Project Management</span>
+      <span>10 min read · July 28, 2026 · Updated August 27, 2026</span>
+    </div>
+    <h1>Why ERP Implementations Fail: 7 Failure Modes and the Early Signal for Each</h1>
+    <p class="post__dek">The publicly documented disasters share a small number of mechanisms. Each one emits a specific signal months before the write-off — if anyone is watching for it.</p>
+  </div>
+
+  <div class="post-shell">
+    <div class="rail rail--left">
+  <nav class="toc" aria-label="CONTENTS">
+    <p class="toc__title">CONTENTS</p>
+    <ol class="toc__list"><li><a href="#what-the-public-record-actually-shows">What the public record actually shows</a></li><li><a href="#failure-mode-1-customising-the-product-instead-of-changing-t">Failure mode 1: customising the product instead of changing the process</a></li><li><a href="#failure-mode-2-a-go-live-date-fixed-before-the-scope">Failure mode 2: a go-live date fixed before the scope</a></li><li><a href="#failure-mode-3-data-migration-treated-as-an-it-task">Failure mode 3: data migration treated as an IT task</a></li><li><a href="#failure-mode-4-change-management-funded-as-training">Failure mode 4: change management funded as training</a></li><li><a href="#failure-mode-5-governance-that-measures-activity-not-viabili">Failure mode 5: governance that measures activity, not viability</a></li><li><a href="#failure-mode-6-testing-the-happy-path-at-convenient-volume">Failure mode 6: testing the happy path at convenient volume</a></li><li><a href="#failure-mode-7-retiring-the-fallback-too-early">Failure mode 7: retiring the fallback too early</a></li><li><a href="#pre-go-live-checklist">Pre-go-live checklist</a></li><li><a href="#if-you-re-already-inside-one">If you're already inside one</a></li></ol>
+  </nav>
+</div>
+
+    <div class="post__body">
+        <p data-reveal>ERP failures are unusually well documented, because they are large enough to appear in earnings statements and lawsuits. That makes them useful: the public record shows the same small set of mechanisms repeating across decades, vendors and industries.</p>
+        <p data-reveal>This is not a list of causes like "poor planning" — that describes everything and predicts nothing. Below are seven <strong>specific failure modes</strong>, each with the early signal it emits, the reason that signal gets ignored, and a countermeasure that costs almost nothing.</p>
+        <h2 id="what-the-public-record-actually-shows" data-reveal>What the public record actually shows</h2>
+        <div class="post__table-wrap" data-reveal><table class="post__table"><caption>Publicly reported ERP failures and their reported cost (figures vary between sources)</caption><thead><tr><th scope="col">Company</th><th scope="col">Period</th><th scope="col">Reported impact</th><th scope="col">Dominant mechanism</th></tr></thead><tbody><tr><td>Hershey's</td><td>1999</td><td>≈$100m in unshipped orders during peak season</td><td>Compressed timeline; go-live scheduled into the busiest quarter</td></tr><tr><td>Nike</td><td>2000–2001</td><td>≈$100m in lost sales attributed to demand planning</td><td>Forecasting logic trusted before it was validated against reality</td></tr><tr><td>Waste Management</td><td>2005–2010</td><td>$500m lawsuit, settled out of court</td><td>Gap between demonstrated capability and delivered product</td></tr><tr><td>National Grid</td><td>2012–2014</td><td>≈$585m in recovery costs</td><td>Go-live with unresolved data and testing gaps</td></tr><tr><td>LeasePlan</td><td>2016–2019</td><td>≈$119m written off</td><td>Scope and complexity outrunning the delivery model</td></tr><tr><td>Revlon</td><td>2018</td><td>Reported $64m in lost sales; shareholder litigation</td><td>Fulfilment disruption after go-live</td></tr><tr><td>Haribo</td><td>2018</td><td>Reported delivery failures and a sharp sales drop</td><td>Supply chain data and process readiness</td></tr><tr><td>Lidl</td><td>2011–2018</td><td>≈€500m before cancellation</td><td>Customising core logic instead of changing the process</td></tr></tbody></table></div>
+        <p data-reveal>Notice how few of these are software defects. Almost every case is a decision about process, data, timing or governance that the software then faithfully executed. The <a href="../lidl-digital-transformation-failure/">Lidl case is worth reading in full</a> because it demonstrates the slowest and most expensive version of the pattern.</p>
+        <h2 id="failure-mode-1-customising-the-product-instead-of-changing-t" data-reveal>Failure mode 1: customising the product instead of changing the process</h2>
+        <p data-reveal>The organisation has a process it considers a competitive advantage. The standard product does it differently. Rather than change the process, the software is changed.</p>
+        <ul data-reveal><li><strong>Early signal:</strong> the list of deviations from standard grows past a handful and starts touching core data models — valuation, master data, document flow.</li><li><strong>Why it's ignored:</strong> each deviation is individually justified and individually small.</li><li><strong>Countermeasure:</strong> maintain a single visible register of permanent deviations with a named owner for each, and estimate the cost of applying the vendor's next two major releases on top of them. That estimate is the real price of the customisation, and it's usually nobody's job to produce it.</li></ul>
+        <h2 id="failure-mode-2-a-go-live-date-fixed-before-the-scope" data-reveal>Failure mode 2: a go-live date fixed before the scope</h2>
+        <p data-reveal>A date is announced — to a board, a market, or an expiring licence — and scope is then negotiated backwards against it. Testing is the compressible item, so testing compresses.</p>
+        <ul data-reveal><li><strong>Early signal:</strong> scope is being cut in test phases rather than in build phases, and cutover rehearsals keep moving.</li><li><strong>Why it's ignored:</strong> the date has a public commitment attached; the testing reduction does not.</li><li><strong>Countermeasure:</strong> declare in advance which quarter is off-limits for go-live. Hershey's is the canonical example — going live into the peak season converts a technical problem into unshipped revenue.</li></ul>
+        <h2 id="failure-mode-3-data-migration-treated-as-an-it-task" data-reveal>Failure mode 3: data migration treated as an IT task</h2>
+        <p data-reveal>Migration is scoped as moving records between systems. It is actually a business exercise in deciding what the records mean — which duplicates are the same customer, which historic prices are still valid, which product codes are dead.</p>
+        <ul data-reveal><li><strong>Early signal:</strong> nobody outside IT has signed off on data quality criteria, and the first full-volume migration rehearsal is scheduled late.</li><li><strong>Why it's ignored:</strong> it looks technical, so it's delegated technically.</li><li><strong>Countermeasure:</strong> a named business owner per data domain who signs off on quality thresholds, and at least two full-volume rehearsals with reconciliation against the source, the first one early enough that its findings can change the plan.</li></ul>
+        <h2 id="failure-mode-4-change-management-funded-as-training" data-reveal>Failure mode 4: change management funded as training</h2>
+        <p data-reveal>The budget contains training days. It does not contain time for people to be slower for eight weeks, or capacity for the workarounds they will invent, or a route for the front line to report that the new process doesn't fit reality.</p>
+        <ul data-reveal><li><strong>Early signal:</strong> the plan assumes productivity returns to baseline within days of go-live; no post-go-live capacity buffer exists.</li><li><strong>Why it's ignored:</strong> a productivity dip is uncomfortable to put in a business case.</li><li><strong>Countermeasure:</strong> budget an explicit productivity dip — commonly 20–40% for four to eight weeks in affected functions — and staff a hypercare team with authority to change configuration, not just to log tickets.</li></ul>
+        <h2 id="failure-mode-5-governance-that-measures-activity-not-viabili" data-reveal>Failure mode 5: governance that measures activity, not viability</h2>
+        <p data-reveal>Steering committees receive milestone completion, tickets closed, modules configured. All of these can be green while the answer to "can this run our largest market at real volume?" is getting worse.</p>
+        <ul data-reveal><li><strong>Early signal:</strong> status reporting is consistently amber-to-green while informal conversation with practitioners is consistently pessimistic.</li><li><strong>Why it's ignored:</strong> the gap only shows up if someone deliberately compares the two, and nobody owns that comparison.</li><li><strong>Countermeasure:</strong> one quarterly, consequence-free conversation with practitioners, conducted off the reporting line by someone senior enough to act. It is the cheapest early-warning system available and it is almost never run.</li></ul>
+        <blockquote class="post__pull" data-reveal>By the time a status report turns red, the information that should have turned it red has usually been available for two quarters.</blockquote>
+        <h2 id="failure-mode-6-testing-the-happy-path-at-convenient-volume" data-reveal>Failure mode 6: testing the happy path at convenient volume</h2>
+        <p data-reveal>Testing validates that the system does what the design says, using clean data, at comfortable volume, in the pilot market. Production is none of those things.</p>
+        <ul data-reveal><li><strong>Early signal:</strong> no performance test has been run at peak historical volume; exception scenarios are documented but not executed.</li><li><strong>Why it's ignored:</strong> peak-volume testing requires production-like data and infrastructure, which is expensive and easy to defer.</li><li><strong>Countermeasure:</strong> pick the highest-intensity market or period in your history and prove the system there before committing. Pilots in small markets prove change management, not capacity — this is precisely where Lidl's customised design ran out of road.</li></ul>
+        <h2 id="failure-mode-7-retiring-the-fallback-too-early" data-reveal>Failure mode 7: retiring the fallback too early</h2>
+        <p data-reveal>The legacy system is switched off, or allowed to fall out of sync, before the new one has run a full business cycle at full volume. What was a project failure becomes an operational crisis with no route back.</p>
+        <ul data-reveal><li><strong>Early signal:</strong> there is no written, tested rollback procedure, or the legacy system has stopped receiving data.</li><li><strong>Why it's ignored:</strong> maintaining two systems is expensive and feels like a lack of confidence.</li><li><strong>Countermeasure:</strong> keep the fallback viable through at least one complete business cycle — a month-end, a quarter-end, a peak season — and test the rollback once for real. Lidl's ability to return to its legacy system is the main reason a €500m write-off wasn't worse.</li></ul>
+        <h2 id="pre-go-live-checklist" data-reveal>Pre-go-live checklist</h2>
+        <p data-reveal>None of these require new tooling. All of them can be answered yes or no in a single steering meeting.</p>
+        <ul class="post__checklist" data-reveal><li>A single register of permanent deviations from standard exists, with a named owner per item.</li><li>The cost of applying the vendor's next two major releases has been estimated and accepted.</li><li>Go-live is not scheduled into a peak trading period, and the excluded quarters were declared in advance.</li><li>Each data domain has a business owner who has signed off on quality thresholds.</li><li>At least two full-volume migration rehearsals have completed, with reconciliation against source.</li><li>A performance test has run at peak historical volume, not at convenient volume.</li><li>Exception scenarios have been executed, not just documented.</li><li>A productivity dip is budgeted, with a hypercare team empowered to change configuration.</li><li>A written rollback procedure exists and has been tested once.</li><li>The legacy system will remain viable through at least one full business cycle.</li><li>Written kill criteria exist for the next milestone, agreed before the date.</li><li>A consequence-free practitioner conversation has happened this quarter, off the reporting line.</li></ul>
+        <h2 id="if-you-re-already-inside-one" data-reveal>If you're already inside one</h2>
+        <ol class="post__steps" data-reveal><li><strong>Separate viability from activity in this week's reporting</strong><span>Ask one question the status report does not answer: what evidence exists that this will run our largest market at real volume? If the answer is a plan rather than a test result, that is your position.</span></li><li><strong>Get the deviation register onto one page</strong><span>If it doesn't exist, building it is a two-day job and it is usually the most informative document anyone produces on the programme.</span></li><li><strong>Write kill criteria for the next milestone, now</strong><span>Specific, measurable, agreed before the date arrives. Criteria written after a slip are negotiations.</span></li><li><strong>Protect the fallback</strong><span>Whatever else is decided, keep the old system able to run. This converts the worst case from a crisis into an expensive disappointment.</span></li><li><strong>Decide who is allowed to say stop</strong><span>Programmes become cancellable only when the people identified with them are no longer the only ones who can end them. Name that person explicitly, in advance.</span></li></ol>
+        <div class="post__note" data-reveal>The uncomfortable pattern in the public record: almost every one of these programmes could have been stopped for a fraction of its final cost, and almost none of them were, because at every individual decision point continuing was cheaper than stopping.</div>
+
+  <div class="post__takeaways" data-reveal>
+    <p class="post__takeaways-title">WHAT TO TAKE AWAY</p>
+    <ul><li>Almost none of the documented ERP disasters were software defects; they were decisions about process, data, timing and governance that the software then executed faithfully.</li><li>The deviation register — every permanent difference from standard, with an owner — is the single most informative document on an ERP programme, and usually nobody's job to produce.</li><li>Never schedule go-live into a peak trading period; declare the excluded quarters in advance, before a date gets publicly committed.</li><li>Data migration is a business exercise in deciding what records mean; give each data domain a business owner and run two full-volume rehearsals.</li><li>Budget an explicit 20–40% productivity dip for four to eight weeks, and give hypercare authority to change configuration rather than only log tickets.</li><li>Keep the legacy system viable through one full business cycle and test the rollback once for real — that's what turns a catastrophe into an expensive disappointment.</li></ul>
+  </div>
+
+  <section class="post__faq" id="faq" data-reveal>
+    <h2>FREQUENTLY ASKED QUESTIONS</h2>
+    <div class="faq__list"><details class="faq-item">
+      <summary>What is the most common reason ERP implementations fail?<span class="faq-item__icon" aria-hidden="true"></span></summary>
+      <p>Customising the product to preserve an existing process instead of changing the process. Each deviation looks individually justified, but together they create a permanent branch that makes every future upgrade more expensive and removes the vendor's reference behaviour as a source of truth.</p>
+    </details><details class="faq-item">
+      <summary>How early can an ERP failure be detected?<span class="faq-item__icon" aria-hidden="true"></span></summary>
+      <p>Usually two to four quarters before it appears in status reporting. The reliable early signals are a growing deviation register touching core data models, scope being cut in test phases rather than build phases, no peak-volume performance test, and a persistent gap between green status reports and pessimistic practitioner conversations.</p>
+    </details><details class="faq-item">
+      <summary>Why is data migration such a common failure point?<span class="faq-item__icon" aria-hidden="true"></span></summary>
+      <p>Because it is scoped as a technical transfer when it is really a business exercise in deciding what records mean — which duplicates are the same customer, which prices are still valid, which codes are dead. Without a business owner per data domain signing off on quality thresholds, those decisions get made implicitly by whoever writes the migration script.</p>
+    </details><details class="faq-item">
+      <summary>Should we go live big-bang or phased?<span class="faq-item__icon" aria-hidden="true"></span></summary>
+      <p>Either can work; what matters more is whether the fallback stays viable through a full business cycle and whether a tested rollback procedure exists. Big-bang without a rollback is the configuration that turns a project failure into an operational crisis.</p>
+    </details><details class="faq-item">
+      <summary>How much productivity loss should we plan for after go-live?<span class="faq-item__icon" aria-hidden="true"></span></summary>
+      <p>As a planning assumption, 20–40% in affected functions for four to eight weeks. Plans that assume a return to baseline within days are the ones that generate the workarounds and shadow processes that outlive the project.</p>
+    </details><details class="faq-item">
+      <summary>What single practice most reduces the risk?<span class="faq-item__icon" aria-hidden="true"></span></summary>
+      <p>Written kill criteria agreed before each milestone: a specific, measurable condition under which the programme stops. Almost every documented failure could have been stopped for a fraction of its final cost, and almost none were, because continuing was always locally cheaper than stopping.</p>
+    </details></div>
+  </section>
+
+  <div class="post__tags"><span class="badge">#ERP</span><span class="badge">#ProjectManagement</span><span class="badge">#DigitalTransformation</span><span class="badge">#ChangeManagement</span><span class="badge">#RiskManagement</span></div>
+
+  <section class="post__author" data-reveal>
+    <picture>
+      <source srcset="../../../assets/img/founder.webp" type="image/webp">
+      <img src="../../../assets/img/founder.jpg" width="96" height="126" alt="George Mercer" loading="lazy" decoding="async">
+    </picture>
+    <div>
+      <p class="post__author-label">ABOUT THE AUTHOR</p>
+      <p class="post__author-name">George Mercer</p>
+      <p class="post__author-bio">Independent consultant and founder of Ganza Consulting. Works on the single hard problems other firms decline: non-standard automation, stalled projects, messy processes and custom web builds. Every article here is written from engagements that were actually delivered — not from a content calendar.</p>
+      <p class="post__author-links">
+        <a href="https://t.me/groovebliss" target="_blank" rel="noopener" data-track="author-telegram">Telegram ↗</a>
+        <a href="../../../en/#about">Home ↗</a>
+      </p>
+    </div>
+  </section>
+
+  <div class="post__cta" data-reveal>
+    <div class="post__cta-box">
+      <p>Have a problem like this one? We take on the single hard cases other consultants pass on — fixed scope, a written answer, and a number you can act on.</p>
+      <a class="btn btn--yellow" href="https://t.me/groovebliss" target="_blank" rel="noopener" data-track="post-cta-telegram">MESSAGE ON TELEGRAM →</a>
+      <a class="btn btn--outline" href="../../../en/services/#pricing" data-track="post-cta-pricing">SEE PRICING</a>
+    </div>
+  </div>
+    </div>
+
+    <div class="rail rail--right">
+  <div class="rail__block">
+    <p class="rail__label">MIN READ</p>
+    <p class="rail__value">10</p>
+  </div>
+  <div class="rail__block">
+    <p class="rail__label">SHARE</p>
+    <div class="rail__share"><a href="https://t.me/share/url?url=https://anomerc.github.io/ganza-consulting-site/en/blog/erp-implementation-failure-reasons/&text=Why ERP Implementations Fail: 7 Failure Modes and the Early Signal for Each" target="_blank" rel="noopener" data-track="share-telegram">Telegram</a><a href="https://www.linkedin.com/sharing/share-offsite/?url=https://anomerc.github.io/ganza-consulting-site/en/blog/erp-implementation-failure-reasons/" target="_blank" rel="noopener" data-track="share-linkedin">LinkedIn</a><a href="https://twitter.com/intent/tweet?url=https://anomerc.github.io/ganza-consulting-site/en/blog/erp-implementation-failure-reasons/&text=Why ERP Implementations Fail: 7 Failure Modes and the Early Signal for Each" target="_blank" rel="noopener" data-track="share-x">X</a></div>
+  </div>
+  <a class="rail__top" href="#top">↑ TOP</a>
+</div>
+  </div>
+</article>
+
+<section class="post__related">
+    <h2>RELATED READING</h2>
+    <div class="post__related-grid"><a class="related-card" href="../lidl-digital-transformation-failure/" data-reveal data-track="related-lidl-digital-transformation-failure">
+        <span class="related-card__tag">Case Study</span>
+        <span class="related-card__title">How Lidl Lost €500 Million: A Case Study in Digital Transformation Failure</span>
+        <span class="related-card__meta">9 min read</span>
+      </a><a class="related-card" href="../audit-nobody-reads/" data-reveal data-track="related-audit-nobody-reads">
+        <span class="related-card__tag">Consulting</span>
+        <span class="related-card__title">The Audit Nobody Reads: Why Most Business Audits Fail to Drive Change</span>
+        <span class="related-card__meta">9 min read</span>
+      </a><a class="related-card" href="../when-not-to-automate/" data-reveal data-track="related-when-not-to-automate">
+        <span class="related-card__tag">Automation &amp; AI</span>
+        <span class="related-card__title">When Not to Automate: The Hidden Risk of Automating Broken Processes</span>
+        <span class="related-card__meta">10 min read</span>
+      </a></div>
+  </section>
+
+<nav class="post__nav">
+  <a class="post__nav-link" href="../one-person-consulting-studio/" data-track="post-prev">
+    <span class="post__nav-label">← PREVIOUS</span>
+    <span class="post__nav-title">The One-Person Consulting Studio: When Small Beats Big (and When It Doesn&#x27;t)</span>
+  </a>
+  <a class="post__nav-link" href="../when-not-to-automate/" data-track="post-next">
+    <span class="post__nav-label">NEXT →</span>
+    <span class="post__nav-title">When Not to Automate: The Hidden Risk of Automating Broken Processes</span>
+  </a>
+</nav>
+</main>
+
+<footer class="footer" id="contact">
+  <div class="footer__top">
+    <h2>READY TO SORT<br>OUT THE CHAOS?<br>WRITE TO US.</h2>
+    <div class="footer__contacts">
+      <a class="contact-link" href="https://t.me/groovebliss" target="_blank" rel="noopener" data-track="footer-telegram">
+        <span class="contact-link__label">TELEGRAM</span>
+        <span class="contact-link__value">@groovebliss ↗</span>
+      </a>
+      <a class="contact-link" href="https://www.linkedin.com/in/george-mercer-55520b388/" target="_blank" rel="noopener" data-track="footer-linkedin">
+        <span class="contact-link__label">LINKEDIN</span>
+        <span class="contact-link__value">george-mercer ↗</span>
+      </a>
+      <a class="contact-link" href="mailto:onegeorgemercer@gmail.com" data-track="footer-email">
+        <span class="contact-link__label">EMAIL</span>
+        <span class="contact-link__value">onegeorgemercer@gmail.com ↗</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="footer__bottom">
+    <p class="footer__joke">COPYRIGHT IS BORING</p>
+    <p class="footer__legal">© 2026 GANZA CONSULTING. ALL RIGHTS... WHATEVER.</p>
+  </div>
+</footer>
+
+<script src="../../../assets/js/site.js" defer></script>
+</body>
+</html>

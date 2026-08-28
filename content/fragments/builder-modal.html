@@ -1,0 +1,78 @@
+<div class="builder-overlay" id="builderOverlay" aria-hidden="true">
+  <div class="builder-modal" role="dialog" aria-modal="true" aria-labelledby="builderModalTitle">
+
+    <div class="builder-modal__head">
+      <span class="builder-modal__tag">
+        <span class="lang-ru">КОНСТРУКТОР ПРОЕКТА</span>
+        <span class="lang-en">PROJECT BUILDER</span>
+      </span>
+      <div class="builder-modal__head-actions">
+        <button class="lang-switch lang-switch--modal" id="builderLangSwitch" type="button" aria-label="Switch language">
+          <span class="lang-switch__opt" data-set="ru">RU</span>
+          <span class="lang-switch__sep">/</span>
+          <span class="lang-switch__opt" data-set="en">EN</span>
+        </button>
+        <button class="builder-modal__close" id="builderClose" type="button" aria-label="Close">✕</button>
+      </div>
+    </div>
+
+    <div class="builder-progress" id="builderProgress" aria-hidden="true">
+      <div class="builder-progress__bar" id="builderProgressBar"></div>
+    </div>
+    <p class="builder-progress__label" id="builderProgressLabel"></p>
+
+    <!-- question screen -->
+    <div class="builder-step" id="builderStep">
+      <h3 class="builder-step__title" id="builderStepTitle"></h3>
+      <p class="builder-step__sub" id="builderStepSub"></p>
+      <div class="builder-options" id="builderOptions"></div>
+      <div class="builder-nav">
+        <button class="btn btn--outline builder-nav__back" id="builderBack" type="button">
+          <span class="lang-ru">← НАЗАД</span><span class="lang-en">← BACK</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- result screen -->
+    <div class="builder-result" id="builderResult" hidden>
+      <span class="builder-modal__tag builder-modal__tag--yellow">
+        <span class="lang-ru">ТВОЙ ПРОЕКТ СОБРАН</span>
+        <span class="lang-en">YOUR PROJECT IS BUILT</span>
+      </span>
+
+      <div class="builder-result__grid">
+        <div class="builder-result__cell">
+          <span class="builder-result__label"><span class="lang-ru">СРОК</span><span class="lang-en">TIMELINE</span></span>
+          <span class="builder-result__value" id="builderDuration">—</span>
+          <span class="builder-result__note" id="builderDurationDays"></span>
+        </div>
+        <div class="builder-result__cell">
+          <span class="builder-result__label"><span class="lang-ru">БЮДЖЕТ</span><span class="lang-en">BUDGET</span></span>
+          <span class="builder-result__value" id="builderBudget">—</span>
+        </div>
+      </div>
+
+      <details class="builder-breakdown" id="builderBreakdown">
+        <summary>
+          <span class="lang-ru">КАК МЫ ЭТО СЧИТАЕМ →</span>
+          <span class="lang-en">HOW WE CALCULATED THIS →</span>
+        </summary>
+        <ul id="builderBreakdownList"></ul>
+        <p class="builder-breakdown__foot">
+          <span class="lang-ru">Это не гадание на кофейной гуще и не фейковые ИИ-коэффициенты — прозрачная формула на основе наших кейсов и тарифов. Точную цифру дадим после короткого созвона.</span>
+          <span class="lang-en">Not tea-leaf reading, not fake AI multipliers — a transparent formula based on our own cases and pricing. We'll confirm the exact number on a short call.</span>
+        </p>
+      </details>
+
+      <div class="builder-result__actions">
+        <a class="btn btn--yellow" id="builderTelegramCta" href="https://t.me/groovebliss" target="_blank" rel="noopener">
+          <span class="lang-ru">ОБСУДИТЬ В TELEGRAM →</span><span class="lang-en">DISCUSS ON TELEGRAM →</span>
+        </a>
+        <button class="btn btn--outline" id="builderRestart" type="button">
+          <span class="lang-ru">↺ СОБРАТЬ ЗАНОВО</span><span class="lang-en">↺ START OVER</span>
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>

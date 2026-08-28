@@ -1,7 +1,7 @@
 User-agent: *
 Allow: /
 Disallow: /admin/
-Disallow: /_src/
-Disallow: /en/
+Disallow: /Tools/
+Disallow: /content/
 
 Sitemap: https://anomerc.github.io/ganza-consulting-site/sitemap.xml

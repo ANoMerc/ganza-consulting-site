@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en" data-lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Why Your Multilingual Website Isn&#x27;t Converting</title>
+<meta name="description" content="Layout that breaks on longer strings, trust signals that don&#x27;t transfer, and the hreflang mistakes that hide half your site from search engines.">
+<meta name="keywords" content="multilingual website, website localization, hreflang implementation, international SEO, multi-market conversion, RTL layout, localization mistakes, translated website not converting">
+<meta name="author" content="George Mercer">
+<meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1">
+<meta name="theme-color" content="#0b0b09">
+<link rel="canonical" href="https://anomerc.github.io/ganza-consulting-site/en/blog/multilingual-website-not-converting/">
+<link rel="alternate" hreflang="ru" href="https://anomerc.github.io/ganza-consulting-site/blog/multilingual-website-not-converting/">
+<link rel="alternate" hreflang="en" href="https://anomerc.github.io/ganza-consulting-site/en/blog/multilingual-website-not-converting/">
+<link rel="alternate" hreflang="x-default" href="https://anomerc.github.io/ganza-consulting-site/blog/multilingual-website-not-converting/">
+<link rel="alternate" type="application/rss+xml" title="Ganza Consulting — Blog" href="https://anomerc.github.io/ganza-consulting-site/en/blog/feed.xml">
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Ganza Consulting">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="ru_RU">
+<meta property="og:url" content="https://anomerc.github.io/ganza-consulting-site/en/blog/multilingual-website-not-converting/">
+<meta property="og:title" content="Why Your Multilingual Website Isn&#x27;t Converting">
+<meta property="og:description" content="Layout that breaks on longer strings, trust signals that don&#x27;t transfer, and the hreflang mistakes that hide half your site from search engines.">
+<meta property="og:image" content="https://anomerc.github.io/ganza-consulting-site/assets/img/blog/multilingual-website-not-converting-cover.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Why Your Multilingual Website Isn&#x27;t Converting (It&#x27;s Not About Translation)">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Why Your Multilingual Website Isn&#x27;t Converting">
+<meta name="twitter:description" content="Layout that breaks on longer strings, trust signals that don&#x27;t transfer, and the hreflang mistakes that hide half your site from search engines.">
+<meta name="twitter:image" content="https://anomerc.github.io/ganza-consulting-site/assets/img/blog/multilingual-website-not-converting-cover.png">
+<meta property="article:published_time" content="2026-08-13">
+<meta property="article:modified_time" content="2026-08-27">
+<meta property="article:section" content="Web Development">
+<meta property="article:tag" content="WebDevelopment">
+<meta property="article:tag" content="Localization">
+<meta property="article:tag" content="InternationalBusiness">
+<meta property="article:tag" content="UXDesign">
+<meta property="article:tag" content="GlobalMarketing">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230b0b09'/%3E%3Ctext x='50' y='73' font-size='66' font-family='Arial Black,sans-serif' font-weight='900' fill='%23e8ff2e' text-anchor='middle'%3EG%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../../assets/css/base.css">
+<link rel="stylesheet" href="../../../assets/css/builder.css">
+<link rel="stylesheet" href="../../../assets/css/blog.css">
+<link rel="stylesheet" href="../../../assets/css/glass.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://anomerc.github.io/ganza-consulting-site/#organization",
+      "name": "Ganza Consulting",
+      "url": "https://anomerc.github.io/ganza-consulting-site/",
+      "email": "onegeorgemercer@gmail.com",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://anomerc.github.io/ganza-consulting-site/assets/img/og-cover.png",
+        "width": 1200,
+        "height": 630
+      },
+      "sameAs": [
+        "https://t.me/groovebliss",
+        "https://www.linkedin.com/in/george-mercer-55520b388/"
+      ]
+    },
+    {
+      "@type": "Person",
+      "@id": "https://anomerc.github.io/ganza-consulting-site/#george-mercer",
+      "name": "George Mercer",
+      "url": "https://anomerc.github.io/ganza-consulting-site/en/#about",
+      "image": "https://anomerc.github.io/ganza-consulting-site/assets/img/founder.jpg",
+      "description": "Independent consultant and founder of Ganza Consulting. Works on the single hard problems other firms decline: non-standard automation, stalled projects, messy processes and custom web builds. Every article here is written from engagements that were actually delivered — not from a content calendar.",
+      "jobTitle": "Independent consultant",
+      "worksFor": {
+        "@id": "https://anomerc.github.io/ganza-consulting-site/#organization"
+      },
+      "sameAs": [
+        "https://t.me/groovebliss",
+        "https://www.linkedin.com/in/george-mercer-55520b388/"
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://anomerc.github.io/ganza-consulting-site/en/blog/multilingual-website-not-converting/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://anomerc.github.io/ganza-consulting-site/en/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Blog",
+          "item": "https://anomerc.github.io/ganza-consulting-site/en/blog/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Why Your Multilingual Website Isn't Converting (It's Not About Translation)",
+          "item": "https://anomerc.github.io/ganza-consulting-site/en/blog/multilingual-website-not-converting/"
+        }
+      ]
+    },
+    {
+      "@type": "BlogPosting",
+      "@id": "https://anomerc.github.io/ganza-consulting-site/en/blog/multilingual-website-not-converting/#article",
+      "headline": "Why Your Multilingual Website Isn't Converting (It's Not About Translation)",
+      "alternativeHeadline": "Translation is the easy 20% of localisation. The 80% that decides whether a site converts has almost nothing to do with words.",
+      "description": "Layout that breaks on longer strings, trust signals that don't transfer, and the hreflang mistakes that hide half your site from search engines.",
+      "articleSection": "Web Development",
+      "keywords": "multilingual website, website localization, hreflang implementation, international SEO, multi-market conversion, RTL layout, localization mistakes, translated website not converting",
+      "inLanguage": "en",
+      "wordCount": 1336,
+      "timeRequired": "PT9M",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://anomerc.github.io/ganza-consulting-site/assets/img/blog/multilingual-website-not-converting-cover.png",
+        "width": 1200,
+        "height": 630
+      },
+      "datePublished": "2026-08-13",
+      "dateModified": "2026-08-27",
+      "author": {
+        "@id": "https://anomerc.github.io/ganza-consulting-site/#george-mercer"
+      },
+      "publisher": {
+        "@id": "https://anomerc.github.io/ganza-consulting-site/#organization"
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://anomerc.github.io/ganza-consulting-site/en/blog/multilingual-website-not-converting/"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://anomerc.github.io/ganza-consulting-site/en/blog/multilingual-website-not-converting/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Why isn't my translated website converting?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Usually because translation was the only thing that changed. The layout still assumes one language's string lengths, the trust signals are the source market's, the contact and payment options are the ones you use at home, and often half the site isn't indexed because the language switch happens only in the browser."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the correct hreflang setup for a multilingual site?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "One indexable URL per language, reciprocal hreflang annotations where every version references every other version and itself, valid ISO 639-1 language codes with optional ISO 3166-1 Alpha-2 region codes, an x-default entry, and a self-referencing canonical on each language version."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Should I redirect visitors to their language automatically by IP?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. It prevents search engines from indexing the versions they are not served, and it overrides deliberate user choices. Detect and offer — a dismissible suggestion to switch — but let the user decide, and make the switch change the URL."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How much extra space should a design leave for translation?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "As a working rule, any string should be able to grow by about 35% without breaking the layout. Test with the longest language you actually publish, focusing on navigation, primary buttons, form labels, validation messages and table headers."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do I need to redo keyword research for each language?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Direct translation of keywords regularly misses how a market searches — different phrasing, a different level of technical vocabulary, and sometimes an English loanword that outperforms the native term. Research natively per language rather than translating a keyword list."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What should I fix first if the budget only covers one thing?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Indexing: URLs, hreflang, canonicals and the language-switch behaviour. A correctly indexed mediocre translation outperforms an excellent one that search engines cannot see."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<script src="../../../assets/js/analytics.js" defer></script>
+</head>
+<body class="page-article">
+<div class="ticker" aria-hidden="true">
+  <div class="ticker__track"><span>NOW BOOKING Q4 2026&nbsp;&nbsp;—&nbsp;&nbsp;CONSULTING + AUTOMATION + PROJECT MANAGEMENT&nbsp;&nbsp;—&nbsp;&nbsp;NO TEMPLATES&nbsp;&nbsp;—&nbsp;&nbsp;NOW BOOKING Q4 2026&nbsp;&nbsp;—&nbsp;&nbsp;CONSULTING + AUTOMATION + PROJECT MANAGEMENT&nbsp;&nbsp;—&nbsp;&nbsp;NO TEMPLATES&nbsp;&nbsp;—&nbsp;&nbsp;</span></div>
+</div>
+<header class="site-header" id="top">
+  <div class="site-header__inner">
+    <a href="../../../en/" class="logo" data-track="logo">
+      <span class="logo__mark">G</span>
+      <span class="logo__text">GANZA<br>CONSULTING</span>
+    </a>
+
+    <nav class="nav" id="nav" aria-label="Main navigation">
+      <a href="../../../en/services">Services</a>
+      <a href="../../../en/cases">Cases</a>
+      <a href="../../../en/blog" class="is-active">Blog</a>
+      <a href="../../../en/#contact">Contact</a>
+    </nav>
+
+    <div class="header-actions">
+      <a class="lang-switch" href="../../../blog/multilingual-website-not-converting/" hreflang="ru"
+         aria-label="Switch language" data-track="lang-switch"><span class="lang-switch__opt">RU</span><span class="lang-switch__sep">/</span><span class="lang-switch__opt is-active">EN</span></a>
+      <a class="btn btn--small btn--yellow" href="https://t.me/groovebliss" target="_blank" rel="noopener" data-track="header-telegram">TELEGRAM ↗</a>
+      <button class="burger" id="burger" aria-label="MENU" type="button">MENU</button>
+    </div>
+  </div>
+</header>
+
+<main id="content" class="post-wrap">
+<nav class="breadcrumbs" aria-label="Breadcrumb">
+  <a href="../../../en/">Home</a><span>/</span><a href="../../../en/blog/">Blog</a><span>/</span><span aria-current="page">Why Your Multilingual Website Isn&#x27;t Converting (It&#x27;s Not About Translation)</span>
+</nav>
+
+<article class="post">
+  <div class="post__head">
+    <div class="post__meta">
+      <span class="post__tag">Web Development</span>
+      <span>9 min read · August 13, 2026 · Updated August 27, 2026</span>
+    </div>
+    <h1>Why Your Multilingual Website Isn&#x27;t Converting (It&#x27;s Not About Translation)</h1>
+    <p class="post__dek">Translation is the easy 20% of localisation. The 80% that decides whether a site converts has almost nothing to do with words.</p>
+  </div>
+
+  <div class="post-shell">
+    <div class="rail rail--left">
+  <nav class="toc" aria-label="CONTENTS">
+    <p class="toc__title">CONTENTS</p>
+    <ol class="toc__list"><li><a href="#1-the-layout-was-designed-around-one-language-s-string-lengt">1. The layout was designed around one language's string lengths</a></li><li><a href="#2-reading-direction-and-scanning-patterns">2. Reading direction and scanning patterns</a></li><li><a href="#3-trust-signals-don-t-transfer">3. Trust signals don't transfer</a></li><li><a href="#4-transactional-expectations">4. Transactional expectations</a></li><li><a href="#5-search-engines-can-only-see-one-version-of-your-site">5. Search engines can only see one version of your site</a></li><li><a href="#6-the-content-strategy-is-a-translation-not-a-market">6. The content strategy is a translation, not a market</a></li><li><a href="#a-localisation-checklist-that-catches-most-of-it">A localisation checklist that catches most of it</a></li><li><a href="#how-to-sequence-the-work">How to sequence the work</a></li></ol>
+  </nav>
+</div>
+
+    <div class="post__body">
+        <p data-reveal>Most companies localise a website by translating it. That is the easy 20% of the problem, and it's the part everyone gets right.</p>
+        <p data-reveal>The other 80% — the part that decides whether a visitor from that market actually buys — is layout, trust signals, transactional expectations and search visibility. <strong>A site can read perfectly in a language and still feel imported</strong>, and visitors rarely articulate why. They just leave faster.</p>
+        <p data-reveal>Here is what actually breaks, in the order it typically costs you money.</p>
+        <h2 id="1-the-layout-was-designed-around-one-language-s-string-lengt" data-reveal>1. The layout was designed around one language's string lengths</h2>
+        <p data-reveal>Text length changes substantially between languages. German and Russian expand relative to English; Chinese and Japanese contract; Finnish produces long unbreakable compounds. Designs built to fit English exactly will fail somewhere.</p>
+        <p data-reveal>Where it shows first:</p>
+        <ul data-reveal><li><strong>Navigation.</strong> A five-item menu that fits English wraps to two lines in German and pushes the CTA below the fold on a laptop.</li><li><strong>Buttons.</strong> Fixed-width buttons truncate or the label wraps mid-word. The primary CTA is the single worst place for this and the most common one.</li><li><strong>Form labels and validation messages.</strong> Usually written last, translated last, and tested never — and they sit directly in the conversion path.</li><li><strong>Tables and pricing grids.</strong> Column widths tuned to short English headers become unreadable with longer ones.</li></ul>
+        <p data-reveal>The fix is structural, not linguistic: fluid widths, no fixed-height containers around text, and a test pass with the longest translation you actually have. A pragmatic rule is to design so that any string can grow by about 35% without breaking the layout.</p>
+        <h2 id="2-reading-direction-and-scanning-patterns" data-reveal>2. Reading direction and scanning patterns</h2>
+        <p data-reveal>Right-to-left languages (Arabic, Hebrew, Farsi, Urdu) are not a mirror-image switch. Direction reverses for text flow, layout order and navigation, but numbers, Latin brand names, code, phone numbers and many charts stay left-to-right. Icons with directional meaning — back arrows, progress indicators, sliders — need to flip; logos and clock icons don't.</p>
+        <p data-reveal>Beyond RTL, scanning behaviour differs even between left-to-right markets: how far a reader trusts a page before scrolling, how much density reads as "serious" versus "cluttered", and whether a wall of text signals credibility or carelessness. A layout that feels confident and airy in one market can read as thin and unserious in another.</p>
+        <blockquote class="post__pull" data-reveal>The test isn't "does it read correctly in this language." It's "would someone who only reads this language assume it was built by someone who only reads this language."</blockquote>
+        <h2 id="3-trust-signals-don-t-transfer" data-reveal>3. Trust signals don't transfer</h2>
+        <p data-reveal>This is the largest and least technical cause of lost conversion. Every market has its own evidence of legitimacy, and a translated page usually carries over the source market's set — which reads as nothing at all.</p>
+        <div class="post__table-wrap" data-reveal><table class="post__table"><caption>What tends to build trust in different markets</caption><thead><tr><th scope="col">Signal</th><th scope="col">Why it varies</th><th scope="col">Practical implication</th></tr></thead><tbody><tr><td>Company registration and legal details</td><td>In some markets a visible legal entity, address and registration number is a baseline expectation; in others it reads as clutter</td><td>Check what local competitors put in the footer, and match the level of disclosure</td></tr><tr><td>Contact channel</td><td>Phone, email, WhatsApp, Telegram, LINE, WeChat — the expected default differs sharply</td><td>Offer the local default first, not your home market's default</td></tr><tr><td>Reviews and social proof</td><td>Which platform counts as credible is market-specific</td><td>A logo wall from unknown-to-them companies proves nothing; local names or recognisable sectors do</td></tr><tr><td>Pricing transparency</td><td>Some markets expect a visible price, others expect "request a quote"</td><td>Getting this backwards either kills trust or kills leads</td></tr><tr><td>Certifications</td><td>Local certifications and memberships often outrank international ones</td><td>Show the ones that mean something locally, drop the ones that don't</td></tr></tbody></table></div>
+        <p data-reveal>None of this appears in a translation brief, and all of it is inside the conversion path.</p>
+        <h2 id="4-transactional-expectations" data-reveal>4. Transactional expectations</h2>
+        <p data-reveal>The checkout or contact step is where imported assumptions become abandonment:</p>
+        <ul data-reveal><li><strong>Payment methods.</strong> Card-only checkout is normal in some markets and a hard stop in others where bank transfer, local wallets or invoice-on-delivery dominate.</li><li><strong>Address forms.</strong> A form that requires a state and a five-digit ZIP breaks for most of the world. So does forcing a first name / last name split.</li><li><strong>Currency and tax display.</strong> Whether prices are shown with or without VAT is a market convention; getting it wrong makes you look either expensive or evasive.</li><li><strong>Formats.</strong> Dates (12/06 means two different days), decimal separators, phone formats, name order. Each one is a small credibility leak in the exact moment you're asking for money.</li><li><strong>Working hours and response promises.</strong> "We reply within 24 hours" means something different across a time-zone gap, and unmet timing promises cost more than vague ones.</li></ul>
+        <h2 id="5-search-engines-can-only-see-one-version-of-your-site" data-reveal>5. Search engines can only see one version of your site</h2>
+        <p data-reveal>This is the failure that hides all the others: you fixed the site, and half of it isn't being indexed. The most common technical mistakes:</p>
+        <ol data-reveal><li><strong>Client-side language switching only.</strong> If both languages live in one URL and JavaScript toggles them, search engines index one version. The other language effectively doesn't exist as a landing page.</li><li><strong>Missing or non-reciprocal hreflang.</strong> Every language version must point to every other one <em>and</em> to itself, with matching URLs on both sides. One-way declarations are ignored.</li><li><strong>Wrong or invented language codes.</strong> Use ISO 639-1 language codes plus optional ISO 3166-1 Alpha-2 region codes. <code>en-GB</code> is valid; <code>en-UK</code> is not.</li><li><strong>No x-default.</strong> Declare which version serves users whose language you don't target.</li><li><strong>Canonical fighting hreflang.</strong> Each language version should be canonical to itself. Pointing every localised page's canonical at the English one removes them from the index — a surprisingly common configuration.</li><li><strong>Automatic IP-based redirects.</strong> Forcing a visitor (or a crawler) into a language version by geography prevents indexing of the others and irritates people who deliberately chose a language.</li></ol>
+        <div class="post__note" data-reveal>Practical structure that avoids most of this: one physical URL per language (<code>/</code> and <code>/ru/</code>, or subdomains, or ccTLDs), reciprocal hreflang tags including x-default, self-referencing canonicals, and a language switch that navigates to a real URL rather than silently swapping text. Let users choose; never redirect them by IP.</div>
+        <h2 id="6-the-content-strategy-is-a-translation-not-a-market" data-reveal>6. The content strategy is a translation, not a market</h2>
+        <p data-reveal>The deepest version of the problem: the page answers the questions your home market asks. Objections differ by market — price sensitivity, contract length, data residency, whether working with a foreign supplier is normal or exotic. A word-perfect translation of the wrong objection handling converts worse than clumsy copy addressing the right one.</p>
+        <p data-reveal>The same applies to search intent. Direct translation of keywords frequently misses how the market actually searches: different phrasing, different level of technicality, sometimes an English loanword that ranks better than the native term. Keyword research has to be redone per language, not translated.</p>
+        <h2 id="a-localisation-checklist-that-catches-most-of-it" data-reveal>A localisation checklist that catches most of it</h2>
+        <ul class="post__checklist" data-reveal><li>Every string can grow 35% without breaking the layout; longest-language pass completed on nav, buttons, forms and tables.</li><li>Directional icons flip for RTL; numbers, brand names and code stay LTR.</li><li>Footer discloses at the level local competitors do.</li><li>The primary contact channel is the market's default, not yours.</li><li>Payment methods and address form match local reality; date and number formats localised.</li><li>One indexable URL per language, reciprocal hreflang including x-default, self-referencing canonical.</li><li>No IP-based forced redirects; language switch changes the URL.</li><li>Keyword research redone natively, not translated.</li><li>Error and validation messages translated and visually tested.</li><li>A native speaker who is also a buyer in that market has reviewed the conversion path — not just the text.</li></ul>
+        <h2 id="how-to-sequence-the-work" data-reveal>How to sequence the work</h2>
+        <ol class="post__steps" data-reveal><li><strong>Fix indexing first</strong><span>Nothing else matters if the market can't find the page. URLs, hreflang, canonicals and the switch behaviour are a few days of work with the largest single effect.</span></li><li><strong>Then fix the conversion path</strong><span>Contact method, form, payment, formats. Narrow, measurable, and where the money is lost fastest.</span></li><li><strong>Then fix trust signals</strong><span>Footer disclosure, proof, certifications. Cheap to change, and it compounds with the previous step.</span></li><li><strong>Then re-do content per market</strong><span>Objection handling and keyword targeting. Most expensive, slowest to pay back, and pointless before the first three are done.</span></li></ol>
+        <p data-reveal>Most localisation budgets run this list backwards: they start with content and never reach hreflang. If you only have budget for one step, do the first — a correctly indexed mediocre translation outperforms a beautiful one nobody can find.</p>
+
+  <div class="post__takeaways" data-reveal>
+    <p class="post__takeaways-title">WHAT TO TAKE AWAY</p>
+    <ul><li>Translation is roughly 20% of localisation; layout tolerance, trust signals, transactional expectations and indexing are the rest.</li><li>Design so any string can grow ~35% without breaking, and test with your longest language — buttons and form messages fail first.</li><li>Trust signals are market-specific: match local competitors' level of disclosure and lead with the market's default contact channel.</li><li>The most expensive technical mistake is client-side-only language switching, followed by non-reciprocal hreflang and canonicals pointing at the source language.</li><li>Never redirect by IP; let the user choose and make the switch change the URL.</li><li>Sequence the work indexing → conversion path → trust signals → content. Most budgets run it backwards.</li></ul>
+  </div>
+
+  <section class="post__faq" id="faq" data-reveal>
+    <h2>FREQUENTLY ASKED QUESTIONS</h2>
+    <div class="faq__list"><details class="faq-item">
+      <summary>Why isn&#x27;t my translated website converting?<span class="faq-item__icon" aria-hidden="true"></span></summary>
+      <p>Usually because translation was the only thing that changed. The layout still assumes one language's string lengths, the trust signals are the source market's, the contact and payment options are the ones you use at home, and often half the site isn't indexed because the language switch happens only in the browser.</p>
+    </details><details class="faq-item">
+      <summary>What is the correct hreflang setup for a multilingual site?<span class="faq-item__icon" aria-hidden="true"></span></summary>
+      <p>One indexable URL per language, reciprocal hreflang annotations where every version references every other version and itself, valid ISO 639-1 language codes with optional ISO 3166-1 Alpha-2 region codes, an x-default entry, and a self-referencing canonical on each language version.</p>
+    </details><details class="faq-item">
+      <summary>Should I redirect visitors to their language automatically by IP?<span class="faq-item__icon" aria-hidden="true"></span></summary>
+      <p>No. It prevents search engines from indexing the versions they are not served, and it overrides deliberate user choices. Detect and offer — a dismissible suggestion to switch — but let the user decide, and make the switch change the URL.</p>
+    </details><details class="faq-item">
+      <summary>How much extra space should a design leave for translation?<span class="faq-item__icon" aria-hidden="true"></span></summary>
+      <p>As a working rule, any string should be able to grow by about 35% without breaking the layout. Test with the longest language you actually publish, focusing on navigation, primary buttons, form labels, validation messages and table headers.</p>
+    </details><details class="faq-item">
+      <summary>Do I need to redo keyword research for each language?<span class="faq-item__icon" aria-hidden="true"></span></summary>
+      <p>Yes. Direct translation of keywords regularly misses how a market searches — different phrasing, a different level of technical vocabulary, and sometimes an English loanword that outperforms the native term. Research natively per language rather than translating a keyword list.</p>
+    </details><details class="faq-item">
+      <summary>What should I fix first if the budget only covers one thing?<span class="faq-item__icon" aria-hidden="true"></span></summary>
+      <p>Indexing: URLs, hreflang, canonicals and the language-switch behaviour. A correctly indexed mediocre translation outperforms an excellent one that search engines cannot see.</p>
+    </details></div>
+  </section>
+
+  <div class="post__tags"><span class="badge">#WebDevelopment</span><span class="badge">#Localization</span><span class="badge">#InternationalBusiness</span><span class="badge">#UXDesign</span><span class="badge">#GlobalMarketing</span></div>
+
+  <section class="post__author" data-reveal>
+    <picture>
+      <source srcset="../../../assets/img/founder.webp" type="image/webp">
+      <img src="../../../assets/img/founder.jpg" width="96" height="126" alt="George Mercer" loading="lazy" decoding="async">
+    </picture>
+    <div>
+      <p class="post__author-label">ABOUT THE AUTHOR</p>
+      <p class="post__author-name">George Mercer</p>
+      <p class="post__author-bio">Independent consultant and founder of Ganza Consulting. Works on the single hard problems other firms decline: non-standard automation, stalled projects, messy processes and custom web builds. Every article here is written from engagements that were actually delivered — not from a content calendar.</p>
+      <p class="post__author-links">
+        <a href="https://t.me/groovebliss" target="_blank" rel="noopener" data-track="author-telegram">Telegram ↗</a>
+        <a href="../../../en/#about">Home ↗</a>
+      </p>
+    </div>
+  </section>
+
+  <div class="post__cta" data-reveal>
+    <div class="post__cta-box">
+      <p>Have a problem like this one? We take on the single hard cases other consultants pass on — fixed scope, a written answer, and a number you can act on.</p>
+      <a class="btn btn--yellow" href="https://t.me/groovebliss" target="_blank" rel="noopener" data-track="post-cta-telegram">MESSAGE ON TELEGRAM →</a>
+      <a class="btn btn--outline" href="../../../en/services/#pricing" data-track="post-cta-pricing">SEE PRICING</a>
+    </div>
+  </div>
+    </div>
+
+    <div class="rail rail--right">
+  <div class="rail__block">
+    <p class="rail__label">MIN READ</p>
+    <p class="rail__value">9</p>
+  </div>
+  <div class="rail__block">
+    <p class="rail__label">SHARE</p>
+    <div class="rail__share"><a href="https://t.me/share/url?url=https://anomerc.github.io/ganza-consulting-site/en/blog/multilingual-website-not-converting/&text=Why Your Multilingual Website Isn&#x27;t Converting (It&#x27;s Not About Translation)" target="_blank" rel="noopener" data-track="share-telegram">Telegram</a><a href="https://www.linkedin.com/sharing/share-offsite/?url=https://anomerc.github.io/ganza-consulting-site/en/blog/multilingual-website-not-converting/" target="_blank" rel="noopener" data-track="share-linkedin">LinkedIn</a><a href="https://twitter.com/intent/tweet?url=https://anomerc.github.io/ganza-consulting-site/en/blog/multilingual-website-not-converting/&text=Why Your Multilingual Website Isn&#x27;t Converting (It&#x27;s Not About Translation)" target="_blank" rel="noopener" data-track="share-x">X</a></div>
+  </div>
+  <a class="rail__top" href="#top">↑ TOP</a>
+</div>
+  </div>
+</article>
+
+<section class="post__related">
+    <h2>RELATED READING</h2>
+    <div class="post__related-grid"><a class="related-card" href="../how-to-choose-a-consultant/" data-reveal data-track="related-how-to-choose-a-consultant">
+        <span class="related-card__tag">Consulting</span>
+        <span class="related-card__title">How to Choose a Business Consultant: 9 Questions That Separate Expertise From a Good Deck</span>
+        <span class="related-card__meta">9 min read</span>
+      </a><a class="related-card" href="../audit-nobody-reads/" data-reveal data-track="related-audit-nobody-reads">
+        <span class="related-card__tag">Consulting</span>
+        <span class="related-card__title">The Audit Nobody Reads: Why Most Business Audits Fail to Drive Change</span>
+        <span class="related-card__meta">9 min read</span>
+      </a><a class="related-card" href="../when-not-to-automate/" data-reveal data-track="related-when-not-to-automate">
+        <span class="related-card__tag">Automation &amp; AI</span>
+        <span class="related-card__title">When Not to Automate: The Hidden Risk of Automating Broken Processes</span>
+        <span class="related-card__meta">10 min read</span>
+      </a></div>
+  </section>
+
+<nav class="post__nav">
+  <a class="post__nav-link" href="../when-not-to-automate/" data-track="post-prev">
+    <span class="post__nav-label">← PREVIOUS</span>
+    <span class="post__nav-title">When Not to Automate: The Hidden Risk of Automating Broken Processes</span>
+  </a>
+  <a class="post__nav-link" href="../small-business-automation-guide/" data-track="post-next">
+    <span class="post__nav-label">NEXT →</span>
+    <span class="post__nav-title">Small Business Automation: What to Automate First (and What to Leave Alone)</span>
+  </a>
+</nav>
+</main>
+
+<footer class="footer" id="contact">
+  <div class="footer__top">
+    <h2>READY TO SORT<br>OUT THE CHAOS?<br>WRITE TO US.</h2>
+    <div class="footer__contacts">
+      <a class="contact-link" href="https://t.me/groovebliss" target="_blank" rel="noopener" data-track="footer-telegram">
+        <span class="contact-link__label">TELEGRAM</span>
+        <span class="contact-link__value">@groovebliss ↗</span>
+      </a>
+      <a class="contact-link" href="https://www.linkedin.com/in/george-mercer-55520b388/" target="_blank" rel="noopener" data-track="footer-linkedin">
+        <span class="contact-link__label">LINKEDIN</span>
+        <span class="contact-link__value">george-mercer ↗</span>
+      </a>
+      <a class="contact-link" href="mailto:onegeorgemercer@gmail.com" data-track="footer-email">
+        <span class="contact-link__label">EMAIL</span>
+        <span class="contact-link__value">onegeorgemercer@gmail.com ↗</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="footer__bottom">
+    <p class="footer__joke">COPYRIGHT IS BORING</p>
+    <p class="footer__legal">© 2026 GANZA CONSULTING. ALL RIGHTS... WHATEVER.</p>
+  </div>
+</footer>
+
+<script src="../../../assets/js/site.js" defer></script>
+</body>
+</html>
