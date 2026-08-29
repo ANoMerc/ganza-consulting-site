@@ -1,11 +1,16 @@
 # -*- coding: utf-8 -*-
 """Услуги: как мы работаем, что делаем, сколько стоит, частые возражения."""
 from core import config as cfg
+from core.pages import crumbs, faq_nodes
 
 
 def schema(ctx):
-    """ProfessionalService с прайсингом — рич-сниппет в выдаче."""
-    return [{
+    """ProfessionalService с прайсингом, хлебные крошки и FAQ этой же страницы.
+
+    FAQPage считается из content/fragments/faq.html — вопросы и разметка не
+    могут разойтись, потому что источник один.
+    """
+    return crumbs(ctx, (ctx.L["services"], "services/")) + faq_nodes(ctx) + [{
         "@type": "ProfessionalService",
         "@id": f"{cfg.SITE}/#service",
         "name": cfg.BRAND,
@@ -45,13 +50,14 @@ PAGE = dict(
     },
     hero={
         "eyebrow": {"en": "SERVICES & PRICING", "ru": "УСЛУГИ И ЦЕНЫ"},
-        "h1": {"en": "WHAT WE DO AND WHAT IT COSTS",
-               "ru": "ЧТО МЫ ДЕЛАЕМ И СКОЛЬКО ЭТО СТОИТ"},
+        "h1": {"en": "WHAT I DO AND WHAT IT COSTS",
+               "ru": "ЧТО Я ДЕЛАЮ И СКОЛЬКО ЭТО СТОИТ"},
         "lead": {
             "en": "Four engagement formats instead of a funnel of identical packages. Each one "
                   "states what's included, what it costs and how long it takes — before the first call.",
-            "ru": "Четыре формата работы вместо воронки одинаковых пакетов. У каждого написано, "
-                  "что входит, сколько стоит и сколько занимает — до первого созвона.",
+            "ru": "Четыре формата работы вместо воронки одинаковых пакетов. У каждого "
+                  "написано, что входит, сколько стоит и сколько занимает — до первого "
+                  "разговора, а не после него.",
         },
     },
     keywords={
@@ -67,5 +73,6 @@ PAGE = dict(
         ("fragment", "builder-trigger"),
         ("fragment", "pricing"),
         ("fragment", "faq"),
+        ("fragment", "contact-form"),
     ],
 )

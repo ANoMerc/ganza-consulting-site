@@ -111,7 +111,6 @@ def head(ctx, *, title, description, keywords="", og_image=None, og_image_alt=""
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>{title}</title>
 <meta name="description" content="{description}">
-{f'<meta name="keywords" content="{keywords}">' if keywords else ''}
 <meta name="author" content="{esc(cfg.AUTHOR_NAME)}">
 <meta name="robots" content="{robots}">
 <meta name="theme-color" content="#0b0b09">
@@ -185,8 +184,9 @@ def jsonld(graph):
 # Шапка / подвал
 # ---------------------------------------------------------------------------
 def ticker(ctx):
+    line = ctx.L["ticker"].replace("{{QUARTER}}", cfg.booking_quarter())
     return f"""<div class="ticker" aria-hidden="true">
-  <div class="ticker__track"><span>{ctx.L['ticker'] * 2}</span></div>
+  <div class="ticker__track"><span>{line * 2}</span></div>
 </div>
 """
 
@@ -254,6 +254,7 @@ def footer(ctx, scripts=()):
   <div class="footer__bottom">
     <p class="footer__joke">{L['footer_joke']}</p>
     <p class="footer__legal">{L['footer_legal']}</p>
+    <p class="footer__links"><a href="{ctx.to('privacy/')}">{L['privacy']}</a></p>
   </div>
 </footer>
 

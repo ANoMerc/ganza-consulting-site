@@ -1,5 +1,11 @@
 # -*- coding: utf-8 -*-
 """Кейсы. Карточки собираются из content/cases/*.py — добавляются скриптом."""
+from core.pages import crumbs
+def schema(ctx):
+    """Хлебные крошки. Раньше у кейсов не было ничего, кроме WebPage."""
+    return crumbs(ctx, (ctx.L["cases"], "cases/"))
+
+
 PAGE = dict(
     slug="cases/",
     order=2,
@@ -19,10 +25,12 @@ PAGE = dict(
         "eyebrow": {"en": "CASES", "ru": "КЕЙСЫ"},
         "h1": {"en": "WHAT WE ACTUALLY DELIVERED", "ru": "ЧТО РЕАЛЬНО СДЕЛАНО"},
         "lead": {
-            "en": "Clients are anonymised, the numbers are not. Each case says what was wrong, "
-                  "what we did about it, and which figure moved.",
+            "en": "Clients are anonymised, the numbers are not. Each case says what was "
+                  "wrong, what I did about it, which figure moved — and an honest caveat "
+                  "about what that figure does not prove.",
             "ru": "Клиенты обезличены, цифры — нет. В каждом кейсе: что было не так, что "
-                  "сделали и какая цифра сдвинулась.",
+                  "я сделал, какая цифра сдвинулась — и честная оговорка о том, "
+                  "чего эта цифра не доказывает.",
         },
     },
     keywords={
@@ -31,5 +39,6 @@ PAGE = dict(
         "ru": "кейсы консалтинга, кейс автоматизации, аналитика в ритейле кейс, "
               "мультиязычный сайт кейс",
     },
+    schema=schema,
     sections=[("cases", None)],
 )

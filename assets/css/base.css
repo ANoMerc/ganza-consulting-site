@@ -227,6 +227,21 @@ html[data-lang="en"] .lang-switch__opt[data-set="en"]{opacity:1;}
   font-size:clamp(48px, 9vw, 118px);
   margin-bottom:18px;
 }
+.hero__title-main{display:block;}
+/* Вторая строка заголовка: несёт то, по чему ищут, и не спорит со слоганом. */
+.hero__title-sub{
+  display:block;
+  margin-top:16px;
+  max-width:46ch;
+  font-family:var(--font-body);
+  font-weight:500;
+  font-size:clamp(15px, 1.5vw, 19px);
+  line-height:1.4;
+  letter-spacing:0;
+  text-transform:none;
+  color:inherit;
+  opacity:.7;
+}
 .hero__title .hl{
   color:var(--paper);
   background:var(--red);
@@ -974,3 +989,68 @@ html[data-lang="en"] .lang-switch__opt[data-set="en"]{opacity:1;}
 .page-hero h1{font-size:clamp(34px,6vw,72px); line-height:1.02; margin:16px 0 18px;}
 .page-hero__lead{max-width:640px; font-size:17px; line-height:1.6;}
 @media (max-width:720px){.page-hero{padding:36px 16px 4px;}}
+
+/* ==========================================================================
+   ФОРМА ОБРАТНОЙ СВЯЗИ
+   ========================================================================== */
+.contact-form{padding:var(--section-pad, 90px) 0;}
+/* Выравниваем по .section-label выше, у неё свои 32px по горизонтали. */
+.cform{display:flex; flex-direction:column; gap:22px; max-width:720px; margin:34px 32px 0;}
+@media (max-width:640px){.cform{margin:28px 20px 0;}}
+.cform__row{display:grid; grid-template-columns:1fr 1fr; gap:22px;}
+@media (max-width:640px){.cform__row{grid-template-columns:1fr;}}
+
+.cform__field{display:flex; flex-direction:column; gap:8px;}
+.cform__label{
+  font-family:var(--font-mono);
+  font-size:12px; letter-spacing:.08em; text-transform:uppercase; opacity:.75;
+}
+.cform input[type=text], .cform textarea{
+  font-family:var(--font-body); font-size:16px; line-height:1.5;
+  padding:13px 15px; width:100%;
+  color:inherit; background:transparent;
+  border:1.5px solid currentColor; border-radius:0;
+}
+.cform input[type=text]:focus-visible, .cform textarea:focus-visible{
+  outline:2px solid var(--yellow); outline-offset:2px;
+}
+.cform textarea{resize:vertical; min-height:130px;}
+.cform__hint{font-size:14px; line-height:1.45; opacity:.6;}
+
+/* ловушка для ботов: убрана из потока и недостижима с клавиатуры */
+.cform__trap{position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden;}
+
+.cform__consent{display:flex; gap:12px; align-items:flex-start; font-size:15px; line-height:1.5;}
+.cform__consent input{margin-top:4px; width:18px; height:18px; flex:none; accent-color:var(--yellow);}
+.cform__consent a{color:var(--yellow); text-decoration:underline; text-underline-offset:3px;}
+.cform__alt a{color:var(--yellow); text-decoration:underline; text-underline-offset:3px;}
+
+.cform__actions{display:flex; align-items:center; gap:20px; flex-wrap:wrap;}
+.cform__alt{font-size:15px; opacity:.75; margin:0;}
+.cform button[disabled]{opacity:.55; cursor:progress;}
+
+.cform__status{margin:0; font-size:15px; line-height:1.5; min-height:1.5em;}
+.cform__status--ok{color:var(--yellow); font-weight:600;}
+.cform__status--err{color:var(--red);}
+
+/* Текстовые страницы (политика, оферта): та же колонка, что у статьи. */
+.textpage{padding:0 32px 90px;}
+.textpage .post__body{max-width:72ch; margin:0;}
+@media (max-width:640px){.textpage{padding:0 20px 64px;}}
+.footer__links{margin:10px 0 0;}
+.footer__links a{font-family:var(--font-mono); font-size:12px; letter-spacing:.06em;
+  text-transform:uppercase; opacity:.7; text-decoration:underline; text-underline-offset:3px;}
+.footer__links a:hover{opacity:1;}
+
+/* Оговорка в кейсе: свёрнута, но не спрятана. */
+.case-card__honest{margin:16px 0 4px; border-top:1px solid currentColor; padding-top:12px;}
+.case-card__honest summary{
+  cursor:pointer; list-style:none;
+  font-family:var(--font-mono); font-size:11px; letter-spacing:.09em;
+  text-transform:uppercase; opacity:.65;
+}
+.case-card__honest summary::-webkit-details-marker{display:none;}
+.case-card__honest summary::after{content:" +"; }
+.case-card__honest[open] summary::after{content:" −"; }
+.case-card__honest summary:hover{opacity:1;}
+.case-card__honest p{margin:10px 0 0; font-size:14px; line-height:1.55; opacity:.8;}

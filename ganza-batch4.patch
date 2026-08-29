@@ -1,0 +1,1338 @@
+--- a/Tools/core/config.py	2026-08-28 16:37:06.000000000 +0000
++++ b/Tools/core/config.py	2026-08-29 14:32:19.005429699 +0000
+@@ -5,6 +5,7 @@
+ здесь — обновляются canonical, hreflang, JSON-LD, sitemap и RSS во всех
+ шестидесяти файлах.
+ """
++import datetime
+ import os
+ 
+ # --- где живёт сайт --------------------------------------------------------
+@@ -19,8 +20,28 @@
+ TELEGRAM = "https://t.me/groovebliss"
+ LINKEDIN = "https://www.linkedin.com/in/george-mercer-55520b388/"
+ EMAIL = "onegeorgemercer@gmail.com"
++
++# Куда форма шлёт заявку — Supabase Edge Function submit-lead.
++# Пусто = форма собирается, но не отправляет; заполнить после деплоя функции:
++#   https://<project-ref>.supabase.co/functions/v1/submit-lead
++FORM_ENDPOINT = ""
+ AUTHOR_NAME = "George Mercer"
+ 
++# --- контролёр данных (для политики конфиденциальности) ----------------------
++# ЗАПОЛНИТЬ перед публикацией. По грузинскому закону уведомление должно
++# называть, кто именно обрабатывает данные, и давать рабочий контакт.
++# Если решите не публиковать идентификационный номер — оставьте пустым,
++# строка не появится, но юриста об этом стоит спросить.
++CONTROLLER = {
++    "legal_name": {"en": "Individual entrepreneur George Mercer",
++                   "ru": "Индивидуальный предприниматель George Mercer"},
++    "reg_number": "",                       # идентификационный номер ИП, если публикуем
++    "country":    {"en": "Georgia", "ru": "Грузия"},
++    "address":    "",                       # адрес регистрации, если публикуем
++    "since":      "2024-03-01",             # дата вступления в силу закона Грузии
++    "updated":    "2026-08-29",             # дата редакции политики
++}
++
+ AUTHOR_BIO = {
+     "en": "Independent consultant and founder of Ganza Consulting. Works on the single hard "
+           "problems other firms decline: non-standard automation, stalled projects, messy "
+@@ -51,23 +72,35 @@
+ # --- прайсинг (дублируется в JSON-LD, поэтому живёт здесь) ------------------
+ OFFERS = [
+     dict(price="2500", key="flagship",
+-         name={"en": "The Problem Everyone Else Turned Down",
+-               "ru": "Задача, от которой отказались другие"},
+-         desc={"en": "Flagship engagement for a single non-standard problem. Usually 2–6 weeks.",
+-               "ru": "Флагманский формат под одну нетиповую задачу. Обычно 2–6 недель."}),
++         name={"en": "Where the Checklist Runs Out",
++               "ru": "Там, где чек-лист заканчивается"},
++         desc={"en": "One problem that doesn't split into clear stages, so no ready-made "
++                     "package fits it. Analysis, automation and development as the task "
++                     "requires, from one person. Usually 2–6 weeks.",
++               "ru": "Одна задача, которая не разбивается на понятные этапы, поэтому под "
++                     "неё не подходит ни один готовый пакет. Аналитика, автоматизация и "
++                     "разработка в нужной пропорции, от одного человека. Обычно 2–6 недель."}),
+     dict(price="450", key="pinpoint",
+          name={"en": "Pinpoint Expertise", "ru": "Точечная экспертиза"},
+-         desc={"en": "One focused question answered in writing. 3–5 days.",
+-               "ru": "Один сфокусированный вопрос с письменным ответом. 3–5 дней."}),
++         desc={"en": "One question, taken apart properly and answered in writing, with "
++                     "the arithmetic shown. No implementation. 3–5 days.",
++               "ru": "Один вопрос, разобранный до конца и отвеченный письменно, с "
++                     "показанным расчётом. Без внедрения. 3–5 дней."}),
+     dict(price="1100", key="fast",
+          name={"en": "Fast Implementation of a Single Solution",
+                "ru": "Быстрое внедрение точечного решения"},
+-         desc={"en": "Build and ship one specific solution. 1–3 weeks.",
+-               "ru": "Собрать и внедрить одно конкретное решение. 1–3 недели."}),
+-    dict(price="1400", key="reserve",
++         desc={"en": "You already know what is needed. I design it, build it, test it and "
++                     "hand over documentation plus two weeks of support. 1–3 weeks.",
++               "ru": "Вы уже знаете, что нужно. Проектирую, собираю, тестирую и отдаю с "
++                     "документацией и двумя неделями поддержки. 1–3 недели."}),
++    dict(price="600", key="reserve",
+          name={"en": "Expert Reserve", "ru": "Экспертный резерв"},
+-         desc={"en": "Monthly access to an expert on call for ongoing hard questions.",
+-               "ru": "Ежемесячный доступ к эксперту под текущие сложные вопросы."}),
++         desc={"en": "A fixed pool of hours each month for questions as they come up. "
++                     "You are buying availability, not activity — nothing is billed for "
++                     "simply existing.",
++               "ru": "Оговорённый пул часов в месяц под вопросы по мере их появления. "
++                     "Вы платите за доступность, а не за активность: за сам факт "
++                     "существования подписки счёт не выставляется."}),
+ ]
+ 
+ # --- подписи интерфейса -----------------------------------------------------
+@@ -83,13 +116,15 @@
+         "all_posts": "ALL ARTICLES →", "filter_all": "ALL",
+         "share": "SHARE", "top": "↑ TOP", "problem": "Problem",
+         "did": "What we did", "result": "Result",
+-        "cta_text": "Have a problem like this one? We take on the single hard cases other "
+-                    "consultants pass on — fixed scope, a written answer, and a number you can act on.",
++        "cta_text": "Have a problem like this one? I take on the work a checklist doesn't "
++                    "close — fixed scope, a written answer, and a number you can act on. "
++                    "The price is known before the work starts.",
+         "cta_tg": "MESSAGE ON TELEGRAM →", "cta_pricing": "SEE PRICING",
+         "footer_h": "READY TO SORT<br>OUT THE CHAOS?<br>WRITE TO US.",
++        "privacy": "Privacy policy",
+         "footer_joke": "COPYRIGHT IS BORING",
+         "footer_legal": "© 2026 GANZA CONSULTING. ALL RIGHTS... WHATEVER.",
+-        "ticker": "NOW BOOKING Q4 2026&nbsp;&nbsp;—&nbsp;&nbsp;CONSULTING + AUTOMATION + "
++        "ticker": "NOW BOOKING {{QUARTER}}&nbsp;&nbsp;—&nbsp;&nbsp;CONSULTING + AUTOMATION + "
+                   "PROJECT MANAGEMENT&nbsp;&nbsp;—&nbsp;&nbsp;NO TEMPLATES&nbsp;&nbsp;—&nbsp;&nbsp;",
+     },
+     "ru": {
+@@ -103,13 +138,15 @@
+         "all_posts": "ВСЕ СТАТЬИ →", "filter_all": "ВСЕ",
+         "share": "ПОДЕЛИТЬСЯ", "top": "↑ НАВЕРХ", "problem": "Проблема",
+         "did": "Что сделали", "result": "Результат",
+-        "cta_text": "Похожая задача? Мы берём единичные сложные случаи, за которые не берутся "
+-                    "другие: фиксированный объём, письменный ответ и цифра, с которой можно работать.",
++        "cta_text": "Похожая задача? Я берусь за то, что не закрывается чек-листом: "
++                    "фиксированный объём, письменный ответ и цифра, с которой можно работать. "
++                    "Цена известна до начала работы.",
+         "cta_tg": "НАПИСАТЬ В TELEGRAM →", "cta_pricing": "СМОТРЕТЬ ЦЕНЫ",
+         "footer_h": "ПОРА РАЗГРЕСТИ<br>ХАОС?<br>НАПИШИТЕ НАМ.",
++        "privacy": "Политика конфиденциальности",
+         "footer_joke": "КОПИРАЙТ — СКУКА",
+         "footer_legal": "© 2026 GANZA CONSULTING. ВСЕ ПРАВА... НЕВАЖНО.",
+-        "ticker": "ПРИНИМАЕМ ПРОЕКТЫ НА Q4 2026&nbsp;&nbsp;—&nbsp;&nbsp;КОНСАЛТИНГ + АВТОМАТИЗАЦИЯ + "
++        "ticker": "ПРИНИМАЕМ ПРОЕКТЫ НА {{QUARTER}}&nbsp;&nbsp;—&nbsp;&nbsp;КОНСАЛТИНГ + АВТОМАТИЗАЦИЯ + "
+                   "ПРОЕКТНЫЙ МЕНЕДЖМЕНТ&nbsp;&nbsp;—&nbsp;&nbsp;БЕЗ ШАБЛОНОВ&nbsp;&nbsp;—&nbsp;&nbsp;",
+     },
+ }
+@@ -129,3 +166,18 @@
+     dict(key="blog", page="blog"),
+     dict(key="contact", page="", anchor="contact"),
+ ]
++
++
++# --- квартал, на который открыт набор ---------------------------------------
++# Считается от даты сборки: берём дату через месяц и её квартал. Так строка
++# «принимаем проекты на ...» не устаревает молча — раньше там был хардкод.
++def booking_quarter(today=None):
++    """Следующий квартал относительно даты сборки.
++
++    В конце августа 2026 набор идёт на Q4 2026, а не на текущий Q3 — поэтому
++    берём квартал даты и сдвигаем на один вперёд.
++    """
++    d = today or datetime.date.today()
++    q = (d.month - 1) // 3 + 1          # текущий квартал
++    q, y = (q + 1, d.year) if q < 4 else (1, d.year + 1)
++    return f"Q{q} {y}"
+--- a/Tools/core/pages.py	2026-08-28 16:33:43.000000000 +0000
++++ b/Tools/core/pages.py	2026-08-29 14:22:02.761214507 +0000
+@@ -46,6 +46,15 @@
+     return sorted(_load_dir("cases", "CASE"), key=lambda c: c.get("order", 99))
+ 
+ 
++def _load_blocks(name):
++    """content/blocks/<name>.py → словарь {"ru": [...], "en": [...]}"""
++    path = os.path.join(cfg.CONTENT, "blocks", name + ".py")
++    spec = importlib.util.spec_from_file_location(f"blocks_{name}", path)
++    mod = importlib.util.module_from_spec(spec)
++    spec.loader.exec_module(mod)
++    return mod.BLOCKS
++
++
+ def load_pages():
+     return sorted(_load_dir("pages", "PAGE"), key=lambda p: p.get("order", 99))
+ 
+@@ -53,6 +62,26 @@
+ # ---------------------------------------------------------------------------
+ # Фрагменты
+ # ---------------------------------------------------------------------------
++
++# Заголовок главной. Раньше оба языка лежали в одном <h1> и английский просто
++# прятался CSS-ом — то есть у /en/ главный заголовок страницы был кириллицей,
++# а у обеих версий — наполовину на чужом языке. Теперь H1 рендерится под язык
++# страницы, а мгновенное переключение остаётся у всего остального.
++HERO_H1 = {
++    "ru": ("ПОРЯДОК<br>ИЗ <span class=\"hl\">ХАОСА</span>.<br>БЕЗ ВОДЫ.",
++           "Независимый консалтинг, автоматизация процессов и проектный менеджмент"),
++    "en": ("ORDER<br>FROM <span class=\"hl\">CHAOS</span>.<br>NO FLUFF.",
++           "Independent consulting, process automation and project management"),
++}
++
++
++def hero_h1(lang):
++    big, sub = HERO_H1[lang]
++    return (f'<h1 class="hero__title">'
++            f'<span class="hero__title-main">{big}</span>'
++            f'<span class="hero__title-sub">{sub}</span>'
++            f'</h1>')
++
+ def fragment(name, ctx):
+     path = os.path.join(cfg.CONTENT, "fragments", name + ".html")
+     s = open(path, encoding="utf-8").read()
+@@ -61,12 +90,58 @@
+              .replace("{{BLOG}}", ctx.to("blog/"))
+              .replace("{{CASES}}", ctx.to("cases/"))
+              .replace("{{SERVICES}}", ctx.to("services/"))
++             .replace("{{HERO_H1}}", hero_h1(ctx.lang))
++             .replace("{{PRIVACY}}", ctx.to("privacy/"))
++             .replace("{{FORM_ENDPOINT}}", cfg.FORM_ENDPOINT)
+              .replace("{{FOUNDER_ALT}}",
+                       "основатель Ganza Consulting" if ctx.lang == "ru"
+                       else "founder of Ganza Consulting"))
+ 
+ 
+ # ---------------------------------------------------------------------------
++# Схема из разметки
++# ---------------------------------------------------------------------------
++def faq_nodes(ctx, name="faq"):
++    """FAQPage, собранный регуляркой из самого фрагмента FAQ.
++
++    Смысл ровно в том, чтобы источник был один: вопросы и ответы живут в
++    content/fragments/faq.html, а разметка для поиска считается из них. Если
++    вопрос отредактируют, схема поедет следом и разойтись им негде.
++    """
++    path = os.path.join(cfg.CONTENT, "fragments", name + ".html")
++    if not os.path.exists(path):
++        return []
++    src = open(path, encoding="utf-8").read()
++    lang = ctx.lang
++    qa = []
++    for block in re.findall(r"<details[^>]*>(.*?)</details>", src, re.S):
++        q = re.search(rf'<summary>.*?<span class="lang-{lang}">(.*?)</span>', block, re.S)
++        a = re.search(rf'<p>.*?<span class="lang-{lang}">(.*?)</span>', block, re.S)
++        if not (q and a):
++            continue
++        strip = lambda t: re.sub(r"\s+", " ", re.sub(r"<[^>]+>", "", t)).strip()
++        qa.append((strip(q.group(1)), strip(a.group(1))))
++    if not qa:
++        return []
++    return [{"@type": "FAQPage", "@id": ctx.abs() + "#faq",
++             "inLanguage": lang,
++             "mainEntity": [{"@type": "Question", "name": q,
++                             "acceptedAnswer": {"@type": "Answer", "text": a}}
++                            for q, a in qa]}]
++
++
++def crumbs(ctx, *trail):
++    """BreadcrumbList: (название, путь) от главной к текущей странице."""
++    items = [{"@type": "ListItem", "position": 1,
++              "name": ctx.L["home"], "item": ctx.abs("")}]
++    for n, (name, path) in enumerate(trail, start=2):
++        items.append({"@type": "ListItem", "position": n,
++                      "name": name, "item": ctx.abs(path)})
++    return [{"@type": "BreadcrumbList", "@id": ctx.abs() + "#breadcrumb",
++             "itemListElement": items}]
++
++
++# ---------------------------------------------------------------------------
+ # Компоненты
+ # ---------------------------------------------------------------------------
+ def services_teaser(ctx):
+@@ -103,6 +178,15 @@
+ def case_card(case, ctx):
+     L = ctx.L
+     tags = "".join(f'<span class="badge">{t}</span>' for t in case.get("tags", []))
++    # «Что бы я сделал иначе» — необязательный блок. Кейс без него читается как
++    # реклама; с ним — как разбор, и заодно честно называет слабые места цифры.
++    honest = ""
++    if case.get("honest"):
++        label = "ЧЕСТНАЯ ОГОВОРКА" if ctx.lang == "ru" else "THE HONEST CAVEAT"
++        honest = (f'      <details class="case-card__honest">\n'
++                  f'        <summary>{label}</summary>\n'
++                  f'        <p>{esc(case["honest"][ctx.lang])}</p>\n'
++                  f'      </details>\n')
+     return f"""    <article class="case-card case-card--{case['accent']}" data-reveal>
+       <div class="case-card__top">
+         <span class="case-card__client">{esc(case['client'][ctx.lang]).upper()}</span>
+@@ -114,7 +198,7 @@
+       <p class="case-card__label">{L['did']}</p>
+       <p>{esc(case['did'][ctx.lang])}</p>
+       <p class="case-card__result">→ {esc(case['result'][ctx.lang])}</p>
+-      <div class="case-card__tags">{tags}</div>
++{honest}      <div class="case-card__tags">{tags}</div>
+     </article>"""
+ 
+ 
+@@ -202,6 +286,13 @@
+             out.append(cases_grid(ctx, cases[:n], more=bool(arg)))
+         elif kind == "posts":
+             out.append(posts_teaser(ctx, posts, arg or 3))
++        elif kind == "blocks":
++            # Текстовая страница из того же набора блоков, что и статьи:
++            # политика, оферта, «за что не берусь». Ширина и типографика
++            # берутся у статьи, поэтому длинный текст читается одинаково.
++            data = _load_blocks(arg)
++            html = blocks.render(data[ctx.lang], ctx)
++            out.append(f'<section class="textpage"><div class="post__body">{html}</div></section>')
+         else:
+             raise ValueError(f"неизвестная секция: {kind!r}")
+     return "\n".join(out)
+@@ -231,7 +322,13 @@
+     has_builder = page.get("builder", True)
+     if has_builder:
+         html += fragment("builder-modal", ctx)
+-    html += footer(ctx, scripts=("builder.js",) if has_builder else ())
++
++    # form.js грузим только там, где форма действительно есть
++    scripts = ("builder.js",) if has_builder else ()
++    if any((s if isinstance(s, str) else s[1]) == "contact-form"
++           for s in page["sections"] if not isinstance(s, str)):
++        scripts = scripts + ("form.js",)
++    html += footer(ctx, scripts=scripts)
+ 
+     out = (ctx.url_path or "") + "index.html"
+     write(out, html)
+--- a/Tools/core/theme.py	2026-08-28 16:24:15.000000000 +0000
++++ b/Tools/core/theme.py	2026-08-29 13:39:02.919566766 +0000
+@@ -111,7 +111,6 @@
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>{title}</title>
+ <meta name="description" content="{description}">
+-{f'<meta name="keywords" content="{keywords}">' if keywords else ''}
+ <meta name="author" content="{esc(cfg.AUTHOR_NAME)}">
+ <meta name="robots" content="{robots}">
+ <meta name="theme-color" content="#0b0b09">
+@@ -185,8 +184,9 @@
+ # Шапка / подвал
+ # ---------------------------------------------------------------------------
+ def ticker(ctx):
++    line = ctx.L["ticker"].replace("{{QUARTER}}", cfg.booking_quarter())
+     return f"""<div class="ticker" aria-hidden="true">
+-  <div class="ticker__track"><span>{ctx.L['ticker'] * 2}</span></div>
++  <div class="ticker__track"><span>{line * 2}</span></div>
+ </div>
+ """
+ 
+@@ -254,6 +254,7 @@
+   <div class="footer__bottom">
+     <p class="footer__joke">{L['footer_joke']}</p>
+     <p class="footer__legal">{L['footer_legal']}</p>
++    <p class="footer__links"><a href="{ctx.to('privacy/')}">{L['privacy']}</a></p>
+   </div>
+ </footer>
+ 
+--- a/assets/css/base.css	2026-08-28 16:34:04.000000000 +0000
++++ b/assets/css/base.css	2026-08-29 14:22:02.761214507 +0000
+@@ -227,6 +227,21 @@
+   font-size:clamp(48px, 9vw, 118px);
+   margin-bottom:18px;
+ }
++.hero__title-main{display:block;}
++/* Вторая строка заголовка: несёт то, по чему ищут, и не спорит со слоганом. */
++.hero__title-sub{
++  display:block;
++  margin-top:16px;
++  max-width:46ch;
++  font-family:var(--font-body);
++  font-weight:500;
++  font-size:clamp(15px, 1.5vw, 19px);
++  line-height:1.4;
++  letter-spacing:0;
++  text-transform:none;
++  color:inherit;
++  opacity:.7;
++}
+ .hero__title .hl{
+   color:var(--paper);
+   background:var(--red);
+@@ -974,3 +989,68 @@
+ .page-hero h1{font-size:clamp(34px,6vw,72px); line-height:1.02; margin:16px 0 18px;}
+ .page-hero__lead{max-width:640px; font-size:17px; line-height:1.6;}
+ @media (max-width:720px){.page-hero{padding:36px 16px 4px;}}
++
++/* ==========================================================================
++   ФОРМА ОБРАТНОЙ СВЯЗИ
++   ========================================================================== */
++.contact-form{padding:var(--section-pad, 90px) 0;}
++/* Выравниваем по .section-label выше, у неё свои 32px по горизонтали. */
++.cform{display:flex; flex-direction:column; gap:22px; max-width:720px; margin:34px 32px 0;}
++@media (max-width:640px){.cform{margin:28px 20px 0;}}
++.cform__row{display:grid; grid-template-columns:1fr 1fr; gap:22px;}
++@media (max-width:640px){.cform__row{grid-template-columns:1fr;}}
++
++.cform__field{display:flex; flex-direction:column; gap:8px;}
++.cform__label{
++  font-family:var(--font-mono);
++  font-size:12px; letter-spacing:.08em; text-transform:uppercase; opacity:.75;
++}
++.cform input[type=text], .cform textarea{
++  font-family:var(--font-body); font-size:16px; line-height:1.5;
++  padding:13px 15px; width:100%;
++  color:inherit; background:transparent;
++  border:1.5px solid currentColor; border-radius:0;
++}
++.cform input[type=text]:focus-visible, .cform textarea:focus-visible{
++  outline:2px solid var(--yellow); outline-offset:2px;
++}
++.cform textarea{resize:vertical; min-height:130px;}
++.cform__hint{font-size:14px; line-height:1.45; opacity:.6;}
++
++/* ловушка для ботов: убрана из потока и недостижима с клавиатуры */
++.cform__trap{position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden;}
++
++.cform__consent{display:flex; gap:12px; align-items:flex-start; font-size:15px; line-height:1.5;}
++.cform__consent input{margin-top:4px; width:18px; height:18px; flex:none; accent-color:var(--yellow);}
++.cform__consent a{color:var(--yellow); text-decoration:underline; text-underline-offset:3px;}
++.cform__alt a{color:var(--yellow); text-decoration:underline; text-underline-offset:3px;}
++
++.cform__actions{display:flex; align-items:center; gap:20px; flex-wrap:wrap;}
++.cform__alt{font-size:15px; opacity:.75; margin:0;}
++.cform button[disabled]{opacity:.55; cursor:progress;}
++
++.cform__status{margin:0; font-size:15px; line-height:1.5; min-height:1.5em;}
++.cform__status--ok{color:var(--yellow); font-weight:600;}
++.cform__status--err{color:var(--red);}
++
++/* Текстовые страницы (политика, оферта): та же колонка, что у статьи. */
++.textpage{padding:0 32px 90px;}
++.textpage .post__body{max-width:72ch; margin:0;}
++@media (max-width:640px){.textpage{padding:0 20px 64px;}}
++.footer__links{margin:10px 0 0;}
++.footer__links a{font-family:var(--font-mono); font-size:12px; letter-spacing:.06em;
++  text-transform:uppercase; opacity:.7; text-decoration:underline; text-underline-offset:3px;}
++.footer__links a:hover{opacity:1;}
++
++/* Оговорка в кейсе: свёрнута, но не спрятана. */
++.case-card__honest{margin:16px 0 4px; border-top:1px solid currentColor; padding-top:12px;}
++.case-card__honest summary{
++  cursor:pointer; list-style:none;
++  font-family:var(--font-mono); font-size:11px; letter-spacing:.09em;
++  text-transform:uppercase; opacity:.65;
++}
++.case-card__honest summary::-webkit-details-marker{display:none;}
++.case-card__honest summary::after{content:" +"; }
++.case-card__honest[open] summary::after{content:" −"; }
++.case-card__honest summary:hover{opacity:1;}
++.case-card__honest p{margin:10px 0 0; font-size:14px; line-height:1.55; opacity:.8;}
+--- a/assets/css/glass.css	2026-08-28 16:34:04.000000000 +0000
++++ b/assets/css/glass.css	2026-08-29 13:35:28.492598955 +0000
+@@ -232,6 +232,11 @@
+   color:var(--g-text);
+   text-shadow:0 2px 40px rgba(0,0,0,.35);
+ }
++.hero__title-sub{
++  color:var(--g-text-2);
++  opacity:1;
++  text-shadow:none;
++}
+ .hero__title .hl{
+   background:linear-gradient(160deg, rgba(232,67,44,.96), rgba(232,67,44,.82));
+   border-radius:16px;
+@@ -863,3 +868,14 @@
+ /* заголовок страницы */
+ .page-hero h1{color:var(--g-text); text-shadow:0 2px 40px rgba(0,0,0,.35);}
+ .page-hero__lead{color:var(--g-text-2);}
++
++
++/* Форма в стеклянной теме: панель вместо голых рамок. */
++.cform input[type=text], .cform textarea{
++  background:var(--g-surface-2);
++  border:1px solid var(--g-border);
++  border-radius:14px;
++  color:var(--g-text);
++}
++.cform input[type=text]::placeholder{color:var(--g-text-3, rgba(242,240,232,.5));}
++.cform__hint, .cform__alt{color:var(--g-text-2);}
+--- a/assets/js/analytics.js	2026-08-27 23:51:15.000000000 +0000
++++ b/assets/js/analytics.js	2026-08-29 13:32:16.269113216 +0000
+@@ -1,8 +1,10 @@
+ /* ==========================================================================
+    GANZA CONSULTING — first-party analytics
+    --------------------------------------------------------------------------
+-   Sends events to a Supabase table. No cookies, no personal data, no
+-   third-party scripts, nothing that follows anyone to another site.
++   Sends events to a Supabase table. No cookies, no cross-session identifier,
++   no personal data, no third-party scripts. The session id lives in
++   sessionStorage and is gone when the tab closes, so nothing here follows a
++   visitor between sessions or between sites.
+ 
+    >>> SETUP: fill in the two values below with your Supabase project URL and
+    >>> the *anon* (public) key. Both are safe to publish: row-level security
+@@ -42,18 +44,20 @@
+   }
+ 
+   // --- identity -------------------------------------------------------------
++  // Только сессия. Раньше здесь жил постоянный visitor_id в localStorage —
++  // межсессионный идентификатор, то есть по грузинскому закону и по ePrivacy
++  // то же самое, что cookie, со всеми вытекающими согласиями. Взамен мы
++  // теряем «уникальных за месяц» и получаем аналитику, которой не нужен
++  // баннер: идентификатор живёт в sessionStorage и умирает с вкладкой.
+   var SESSION_TTL = 30 * 60 * 1000;
+-  var visitorId = get("localStorage", "ganza:vid");
+-  if (!visitorId) { visitorId = uuid(); set("localStorage", "ganza:vid", visitorId); }
+-
+-  var lastSeen = parseInt(get("localStorage", "ganza:seen") || "0", 10);
++  var lastSeen = parseInt(get("sessionStorage", "ganza:seen") || "0", 10);
+   var sessionId = get("sessionStorage", "ganza:sid");
+   if (!sessionId || Date.now() - lastSeen > SESSION_TTL) {
+     sessionId = uuid();
+     set("sessionStorage", "ganza:sid", sessionId);
+     set("sessionStorage", "ganza:seq", "0");
+   }
+-  set("localStorage", "ganza:seen", String(Date.now()));
++  set("sessionStorage", "ganza:seen", String(Date.now()));
+ 
+   var seq = parseInt(get("sessionStorage", "ganza:seq") || "0", 10) + 1;
+   set("sessionStorage", "ganza:seq", String(seq));
+@@ -101,7 +105,6 @@
+   }
+ 
+   var BASE = {
+-    visitor_id: visitorId,
+     session_id: sessionId,
+     path: location.pathname,
+     lang: document.documentElement.getAttribute("lang") || "en",
+@@ -257,7 +260,7 @@
+       if (sectionTime[id] >= 1) send("section", { section: id.slice(0, 100), value: Math.round(sectionTime[id]) });
+     });
+ 
+-    set("localStorage", "ganza:seen", String(Date.now()));
++    set("sessionStorage", "ganza:seen", String(Date.now()));
+     flush(true);
+     if (!partial) finished = true;
+     sectionTime = {}; sectionEnter = {}; activeMs = 0;
+=== НОВЫЙ ФАЙЛ: assets/js/form.js ===
+=== НОВЫЙ ФАЙЛ: content/blocks/privacy.py ===
+--- a/content/cases/ai-manager-instead-of-hire.py	2026-08-28 16:22:06.000000000 +0000
++++ b/content/cases/ai-manager-instead-of-hire.py	2026-08-29 14:21:49.820310367 +0000
+@@ -2,25 +2,52 @@
+ CASE = dict(
+     order=2,
+     accent="blue",
+-    client={"en": "Client: owner, international company",
+-            "ru": "Клиент: владелец международной компании"},
++    client={"en": "Logistics and international trade · up to 50 people · 2025",
++            "ru": "Логистика и международная торговля · до 50 человек · 2025"},
+     stat={"en": "−60% routine", "ru": "−60% рутины"},
+     title={"en": "AI manager instead of a hire", "ru": "ИИ-менеджер вместо найма"},
+     problem={
+-        "en": "The owner wanted AI instead of hiring another manager — to build estimates, "
+-              "draft documents and bookkeeping, sort mail, and suggest logistics.",
+-        "ru": "Владелец хотел заменить нового сотрудника ИИ — чтобы тот считал сметы, вёл "
+-              "документы и бухгалтерию, разбирал почту и предлагал логистику.",
++        "en": "The owner wanted to hire another manager, then decided AI should do the job "
++              "instead: estimates, documents and bookkeeping, mail triage, logistics "
++              "suggestions. The question on the table was which of those a model could "
++              "actually be trusted with.",
++        "ru": "Владелец собирался нанять ещё одного менеджера, а потом решил, что вместо "
++              "человека справится ИИ: сметы, документы и бухгалтерия, разбор почты, "
++              "предложения по логистике. Вопрос на столе был один — что из этого модели "
++              "действительно можно доверить.",
+     },
+     did={
+-        "en": "We ran CustDev interviews with managers, accountants and lawyers, found that paid "
+-              "AI models created more risk than value, and instead built templates, spreadsheets, "
+-              "a workflow automation platform and a Telegram bot.",
+-        "ru": "Провели CustDev с менеджерами, бухгалтерами и юристами, выяснили, что платные "
+-              "ИИ-модели создают больше рисков, чем пользы, и вместо этого собрали шаблоны, "
+-              "таблицы, платформу автоматизации рабочих процессов и Telegram-бота.",
++        "en": "Six CustDev interviews with the managers, accountants and lawyers who do the "
++              "work. The conclusion was that paid AI models were the wrong tool here: data "
++              "leakage, hallucinations in documents that carry legal weight, nobody to hold "
++              "responsible for an answer, a pull toward the standard solution when the case "
++              "was not standard, running cost, geographic restrictions and an internet "
++              "connection that drops. So the routine went into an n8n workflow with "
++              "templates and spreadsheets, and a Telegram bot took over mail handling and "
++              "internal comms.",
++        "ru": "Шесть интервью CustDev с менеджерами, бухгалтерами и юристами — с теми, кто "
++              "эту работу делает. Вывод: платные ИИ-модели здесь не тот инструмент — утечки "
++              "данных, галлюцинации в документах, у которых есть юридический вес, "
++              "отсутствие ответственного за ответ, склонность выдавать стандартное решение "
++              "там, где случай нестандартный, стоимость, географические ограничения и "
++              "перебои со связью. Поэтому рутина уехала в процессы на n8n с шаблонами и "
++              "таблицами, а Telegram-бот взял на себя разбор почты и внутреннюю "
++              "коммуникацию.",
+     },
+-    result={"en": "−60% time on routine tasks, −40% on mail triage",
+-            "ru": "−60% времени на рутину, −40% на разбор почты"},
+-    tags=["Automation", "AI", "Operations"],
++    result={"en": "−60% time on routine and −40% on mail triage, measured together over "
++                  "two months of running the new process",
++            "ru": "−60% времени на рутину и −40% на разбор почты — замер общий, за два "
++                  "месяца работы нового процесса"},
++    honest={
++        "en": "The numbers come from the team's own before-and-after estimate over two "
++              "months, not from instrumented time tracking — treat them as the order of "
++              "magnitude, not a measurement. Worth saying plainly: nothing here went wrong. "
++              "Weekly calls, written minutes, edits where they were needed. The interesting "
++              "part of this case is the answer, not the drama.",
++        "ru": "Цифры — оценка самой команды до и после, за два месяца, а не хронометраж. "
++              "Это порядок величины, а не измерение. И честно: в этом проекте ничего не "
++              "ломалось. Созвоны раз в неделю, письменные протоколы, правки там, где были "
++              "нужны. Интересен здесь ответ, а не драма.",
++    },
++    tags=["n8n", "Telegram", "CustDev", "Operations"],
+ )
+--- a/content/cases/multilingual-sites.py	2026-08-28 16:22:06.000000000 +0000
++++ b/content/cases/multilingual-sites.py	2026-08-29 14:21:49.827418187 +0000
+@@ -2,22 +2,38 @@
+ CASE = dict(
+     order=3,
+     accent="red",
+-    client={"en": "Client: business owner", "ru": "Клиент: владелец бизнеса"},
+-    stat={"en": "5 languages / markets", "ru": "5 языков / рынков"},
+-    title={"en": "Multilingual sites for business", "ru": "Мультиязычные сайты для бизнеса"},
++    client={"en": "Business owner · CIS and UAE markets",
++            "ru": "Владелец бизнеса · рынки СНГ и ОАЭ"},
++    stat={"en": "Live in 2 weeks", "ru": "Запуск за 2 недели"},
++    title={"en": "Sites that work in two alphabets", "ru": "Сайты, работающие в двух алфавитах"},
+     problem={
+-        "en": "The business needed sites for different markets — from a simple landing page to a "
+-              "catalog that had to work equally well across languages and alphabets.",
+-        "ru": "Нужны были сайты под разные рынки — от простого лендинга до каталога, который "
+-              "должен одинаково хорошо работать на нескольких языках и в разных алфавитах.",
++        "en": "Different markets needed different sites — from a plain landing page to a "
++              "catalogue that had to read correctly in several languages and in two "
++              "directions of script.",
++        "ru": "Под разные рынки нужны были разные сайты — от простого лендинга до каталога, "
++              "который должен одинаково работать на нескольких языках и в двух "
++              "направлениях письма.",
+     },
+     did={
+-        "en": "We built landing pages in Russian and English, plus RU/KZ/EN and EN/AR catalog "
+-              "sites — accounting for local specifics and different reading directions.",
+-        "ru": "Собрали лендинги на русском и английском и сайты-каталоги RU/KZ/EN и EN/AR — "
+-              "с учётом локальной специфики и разных направлений чтения.",
++        "en": "Built RU/KZ/EN and EN/AR sites — index, about, contacts, enquiry form and "
++              "catalogue — with right-to-left layout where it was needed. The work that "
++              "took the time was not translation: it was the legal wording each market "
++              "expects on a commercial site. The CIS jurisdictions were the fiddly ones; "
++              "the UAE was straightforward by comparison.",
++        "ru": "Собрал сайты RU/KZ/EN и EN/AR — индекс, о нас, контакты, форма и каталог — "
++              "с версткой справа налево там, где она нужна. Время съел не перевод, а "
++              "юридические формулировки, которых каждый рынок ждёт от коммерческого сайта. "
++              "Сложными оказались юрисдикции СНГ; ОАЭ на их фоне — просто.",
+     },
+-    result={"en": "Brand presence across multiple language markets, no content chaos",
+-            "ru": "Присутствие бренда на нескольких языковых рынках без хаоса в контенте"},
+-    tags=["Web Development", "Localization"],
++    result={"en": "Two weeks from brief to live sites across both markets",
++            "ru": "Две недели от постановки до работающих сайтов на обоих рынках"},
++    honest={
++        "en": "This case has a delivery time and no commercial number: I do not have "
++              "post-launch traffic or enquiry data for these sites, so I am not going to "
++              "invent one. What it demonstrates is scope and speed, not revenue.",
++        "ru": "У этого кейса есть срок и нет коммерческой цифры: данных по трафику и "
++              "заявкам после запуска у меня нет, и придумывать их я не буду. Он показывает "
++              "объём и скорость, а не выручку.",
++    },
++    tags=["Web", "Localization", "RTL"],
+ )
+--- a/content/cases/retail-promo-roi.py	2026-08-28 16:22:06.000000000 +0000
++++ b/content/cases/retail-promo-roi.py	2026-08-29 14:21:49.825756262 +0000
+@@ -2,23 +2,43 @@
+ CASE = dict(
+     order=1,
+     accent="yellow",
+-    client={"en": "Client: marketer, 20+ store chain",
+-            "ru": "Клиент: маркетолог, сеть 20+ магазинов"},
+-    stat={"en": "+22% ROI", "ru": "+22% ROI"},
+-    title={"en": "Clothing retail", "ru": "Ритейл одежды"},
++    client={"en": "Clothing retail chain · 25 stores · Eastern Europe",
++            "ru": "Сеть магазинов одежды · 25 точек · Восточная Европа"},
++    stat={"en": "+22% promo ROI", "ru": "+22% ROI акций"},
++    title={"en": "Which promotions actually pay", "ru": "Какие акции действительно окупаются"},
+     problem={
+-        "en": "Profit kept falling despite constant promotions. Three promo types, dozens of "
+-              "stores, mountains of traffic and revenue data — and nobody knew what actually worked.",
+-        "ru": "Прибыль падала, несмотря на постоянные акции. Три типа акций, десятки магазинов, "
+-              "куча данных о трафике и доходе — и никто не понимал, что реально работает.",
++        "en": "Margin was falling despite constant promotions. Several promo types, "
++              "twenty-five stores, plenty of traffic and revenue data — and no one able to "
++              "say which promotion did the work and which just moved the discount around.",
++        "ru": "Прибыль падала, несмотря на постоянные акции. Несколько типов промо, "
++              "двадцать пять магазинов, много данных по трафику и выручке — и никто не мог "
++              "сказать, какая акция сработала, а какая просто переложила скидку.",
+     },
+     did={
+-        "en": "We analyzed store locations, found correlations across data types, ran test "
+-              "promotions in select stores, and proposed combining discounts with event marketing.",
+-        "ru": "Проанализировали населённые пункты, нашли корреляции между типами данных, "
+-              "запустили тестовые акции в части магазинов и предложили комбинировать скидки "
+-              "с событийным маркетингом.",
++        "en": "Pulled everything into one table: traffic before, during and after each "
++              "promotion, sales for the same three windows, floor area, store format, city, "
++              "promo code, promo type and dates. Then a live test — one new promotion "
++              "design against three the chain already ran, plus a control — and a proposal "
++              "to pair discounts with an event on the street rather than a discount alone.",
++        "ru": "Свёл всё в одну таблицу: трафик до, во время и после каждой акции, продажи "
++              "за те же три окна, площадь магазина, формат, город, код акции, тип и даты. "
++              "Дальше живой тест — один новый вариант акции против трёх, которые сеть уже "
++              "проводила, плюс контроль — и предложение сочетать скидку с событием на "
++              "улице, а не просто скидку.",
++    },
++    result={"en": "+22% return on promotions against the chain's own previous promo results",
++            "ru": "+22% к отдаче от акций по сравнению с прошлыми акциями самой сети"},
++    honest={
++        "en": "The comparison was against previous promotions, not against a held-back "
++              "group of stores — the control was between promo types, not between shops. "
++              "That is the weaker of the two designs and I would insist on a store-level "
++              "control group next time: some of the +22% belongs to seasonality and I "
++              "cannot separate it out. I also expected a larger effect than this one.",
++        "ru": "Сравнение шло с прошлыми акциями, а не с отложенной группой магазинов — "
++              "контроль был между типами акций, а не между точками. Это более слабая "
++              "схема, и в следующий раз я бы настаивал на контрольной группе магазинов: "
++              "часть из этих 22% принадлежит сезонности, и отделить её я не могу. Честно "
++              "говоря, я ожидал результата лучше.",
+     },
+-    result={"en": "Promotion ROI up 22%", "ru": "ROI акций вырос на 22%"},
+     tags=["Analytics", "Retail", "Pricing"],
+ )
+--- a/content/fragments/about.html	2026-08-28 16:23:19.000000000 +0000
++++ b/content/fragments/about.html	2026-08-29 14:34:44.645723076 +0000
+@@ -1,7 +1,7 @@
+ <section class="about" id="about">
+   <div class="about__col about__col--text">
+     <span class="tag tag--blue"><span class="lang-ru">05 / КТО ЭТО ПИШЕТ</span><span class="lang-en">05 / WHO'S WRITING THIS</span></span>
+-    <h2><span class="lang-ru">О НАС<br>(В ОБЩЕМ)</span><span class="lang-en">ABOUT<br>(SORT OF)</span></h2>
++    <h2><span class="lang-ru">ОБО МНЕ<br>(В ОБЩЕМ)</span><span class="lang-en">ABOUT ME<br>(SORT OF)</span></h2>
+     <div class="about__badges">
+       <span class="badge"><span class="lang-ru">НЕ ЛЮБЛЮ PPTX НА 80 СЛАЙДОВ</span><span class="lang-en">DOESN'T LIKE 80-SLIDE DECKS</span></span>
+       <span class="badge"><span class="lang-ru">ЛЮБИТ ЦИФРЫ БОЛЬШЕ, ЧЕМ КРАСИВЫЕ СЛОВА</span><span class="lang-en">LIKES NUMBERS MORE THAN NICE WORDS</span></span>
+--- a/content/fragments/builder-modal.html	2026-08-28 16:19:18.000000000 +0000
++++ b/content/fragments/builder-modal.html	2026-08-29 14:34:44.646142968 +0000
+@@ -54,13 +54,13 @@
+ 
+       <details class="builder-breakdown" id="builderBreakdown">
+         <summary>
+-          <span class="lang-ru">КАК МЫ ЭТО СЧИТАЕМ →</span>
+-          <span class="lang-en">HOW WE CALCULATED THIS →</span>
++          <span class="lang-ru">ОТКУДА ЭТА ВИЛКА →</span>
++          <span class="lang-en">WHERE THIS RANGE COMES FROM →</span>
+         </summary>
+         <ul id="builderBreakdownList"></ul>
+         <p class="builder-breakdown__foot">
+-          <span class="lang-ru">Это не гадание на кофейной гуще и не фейковые ИИ-коэффициенты — прозрачная формула на основе наших кейсов и тарифов. Точную цифру дадим после короткого созвона.</span>
+-          <span class="lang-en">Not tea-leaf reading, not fake AI multipliers — a transparent formula based on our own cases and pricing. We'll confirm the exact number on a short call.</span>
++          <span class="lang-ru">Это грубая вилка: тип задачи, объём и срочность, сведённые к диапазону по моим тарифам. Не расчёт вашего проекта и не обещание — ориентир, чтобы понять, тот ли это порядок цифр. Точную цену называю после разговора, когда есть чем считать.</span>
++          <span class="lang-en">This is a rough range: task type, size and urgency mapped onto my rates. It is not a calculation of your project and not a quote — it is there so you can see whether the order of magnitude is right. I give the actual price after a conversation, once there is something to work from.</span>
+         </p>
+       </details>
+ 
+--- a/content/fragments/builder-trigger.html	2026-08-28 16:22:35.000000000 +0000
++++ b/content/fragments/builder-trigger.html	2026-08-29 14:35:06.169039045 +0000
+@@ -2,20 +2,20 @@
+     <span class="builder-trigger__glitch" aria-hidden="true">01001100</span>
+     <span class="builder-trigger__main">
+       <span class="builder-trigger__label">
+-        <span class="lang-ru">🕹 БЕСПЛАТНАЯ ИГРУШКА</span>
+-        <span class="lang-en">🕹 FREE TOY</span>
++        <span class="lang-ru">КАЛЬКУЛЯТОР ПРОЕКТА</span>
++        <span class="lang-en">PROJECT CALCULATOR</span>
+       </span>
+       <span class="builder-trigger__title">
+         <span class="lang-ru">СОБЕРИ СВОЙ ПРОЕКТ<br>И УЗНАЙ ЦЕНУ →</span>
+         <span class="lang-en">BUILD YOUR PROJECT<br>AND SEE THE PRICE →</span>
+       </span>
+       <span class="builder-trigger__sub">
+-        <span class="lang-ru">6 вопросов · 30 секунд · честная вилка по срокам и бюджету, без звонка менеджеру</span>
+-        <span class="lang-en">6 questions · 30 seconds · an honest timeline &amp; budget range, no sales call required</span>
++        <span class="lang-ru">6 вопросов · 30 секунд · порядок цифр по срокам и бюджету, без разговора с кем-либо</span>
++        <span class="lang-en">6 questions · 30 seconds · the order of magnitude for timeline and budget, without talking to anyone</span>
+       </span>
+     </span>
+     <span class="builder-trigger__cta">
+-      <span class="lang-ru">ИГРАТЬ →</span>
+-      <span class="lang-en">PLAY →</span>
++      <span class="lang-ru">СОБРАТЬ →</span>
++      <span class="lang-en">BUILD IT →</span>
+     </span>
+   </button>
+=== НОВЫЙ ФАЙЛ: content/fragments/contact-form.html ===
+--- a/content/fragments/faq.html	2026-08-28 16:19:18.000000000 +0000
++++ b/content/fragments/faq.html	2026-08-29 14:33:55.775563374 +0000
+@@ -11,49 +11,49 @@
+   <div class="faq__list">
+     <details class="faq-item">
+       <summary>
+-        <span class="lang-ru">«ДОРОГО. ПОЧЕМУ НЕ ШТАТНЫЙ СОТРУДНИК?»</span>
+-        <span class="lang-en">"IT'S EXPENSIVE. WHY NOT HIRE IN-HOUSE?"</span>
++        <span class="lang-ru">«Дорого. Почему не штатный сотрудник?»</span>
++        <span class="lang-en">"It's expensive. Why not hire in-house?"</span>
+         <span class="faq-item__icon" aria-hidden="true"></span>
+       </summary>
+       <p>
+-        <span class="lang-ru">Штатный сотрудник — это оклад каждый месяц, отпуск, больничный и один набор компетенций. Мы нужны не постоянно, а в моменте — когда есть конкретная сложная задача. Посчитайте: разовый проект за $2 500 часто дешевле, чем 2–3 месяца поиска и адаптации специалиста, который потом полгода закрывает одну и ту же задачу.</span>
+-        <span class="lang-en">A full-time hire means a monthly salary, vacation days, sick leave, and one narrow skill set. We're not there all the time — we're there for the one hard problem. Do the math: a one-off $2,500 project is often cheaper than 2–3 months of hiring and onboarding someone who then spends half a year on that same single task.</span>
++        <span class="lang-ru">Штатный сотрудник — это оклад каждый месяц, отпуск, больничный и один набор компетенций. Я нужен не постоянно, а в моменте, когда есть конкретная задача. Посчитайте сами: разовый проект от $2 500 часто дешевле, чем два-три месяца поиска и адаптации специалиста, который потом полгода закрывает одну и ту же задачу.</span>
++        <span class="lang-en">A full-time hire means a monthly salary, vacation days, sick leave, and one narrow skill set. I'm not there all the time — I'm there for the one specific problem. Do the arithmetic yourself: a one-off project from $2,500 is often cheaper than two or three months of hiring and onboarding someone who then spends half a year on that same single task.</span>
+       </p>
+     </details>
+ 
+     <details class="faq-item">
+       <summary>
+-        <span class="lang-ru">«НЕТ ГАРАНТИЙ РЕЗУЛЬТАТА. КАК ВЫ ИЗМЕРЯЕТЕ УСПЕХ?»</span>
+-        <span class="lang-en">"NO RESULT GUARANTEE. HOW DO YOU MEASURE SUCCESS?"</span>
++        <span class="lang-ru">«Нет гарантий результата. Как вы измеряете успех?»</span>
++        <span class="lang-en">"No result guarantee. How do you measure success?"</span>
+         <span class="faq-item__icon" aria-hidden="true"></span>
+       </summary>
+       <p>
+-        <span class="lang-ru">Мы не обещаем результат до того, как разберёмся в задаче — это было бы враньём. Зато перед стартом фиксируем письменные критерии успеха и промежуточные точки проверки, а не просто «сделаем красиво». Если на диагностике поймём, что задача не решается так, как вы её себе представляли — скажем сразу, а не будем тянуть проект ради счёта.</span>
+-        <span class="lang-en">We don't promise a result before understanding the problem — that would be a lie. What we do instead: agree on written success criteria and checkpoints before starting. And if diagnosis shows the problem isn't solvable the way you imagined, we say so immediately — we don't stretch the project out just to keep billing.</span>
++        <span class="lang-ru">Я не обещаю результат до того, как разберусь в задаче — это было бы враньём. Зато до старта фиксирую письменно критерии успеха и промежуточные точки проверки. Если на диагностике окажется, что задача не решается так, как вы её себе представляли, скажу сразу, а не буду тянуть проект ради счёта.</span>
++        <span class="lang-en">I don't promise a result before I understand the problem — that would be a lie. What I do instead: agree written success criteria and checkpoints before starting. And if the diagnosis shows the problem isn't solvable the way you imagined, I say so immediately rather than stretching the project out to keep billing.</span>
+       </p>
+     </details>
+ 
+     <details class="faq-item">
+       <summary>
+-        <span class="lang-ru">«У ВАС МАЛЕНЬКАЯ СТУДИЯ / ОДИН ЧЕЛОВЕК. А ЕСЛИ ВЫ ЗАБОЛЕЕТЕ?»</span>
+-        <span class="lang-en">"YOU'RE A ONE-PERSON STUDIO. WHAT IF YOU'RE OUT SICK?"</span>
++        <span class="lang-ru">«У вас маленькая студия / один человек. А если вы заболеете?»</span>
++        <span class="lang-en">"You're a one-person studio. What if you're out sick?"</span>
+         <span class="faq-item__icon" aria-hidden="true"></span>
+       </summary>
+       <p>
+-        <span class="lang-ru">Именно поэтому мы берём ограниченное число проектов одновременно — не пытаемся продать одну услугу 20 клиентам через младших специалистов. С задачей работает тот, с кем вы говорили на созвоне, а не «менеджер, который передаст команде». На форс-мажор — прозрачные сроки и промежуточные результаты, а не тишина до дедлайна.</span>
+-        <span class="lang-en">That's exactly why we take on a limited number of projects at a time — we're not reselling the same junior-staffed service to 20 clients. The person doing the work is the person you talked to on the call, not "a manager who'll pass it to the team." For force-majeure situations: transparent timelines and interim deliverables, not silence until the deadline.</span>
++        <span class="lang-ru">Вопрос законный, и отвечать на него надо конкретикой. Работа лежит в ваших системах с первого дня, а не отдаётся в конце. Промежуточный результат — раз в одну-две недели, поэтому ваша уязвимость ограничена длиной одного цикла, а не длиной проекта. Запасного исполнителя я назвать не могу и не буду делать вид, что могу. Вместо этого в договор идёт условие: если я недоступен дольше 12 дней без предварительной договорённости, вы получаете неустойку в размере двух стоимостей проекта.</span>
++        <span class="lang-en">It's a fair question and it deserves specifics rather than reassurance. The work lives in your systems from day one, not handed over at the end. Interim results come every one to two weeks, so your exposure is the length of one cycle, not the length of the project. I cannot name a backup contractor and I won't pretend otherwise. Instead the contract carries a clause: if I am unavailable for more than 12 days without prior agreement, you receive a penalty equal to twice the project fee.</span>
+       </p>
+     </details>
+ 
+     <details class="faq-item">
+       <summary>
+-        <span class="lang-ru">«КОНФИДЕНЦИАЛЬНОСТЬ ДАННЫХ. КАК ВЫ ОБРАЩАЕТЕСЬ С НАШЕЙ ИНФОРМАЦИЕЙ?»</span>
+-        <span class="lang-en">"DATA CONFIDENTIALITY. HOW DO YOU HANDLE OUR INFORMATION?"</span>
++        <span class="lang-ru">«Конфиденциальность данных. Что происходит с нашей информацией?»</span>
++        <span class="lang-en">"Data confidentiality. How do you handle our information?"</span>
+         <span class="faq-item__icon" aria-hidden="true"></span>
+       </summary>
+       <p>
+-        <span class="lang-ru">Подписываем NDA до начала работы с данными — это стандартная практика, а не бонус. Работаем только с тем объёмом данных, который нужен для конкретной задачи, не храним лишнее после завершения проекта и не используем ваши процессы как кейс без отдельного согласования — посмотрите на кейсы на этом сайте, все они обезличены.</span>
+-        <span class="lang-en">We sign an NDA before touching any data — that's standard practice, not a perk. We only work with the data volume the specific task actually needs, don't retain anything longer than necessary after the project ends, and never use your processes as a case study without separate sign-off — look at the case studies on this site, all of them are anonymized.</span>
++        <span class="lang-ru">Подписываю NDA до начала работы с данными — это стандартная практика, а не бонус. Беру только тот объём данных, который нужен для конкретной задачи, не храню лишнее после завершения проекта и не использую ваши процессы как кейс без отдельного согласования: посмотрите кейсы на этом сайте, все они обезличены.</span>
++        <span class="lang-en">I sign an NDA before touching any data — that's standard practice, not a perk. I take only the data the specific task needs, keep nothing longer than necessary once the project ends, and never use your processes as a case study without separate sign-off: look at the cases on this site, every one is anonymised.</span>
+       </p>
+     </details>
+   </div>
+--- a/content/fragments/hero.html	2026-08-28 16:25:48.000000000 +0000
++++ b/content/fragments/hero.html	2026-08-29 14:32:19.005051455 +0000
+@@ -2,30 +2,19 @@
+   <div class="hero__meta">
+     <div class="hero__meta-item"><span class="lang-ru">НЕЗАВИСИМЫЙ КОНСАЛТИНГ</span><span class="lang-en">INDEPENDENT CONSULTING</span></div>
+     <div class="hero__meta-item"><span class="lang-ru">EST. 2023 / УДАЛЁННО ПО МИРУ</span><span class="lang-en">EST. 2023 / REMOTE, WORLDWIDE</span></div>
+-    <div class="hero__meta-item"><span class="lang-ru">3 КЕЙСА · 4 ФОРМАТА РАБОТЫ</span><span class="lang-en">3 CASES · 4 ENGAGEMENT FORMATS</span></div>
++    <div class="hero__meta-item"><span class="lang-ru">ЦЕНЫ НА САЙТЕ · ФИКСИРОВАННЫЙ ОБЪЁМ</span><span class="lang-en">PRICES PUBLISHED · FIXED SCOPE</span></div>
+   </div>
+ 
+-  <h1 class="hero__title">
+-    <span class="lang-ru">
+-      ПОРЯДОК<br>
+-      ИЗ <span class="hl">ХАОСА</span>.<br>
+-      БЕЗ ВОДЫ.
+-    </span>
+-    <span class="lang-en">
+-      ORDER<br>
+-      FROM <span class="hl">CHAOS</span>.<br>
+-      NO FLUFF.
+-    </span>
+-  </h1>
++  {{HERO_H1}}
+ 
+   <div class="hero__tag">
+-    <span class="lang-ru">ДОРОЖЕ. НО БЕРЁМСЯ →</span>
+-    <span class="lang-en">PRICIER. BUT WE TAKE IT ON →</span>
++    <span class="lang-ru">ЦЕНА ИЗВЕСТНА ДО СТАРТА →</span>
++    <span class="lang-en">THE PRICE IS KNOWN BEFORE WE START →</span>
+   </div>
+ 
+   <p class="hero__sub">
+-    <span class="lang-ru">Ganza Consulting берётся за задачи, от которых отказываются подрядчики покрупнее: нестандартные, спорные, «это же невозможно посчитать». Не воронка типовых услуг — конкретный сложный вопрос и человек, который в нём разберётся.</span>
+-    <span class="lang-en">Ganza Consulting takes on the problems bigger agencies pass on: non-standard, messy, "that can't really be measured." Not a funnel of template services — one hard question and the person who'll actually get to the bottom of it.</span>
++    <span class="lang-ru">Ganza Consulting берёт задачи, которые не закрываются чек-листом: там, где данные не сходятся, процесс не описан, а готового пакета под это нет. Один сложный вопрос, один человек, который в нём разберётся, и цена, известная до начала работы.</span>
++    <span class="lang-en">Ganza Consulting takes the problems a checklist doesn't close: where the data doesn't reconcile, the process was never written down, and no ready-made package fits. One hard question, one person who gets to the bottom of it, and a price you know before the work starts.</span>
+   </p>
+ 
+   <div class="hero__actions">
+--- a/content/fragments/how-we-work.html	2026-08-28 16:23:00.000000000 +0000
++++ b/content/fragments/how-we-work.html	2026-08-29 14:33:55.775813614 +0000
+@@ -1,6 +1,6 @@
+ <section class="how" id="how">
+   <div class="section-label">
+-    <span class="tag tag--blue"><span class="lang-ru">01 / КАК МЫ РАБОТАЕМ</span><span class="lang-en">01 / HOW WE WORK</span></span>
++    <span class="tag tag--blue"><span class="lang-ru">01 / КАК УСТРОЕНА РАБОТА</span><span class="lang-en">01 / HOW THE WORK RUNS</span></span>
+     <h2><span class="lang-ru">ЧЕТЫРЕ ШАГА</span><span class="lang-en">FOUR STEPS</span></h2>
+     <p class="section-label__intro">
+       <span class="lang-ru">Никакого «погружения в бизнес» на три недели. Первый разговор бесплатный, и после него вы знаете срок и вилку по деньгам.</span>
+--- a/content/fragments/pricing.html	2026-08-28 16:23:00.000000000 +0000
++++ b/content/fragments/pricing.html	2026-08-29 14:34:15.232264956 +0000
+@@ -3,8 +3,8 @@
+     <span class="tag tag--blue"><span class="lang-ru">03 / СКОЛЬКО СТОИТ</span><span class="lang-en">03 / WHAT IT COSTS</span></span>
+     <h2><span class="lang-ru">ЦЕНЫ</span><span class="lang-en">PRICING</span></h2>
+     <p class="section-label__intro">
+-      <span class="lang-ru">Не пять одинаковых шагов воронки, а четыре разных формата: один сложный вопрос, задача, от которой отказались другие, точечное внедрение и постоянный резерв эксперта. У каждого — открытый список факторов, которые формируют цену.</span>
+-      <span class="lang-en">Not five identical funnel steps — four different formats: one hard question, the problem nobody else took on, a fast point-solution build, and an on-call expert reserve. Each comes with an open list of the factors behind its price.</span>
++      <span class="lang-ru">Четыре разных формата, а не пять шагов одной воронки: разобрать один вопрос, собрать готовое решение, взяться за задачу без готового пакета или держать часы про запас. У каждого открыто написано, из чего складывается цена.</span>
++      <span class="lang-en">Four different formats rather than five steps of one funnel: take apart a single question, build a solution you have already specified, take on a problem with no ready-made package, or keep hours on reserve. Each one states openly what makes up its price.</span>
+     </p>
+   </div>
+ 
+@@ -12,28 +12,28 @@
+ 
+     <article class="price-card price-card--flagship">
+       <span class="price-card__badge"><span class="lang-ru">ФЛАГМАН</span><span class="lang-en">FLAGSHIP</span></span>
+-      <h3><span class="lang-ru">ЗАДАЧА, ОТ КОТОРОЙ ОТКАЗАЛИСЬ ДРУГИЕ</span><span class="lang-en">THE PROBLEM NOBODY ELSE TOOK ON</span></h3>
+-      <p class="price-card__sub"><span class="lang-ru">Нестандартный проект на стыке аналитики, автоматизации и разработки</span><span class="lang-en">A non-standard project at the intersection of analytics, automation and development</span></p>
++      <h3><span class="lang-ru">ТАМ, ГДЕ ЧЕК-ЛИСТ ЗАКАНЧИВАЕТСЯ</span><span class="lang-en">WHERE THE CHECKLIST RUNS OUT</span></h3>
++      <p class="price-card__sub"><span class="lang-ru">Задача, под которую нет готового пакета: аналитика, автоматизация и разработка в нужной пропорции</span><span class="lang-en">A problem with no ready-made package behind it: analysis, automation and development in whatever mix it needs</span></p>
+       <p class="price-card__for">
+-        <span class="lang-ru"><b>Для кого:</b> хотя бы один подрядчик или штатный специалист уже сказал «это невозможно» или «это не по нашему профилю».</span>
+-        <span class="lang-en"><b>For:</b> at least one vendor or in-house specialist has already said "that's not possible" or "that's outside our scope."</span>
++        <span class="lang-ru"><b>Для кого:</b> задача не разбивается на понятные этапы, поэтому непонятно, кому её вообще отдавать и по какому прайсу считать.</span>
++        <span class="lang-en"><b>For:</b> the problem doesn't break into clear stages, so it isn't obvious who to hand it to or which price list it belongs on.</span>
+       </p>
+       <p class="price-card__list-label"><span class="lang-ru">Что входит</span><span class="lang-en">What's included</span></p>
+       <ul class="price-card__list">
+-        <li><span class="lang-ru">Индивидуальный скоуп — обсуждаем задачу, а не выбираем готовый пакет</span><span class="lang-en">A custom scope — we discuss the problem, not pick from a package menu</span></li>
++        <li><span class="lang-ru">Индивидуальный объём: обсуждаем вашу задачу, а не выбираем готовый пакет</span><span class="lang-en">A scope built for the case: we discuss your problem instead of picking from a package menu</span></li>
+         <li><span class="lang-ru">Работа на стыке дисциплин: аналитика, автоматизация, разработка — по необходимости</span><span class="lang-en">Cross-discipline work: analytics, automation, development — as the problem needs</span></li>
+         <li><span class="lang-ru">Прямой контакт с тем, кто делает работу, а не с аккаунт-менеджером</span><span class="lang-en">Direct contact with the person doing the work, not an account manager</span></li>
+         <li><span class="lang-ru">Финальный результат, который можно внедрить, а не презентация «куда двигаться»</span><span class="lang-en">A final result you can implement — not a "here's where to go next" deck</span></li>
+       </ul>
+       <p class="price-card__out">
+-        <span class="lang-ru"><b>На выходе:</b> рабочее решение задачи, которую до этого никто не взялся довести до конца.</span>
+-        <span class="lang-en"><b>You get:</b> a working solution to a problem nobody else agreed to see through.</span>
++        <span class="lang-ru"><b>На выходе:</b> работающее решение, которое можно внедрить и поддерживать без меня, а не документ о том, куда двигаться.</span>
++        <span class="lang-en"><b>You get:</b> a working solution you can put into production and maintain without me — not a document about where to go next.</span>
+       </p>
+       <details class="builder-breakdown price-card__why">
+         <summary><span class="lang-ru">ПОЧЕМУ ТАКАЯ ЦЕНА →</span><span class="lang-en">WHY THIS PRICE →</span></summary>
+         <ul>
+           <li><span class="lang-ru">Уникальность: под задачу нет готового шаблона или процесса</span><span class="lang-en">Uniqueness: there's no off-the-shelf template or process for this</span></li>
+-          <li><span class="lang-ru">Риск: беремся за задачу без гарантированного заранее решения</span><span class="lang-en">Risk: we take it on without a guaranteed solution upfront</span></li>
++          <li><span class="lang-ru">Риск: берёмся за задачу без гарантированного заранее решения</span><span class="lang-en">Risk: we take it on without a guaranteed solution upfront</span></li>
+           <li><span class="lang-ru">Одна экспертиза закрывает то, на что другим нужна команда с накладными расходами</span><span class="lang-en">One expert covers what others would need a full team — and its overhead — for</span></li>
+           <li><span class="lang-ru">Приоритет: ограничиваем число таких проектов одновременно</span><span class="lang-en">Priority: we cap how many of these we run at once</span></li>
+         </ul>
+@@ -51,8 +51,8 @@
+       <h3><span class="lang-ru">ТОЧЕЧНАЯ<br>ЭКСПЕРТИЗА</span><span class="lang-en">ONE HARD<br>QUESTION</span></h3>
+       <p class="price-card__sub"><span class="lang-ru">Не быстрый созвон — полноценный разбор одного вопроса</span><span class="lang-en">Not a quick call — a full deep-dive on one question</span></p>
+       <p class="price-card__for">
+-        <span class="lang-ru"><b>Для кого:</b> есть один конкретный неудобный вопрос, и штатная команда или предыдущий консультант не смогли на него ответить.</span>
+-        <span class="lang-en"><b>For:</b> you have one specific, uncomfortable question that your team or a previous consultant couldn't answer.</span>
++        <span class="lang-ru"><b>Для кого:</b> есть один конкретный вопрос, ответ на который нужен до того, как принимать решение, а внутри компании его посчитать некому.</span>
++        <span class="lang-en"><b>For:</b> you have one specific question that has to be answered before a decision gets made, and nobody inside the company has the time to work it out.</span>
+       </p>
+       <p class="price-card__list-label"><span class="lang-ru">Что входит</span><span class="lang-en">What's included</span></p>
+       <ul class="price-card__list">
+@@ -81,7 +81,7 @@
+ 
+     <article class="price-card">
+       <h3><span class="lang-ru">БЫСТРОЕ ВНЕДРЕНИЕ<br>ТОЧЕЧНОГО РЕШЕНИЯ</span><span class="lang-en">FAST POINT-<br>SOLUTION BUILD</span></h3>
+-      <p class="price-card__sub"><span class="lang-ru">Когда понятно что нужно — нужно, чтобы это просто сделали быстро и качественно</span><span class="lang-en">When you know what you need — you just need it built fast and well</span></p>
++      <p class="price-card__sub"><span class="lang-ru">Когда уже понятно, что нужно, и осталось это сделать</span><span class="lang-en">When you already know what is needed, and it just has to get built</span></p>
+       <p class="price-card__for">
+         <span class="lang-ru"><b>Для кого:</b> задача уже сформулирована, нужен человек, который спроектирует и соберёт решение сам, без очереди на подрядчика.</span>
+         <span class="lang-en"><b>For:</b> the task is already defined; you need someone to design and build the solution themselves, no vendor queue.</span>
+@@ -113,10 +113,10 @@
+ 
+     <article class="price-card">
+       <h3><span class="lang-ru">ЭКСПЕРТНЫЙ<br>РЕЗЕРВ</span><span class="lang-en">ON-CALL<br>EXPERT RESERVE</span></h3>
+-      <p class="price-card__sub"><span class="lang-ru">Не ежедневный менеджмент — человек, к которому идут, когда обычные способы не сработали</span><span class="lang-en">Not day-to-day management — the person you call when the usual approach didn't work</span></p>
++      <p class="price-card__sub"><span class="lang-ru">Я написал статью о том, почему абонентка обычно не решает задачу. Вот случай, когда она всё-таки нужна</span><span class="lang-en">I wrote an article on why retainers usually don't solve the problem. This is the case where one actually does</span></p>
+       <p class="price-card__for">
+-        <span class="lang-ru"><b>Для кого:</b> нужен приоритетный доступ к эксперту для нестандартных вопросов, а не ещё один менеджер на созвонах.</span>
+-        <span class="lang-en"><b>For:</b> you want priority access to an expert for non-standard problems — not another manager on weekly calls.</span>
++        <span class="lang-ru"><b>Для кого:</b> вопросы возникают регулярно, но каждый мелкий, и заводить под него отдельный проект дольше, чем решить. Если задача одна и крупная — берите разовый формат, выйдет дешевле.</span>
++        <span class="lang-en"><b>For:</b> questions come up regularly but each one is small, and opening a project for it takes longer than answering it. If you have one large problem instead, take a one-off format — it will cost you less.</span>
+       </p>
+       <p class="price-card__list-label"><span class="lang-ru">Что входит</span><span class="lang-en">What's included</span></p>
+       <ul class="price-card__list">
+@@ -125,20 +125,20 @@
+         <li><span class="lang-ru">Ежемесячный разбор: что решили, что осталось, что дальше</span><span class="lang-en">A monthly review: what got solved, what's left, what's next</span></li>
+       </ul>
+       <p class="price-card__out">
+-        <span class="lang-ru"><b>На выходе:</b> экспертный резерв, который включается именно тогда, когда обычные процессы забуксовали.</span>
+-        <span class="lang-en"><b>You get:</b> an expert reserve that kicks in exactly when your usual process stalls.</span>
++        <span class="lang-ru"><b>На выходе:</b> неизрасходованные часы не переносятся и не возвращаются — это плата за доступность. Если два месяца подряд часы не нужны, я сам предложу приостановить.</span>
++        <span class="lang-en"><b>You get:</b> unused hours don't roll over and aren't refunded — that is what paying for availability means. If you don't need them two months running, I'll suggest pausing it myself.</span>
+       </p>
+       <details class="builder-breakdown price-card__why">
+         <summary><span class="lang-ru">ПОЧЕМУ ТАКАЯ ЦЕНА →</span><span class="lang-en">WHY THIS PRICE →</span></summary>
+         <ul>
+-          <li><span class="lang-ru">Приоритет над другими проектами — держим для тебя запас времени</span><span class="lang-en">Priority over other projects — we keep time reserved for you</span></li>
++          <li><span class="lang-ru">Приоритет над другими проектами: держу для вас запас времени каждый месяц</span><span class="lang-en">Priority over other projects: I keep time reserved for you every month</span></li>
+           <li><span class="lang-ru">Готовность подключаться к нестандартным задачам без отдельного согласования</span><span class="lang-en">Ready to jump into non-standard tasks without a separate approval round</span></li>
+           <li><span class="lang-ru">Ограниченное количество слотов в месяц</span><span class="lang-en">A limited number of slots per month</span></li>
+         </ul>
+       </details>
+       <div class="price-card__foot">
+         <span class="price-card__duration"><span class="lang-ru">Ежемесячно</span><span class="lang-en">Monthly</span></span>
+-        <span class="price-card__price"><span class="lang-ru">от</span><span class="lang-en">from</span> $1 400<span class="lang-ru">/мес</span><span class="lang-en">/mo</span></span>
++        <span class="price-card__price"><span class="lang-ru">от</span><span class="lang-en">from</span> $600<span class="lang-ru">/мес</span><span class="lang-en">/mo</span></span>
+       </div>
+     </article>
+ 
+--- a/content/fragments/services.html	2026-08-28 16:23:00.000000000 +0000
++++ b/content/fragments/services.html	2026-08-29 14:33:55.775703852 +0000
+@@ -1,9 +1,9 @@
+ <section class="services" id="services">
+   <div class="section-label">
+-    <span class="tag tag--blue"><span class="lang-ru">01 / ЧТО МЫ ДЕЛАЕМ</span><span class="lang-en">01 / WHAT WE DO</span></span>
++    <span class="tag tag--blue"><span class="lang-ru">01 / ЧТО Я ДЕЛАЮ</span><span class="lang-en">01 / WHAT I DO</span></span>
+     <h2><span class="lang-ru">УСЛУГИ</span><span class="lang-en">SERVICES</span></h2>
+     <p class="section-label__intro">
+-      <span class="lang-ru">Мы не про длинную воронку одинаковых пакетов. Берём отдельную сложную задачу — ту, где штатный специалист или обычное агентство разводят руками, — и доводим до результата, который можно внедрить.</span>
++      <span class="lang-ru">Четыре направления. В каждом я беру одну конкретную задачу, а не подписываю вас на поток работ, и довожу её до результата, который можно внедрить и поддерживать без меня.</span>
+       <span class="lang-en">We're not about a long funnel of identical packages. We take one hard, specific problem — the kind where an in-house specialist or a regular agency just shrugs — and turn it into a result you can actually implement.</span>
+     </p>
+   </div>
+@@ -12,32 +12,32 @@
+     <div class="service-cell" data-project-type="audit" role="button" tabindex="0" aria-label="Собрать проект: разбор сложных случаев">
+       <span class="service-cell__num">01</span>
+       <h3><span class="lang-ru">РАЗБОР<br>СЛОЖНЫХ СЛУЧАЕВ</span><span class="lang-en">HARD-CASE<br>DIAGNOSIS</span></h3>
+-      <p><span class="lang-ru">Когда цифры не сходятся, а штатная аналитика уже разводит руками. Берём один конкретный неудобный вопрос и доводим его до внятного, проверяемого ответа — без общих слов.</span>
+-      <span class="lang-en">When the numbers don't add up and in-house analytics has already shrugged. We take one specific, uncomfortable question and turn it into a clear, checkable answer — no generalities.</span></p>
++      <p><span class="lang-ru">Данные есть, а ответа нет: непонятно, какая акция сработала, откуда взялась просадка, окупается ли направление. Беру один вопрос, свожу разрозненные выгрузки в одну картину и отдаю письменный ответ с расчётом, который вы сможете проверить и повторить сами.</span>
++      <span class="lang-en">You have the data but not the answer: which promotion worked, where the dip came from, whether a line of business pays for itself. I take one question, pull the scattered exports into a single picture, and hand back a written answer with the arithmetic — checkable, and repeatable by your own team.</span></p>
+       <span class="service-cell__cta"><span class="lang-ru">СОБРАТЬ ПРОЕКТ →</span><span class="lang-en">BUILD A PROJECT →</span></span>
+     </div>
+ 
+     <div class="service-cell" data-project-type="automation" role="button" tabindex="0" aria-label="Собрать проект: автоматизация нетиповых процессов">
+       <span class="service-cell__num">02</span>
+       <h3><span class="lang-ru">АВТОМАТИЗАЦИЯ<br>НЕТИПОВЫХ ПРОЦЕССОВ</span><span class="lang-en">AUTOMATION FOR<br>NON-STANDARD PROCESSES</span></h3>
+-      <p><span class="lang-ru">Когда готовое no-code решение не подходит, а нанимать разработчика в штат ради одной задачи — дорого и долго. Собираем точечное решение под конкретный процесс, а не платформу «на вырост».</span>
+-      <span class="lang-en">When an off-the-shelf no-code tool doesn't fit, and hiring a developer full-time for one task is slow and expensive. We build a targeted fix for the actual process — not a platform "for future growth."</span></p>
++      <p><span class="lang-ru">Рутина, которая съедает часы каждую неделю: перенос данных между системами, однотипные документы, разбор почты, согласования. Разбираю процесс по шагам, автоматизирую то, что стоит автоматизировать, и оставляю в ваших руках рабочую схему с документацией — а не платформу «на вырост».</span>
++      <span class="lang-en">The routine that eats hours every week: moving data between systems, producing the same documents, triaging mail, chasing approvals. I map the process step by step, automate the parts worth automating, and leave you a working setup with documentation — not a platform "for future growth."</span></p>
+       <span class="service-cell__cta"><span class="lang-ru">СОБРАТЬ ПРОЕКТ →</span><span class="lang-en">BUILD A PROJECT →</span></span>
+     </div>
+ 
+     <div class="service-cell" data-project-type="pm" role="button" tabindex="0" aria-label="Собрать проект: управление сложными проектами">
+       <span class="service-cell__num">03</span>
+       <h3><span class="lang-ru">УПРАВЛЕНИЕ<br>СЛОЖНЫМИ ПРОЕКТАМИ</span><span class="lang-en">COMPLEX PROJECT<br>MANAGEMENT</span></h3>
+-      <p><span class="lang-ru">Проекты, где штатный менеджер тонет в согласованиях, а агентство отказывается из-за неясного скоупа. Берём задачу с противоречивыми стейкхолдерами и доводим её до результата, а не до отчёта.</span>
+-      <span class="lang-en">Projects where an in-house manager drowns in approvals, and agencies decline over unclear scope. We take on tasks with conflicting stakeholders and drive them to a result — not a status report.</span></p>
++      <p><span class="lang-ru">Проект идёт месяцами, сроки уезжают, а причина каждый раз новая. Собираю реальную картину: кто чего ждёт, где решения не принимаются и что блокирует остальное. Дальше веду до результата с еженедельными точками, на которых видно движение, а не пересказ активности.</span>
++      <span class="lang-en">The project has run for months, dates keep slipping, and the reason is different every time. I build the real picture: who expects what, where decisions are not being made, and what is blocking everything else. Then I run it to a result with weekly checkpoints that show movement, not a retelling of activity.</span></p>
+       <span class="service-cell__cta"><span class="lang-ru">СОБРАТЬ ПРОЕКТ →</span><span class="lang-en">BUILD A PROJECT →</span></span>
+     </div>
+ 
+     <div class="service-cell" data-project-type="web" role="button" tabindex="0" aria-label="Собрать проект: нестандартная веб-разработка">
+       <span class="service-cell__num">04</span>
+       <h3><span class="lang-ru">НЕСТАНДАРТНАЯ<br>ВЕБ-РАЗРАБОТКА</span><span class="lang-en">NON-STANDARD<br>WEB DEVELOPMENT</span></h3>
+-      <p><span class="lang-ru">Мультиязычные каталоги, RTL-вёрстка, нетиповые интеграции и локальная специфика рынка — то, на что обычная студия скажет «это не по прайсу». У нас как раз по прайсу.</span>
+-      <span class="lang-en">Multilingual catalogs, RTL layouts, unusual integrations, local market quirks — the stuff a regular studio calls "outside our scope." That's exactly our scope.</span></p>
++      <p><span class="lang-ru">Сайт под несколько рынков сразу: каталог на трёх языках, арабская версия справа налево, разные требования к юридическим текстам в каждой стране. Делаю так, чтобы это не превратилось в четыре разных сайта, которые потом никто не может синхронно обновить.</span>
++      <span class="lang-en">A site that has to work in several markets at once: a catalogue in three languages, an Arabic version running right to left, different legal wording expected in each country. I build it so it doesn't turn into four separate sites nobody can update in step.</span></p>
+       <span class="service-cell__cta"><span class="lang-ru">СОБРАТЬ ПРОЕКТ →</span><span class="lang-en">BUILD A PROJECT →</span></span>
+     </div>
+   </div>
+--- a/content/pages/cases.py	2026-08-28 16:34:49.000000000 +0000
++++ b/content/pages/cases.py	2026-08-29 14:35:24.036246665 +0000
+@@ -1,5 +1,11 @@
+ # -*- coding: utf-8 -*-
+ """Кейсы. Карточки собираются из content/cases/*.py — добавляются скриптом."""
++from core.pages import crumbs
++def schema(ctx):
++    """Хлебные крошки. Раньше у кейсов не было ничего, кроме WebPage."""
++    return crumbs(ctx, (ctx.L["cases"], "cases/"))
++
++
+ PAGE = dict(
+     slug="cases/",
+     order=2,
+@@ -19,10 +25,12 @@
+         "eyebrow": {"en": "CASES", "ru": "КЕЙСЫ"},
+         "h1": {"en": "WHAT WE ACTUALLY DELIVERED", "ru": "ЧТО РЕАЛЬНО СДЕЛАНО"},
+         "lead": {
+-            "en": "Clients are anonymised, the numbers are not. Each case says what was wrong, "
+-                  "what we did about it, and which figure moved.",
++            "en": "Clients are anonymised, the numbers are not. Each case says what was "
++                  "wrong, what I did about it, which figure moved — and an honest caveat "
++                  "about what that figure does not prove.",
+             "ru": "Клиенты обезличены, цифры — нет. В каждом кейсе: что было не так, что "
+-                  "сделали и какая цифра сдвинулась.",
++                  "я сделал, какая цифра сдвинулась — и честная оговорка о том, "
++                  "чего эта цифра не доказывает.",
+         },
+     },
+     keywords={
+@@ -31,5 +39,6 @@
+         "ru": "кейсы консалтинга, кейс автоматизации, аналитика в ритейле кейс, "
+               "мультиязычный сайт кейс",
+     },
++    schema=schema,
+     sections=[("cases", None)],
+ )
+--- a/content/pages/home.py	2026-08-28 16:25:48.000000000 +0000
++++ b/content/pages/home.py	2026-08-29 13:35:34.466167596 +0000
+@@ -27,5 +27,6 @@
+         ("cases", 3),
+         ("posts", 3),
+         ("fragment", "about"),
++        ("fragment", "contact-form"),
+     ],
+ )
+=== НОВЫЙ ФАЙЛ: content/pages/privacy.py ===
+--- a/content/pages/services.py	2026-08-28 16:34:04.000000000 +0000
++++ b/content/pages/services.py	2026-08-29 14:35:24.036050851 +0000
+@@ -1,11 +1,16 @@
+ # -*- coding: utf-8 -*-
+ """Услуги: как мы работаем, что делаем, сколько стоит, частые возражения."""
+ from core import config as cfg
++from core.pages import crumbs, faq_nodes
+ 
+ 
+ def schema(ctx):
+-    """ProfessionalService с прайсингом — рич-сниппет в выдаче."""
+-    return [{
++    """ProfessionalService с прайсингом, хлебные крошки и FAQ этой же страницы.
++
++    FAQPage считается из content/fragments/faq.html — вопросы и разметка не
++    могут разойтись, потому что источник один.
++    """
++    return crumbs(ctx, (ctx.L["services"], "services/")) + faq_nodes(ctx) + [{
+         "@type": "ProfessionalService",
+         "@id": f"{cfg.SITE}/#service",
+         "name": cfg.BRAND,
+@@ -45,13 +50,14 @@
+     },
+     hero={
+         "eyebrow": {"en": "SERVICES & PRICING", "ru": "УСЛУГИ И ЦЕНЫ"},
+-        "h1": {"en": "WHAT WE DO AND WHAT IT COSTS",
+-               "ru": "ЧТО МЫ ДЕЛАЕМ И СКОЛЬКО ЭТО СТОИТ"},
++        "h1": {"en": "WHAT I DO AND WHAT IT COSTS",
++               "ru": "ЧТО Я ДЕЛАЮ И СКОЛЬКО ЭТО СТОИТ"},
+         "lead": {
+             "en": "Four engagement formats instead of a funnel of identical packages. Each one "
+                   "states what's included, what it costs and how long it takes — before the first call.",
+-            "ru": "Четыре формата работы вместо воронки одинаковых пакетов. У каждого написано, "
+-                  "что входит, сколько стоит и сколько занимает — до первого созвона.",
++            "ru": "Четыре формата работы вместо воронки одинаковых пакетов. У каждого "
++                  "написано, что входит, сколько стоит и сколько занимает — до первого "
++                  "разговора, а не после него.",
+         },
+     },
+     keywords={
+@@ -67,5 +73,6 @@
+         ("fragment", "builder-trigger"),
+         ("fragment", "pricing"),
+         ("fragment", "faq"),
++        ("fragment", "contact-form"),
+     ],
+ )
+=== НОВЫЙ ФАЙЛ: supabase/functions/submit-lead/index.ts ===
+--- a/supabase/schema.sql	2026-08-27 23:50:28.000000000 +0000
++++ b/supabase/schema.sql	2026-08-29 13:34:14.019429722 +0000
+@@ -2,13 +2,14 @@
+ -- GANZA CONSULTING — analytics schema for Supabase (PostgreSQL)
+ --
+ -- Run this ONCE in Supabase → SQL Editor → New query → Run.
+--- It creates: the events table, security rules, indexes, reporting views
+--- and a retention function.
++-- It creates: the events table, the leads table (contact form), security
++-- rules, indexes, reporting views and retention functions.
+ --
+ -- Security model
+ --   * the website writes with the public anon key and can ONLY insert
+ --   * nobody can read with the anon key — reading requires a logged-in user
+---   * no cookies, no personal data, no cross-site identifiers are stored
++--   * no cookies, no cross-session identifier, no cross-site identifiers
++--   * the session id lives in sessionStorage and dies with the tab
+ -- ============================================================================
+ 
+ create extension if not exists "pgcrypto";
+@@ -20,8 +21,7 @@
+   id            bigint generated always as identity primary key,
+   ts            timestamptz  not null default now(),
+   event         text         not null,
+-  visitor_id    uuid         not null,   -- stable per browser (localStorage)
+-  session_id    uuid         not null,   -- resets after 30 min of inactivity
++  session_id    uuid         not null,   -- sessionStorage; dies with the tab
+   path          text,                    -- e.g. /blog/when-not-to-automate/
+   lang          text,                    -- en | ru
+   page_type     text,                    -- home | blog-index | article | other
+@@ -69,7 +69,6 @@
+ create index if not exists events_event_ts_idx  on public.events (event, ts desc);
+ create index if not exists events_session_idx   on public.events (session_id, ts);
+ create index if not exists events_path_idx      on public.events (path, ts desc);
+-create index if not exists events_visitor_idx   on public.events (visitor_id);
+ 
+ -- ---------------------------------------------------------------------------
+ -- 3. ROW LEVEL SECURITY
+@@ -102,7 +101,6 @@
+ with base as (
+   select
+     session_id,
+-    min(visitor_id::text)::uuid                                as visitor_id,
+     min(ts)                                                    as started_at,
+     max(ts)                                                    as ended_at,
+     extract(epoch from (max(ts) - min(ts)))::int               as duration_sec,
+@@ -139,7 +137,6 @@
+ select
+   date_trunc('day', started_at)::date          as day,
+   count(*)                                     as sessions,
+-  count(distinct visitor_id)                   as visitors,
+   sum(pageviews)                               as pageviews,
+   round(avg(engaged_sec))                      as avg_engaged_sec,
+   round(100.0 * count(*) filter (where is_bounce) / nullif(count(*),0), 1) as bounce_pct
+@@ -258,11 +255,12 @@
+ order by sessions desc;
+ 
+ -- ---------------------------------------------------------------------------
+--- 5. RETENTION — keeps the free tier (500 MB) comfortable
+---    Call manually, or schedule with pg_cron if it is enabled on your project:
+---      select cron.schedule('prune-events','0 3 * * *','select public.prune_events(180)');
++-- 5. RETENTION — 24 месяца, как заявлено в политике конфиденциальности
++--    Срок в политике и срок здесь должны совпадать, иначе политика — вымысел.
++--      select cron.schedule('prune-events','0 3 * * *','select public.prune_events(730)');
++--      select cron.schedule('prune-leads', '0 3 * * *','select public.prune_leads(1095)');
+ -- ---------------------------------------------------------------------------
+-create or replace function public.prune_events(keep_days int default 180)
++create or replace function public.prune_events(keep_days int default 730)
+ returns bigint
+ language plpgsql
+ security definer
+@@ -315,3 +313,132 @@
+ --
+ -- Sessions that reached Telegram:
+ --   select count(distinct session_id) from events where event = 'outbound' and target_href like '%t.me%';
++
++-- ============================================================================
++-- 6. ЗАЯВКИ С ФОРМЫ
++--
++-- Отдельная таблица, отдельная политика. Аноним может только вставить строку
++-- и не может прочитать ни одной — включая свою. Ограничение частоты живёт в
++-- базе, а не только в браузере: клиентскую проверку обходит любой, кто умеет
++-- открыть консоль.
++-- ============================================================================
++create table if not exists public.leads (
++  id            bigint generated always as identity primary key,
++  ts            timestamptz not null default now(),
++  name          text        not null,
++  contact       text        not null,   -- email или @telegram, как прислали
++  contact_kind  text        not null,   -- email | telegram
++  message       text        not null,
++  lang          text,                   -- на каком языке пришли
++  path          text,                   -- с какой страницы отправили
++  utm_source    text,
++  utm_medium    text,
++  utm_campaign  text,
++  session_id    uuid,                   -- связать с аналитикой той же сессии
++  ip_hash       text,                   -- см. ниже: соль на стороне базы
++  handled_at    timestamptz,            -- отметка «ответил»
++  note          text,
++
++  constraint leads_kind_ck    check (contact_kind in ('email','telegram')),
++  constraint leads_len_ck     check (
++    length(name)     between 1 and 120  and
++    length(contact)  between 3 and 200  and
++    length(message)  between 10 and 4000 and
++    coalesce(length(path),0) <= 300
++  ),
++  constraint leads_ts_ck      check (ts > now() - interval '1 day'
++                                 and ts < now() + interval '1 hour')
++);
++
++comment on table public.leads is
++  'Заявки с формы обратной связи. Аноним может только insert. Хранение 36 мес.';
++
++create index if not exists leads_ts_idx      on public.leads (ts desc);
++create index if not exists leads_open_idx    on public.leads (ts desc) where handled_at is null;
++
++alter table public.leads enable row level security;
++
++drop policy if exists "anon can submit a lead" on public.leads;
++drop policy if exists "authenticated can read leads" on public.leads;
++drop policy if exists "authenticated can update leads" on public.leads;
++
++-- Важно: аноним сюда НЕ пишет. Заявки приходят только через Edge Function
++-- submit-lead, которая работает под service-ключом. Причина простая: публичный
++-- anon-ключ лежит в исходнике страницы, и если разрешить ему insert, таблицу
++-- можно набить мусором в обход формы. Заодно только на сервере известен
++-- IP-адрес, из которого считается ip_hash для ограничения частоты.
++revoke insert on public.leads from anon;
++
++create policy "authenticated can read leads"
++  on public.leads for select to authenticated using (true);
++
++create policy "authenticated can update leads"
++  on public.leads for update to authenticated using (true) with check (true);
++
++-- --- 6.1 Ограничение частоты -------------------------------------------------
++-- Не больше 3 заявок за час с одного ip_hash и не больше 30 за час всего.
++-- Триггер срабатывает до вставки: клиент может сколько угодно обходить свою
++-- проверку в JS, до таблицы это не дойдёт.
++create or replace function public.leads_rate_limit()
++returns trigger
++language plpgsql
++security definer
++set search_path = public
++as $$
++declare
++  per_ip  int;
++  overall int;
++begin
++  if new.ip_hash is not null then
++    select count(*) into per_ip
++      from public.leads
++     where ip_hash = new.ip_hash
++       and ts > now() - interval '1 hour';
++    if per_ip >= 3 then
++      raise exception 'rate limit: too many submissions from this source'
++        using errcode = 'check_violation';
++    end if;
++  end if;
++
++  select count(*) into overall
++    from public.leads
++   where ts > now() - interval '1 hour';
++  if overall >= 30 then
++    raise exception 'rate limit: too many submissions overall'
++      using errcode = 'check_violation';
++  end if;
++
++  return new;
++end;
++$$;
++
++drop trigger if exists leads_rate_limit_trg on public.leads;
++create trigger leads_rate_limit_trg
++  before insert on public.leads
++  for each row execute function public.leads_rate_limit();
++
++-- --- 6.2 Хранение ------------------------------------------------------------
++create or replace function public.prune_leads(keep_days int default 1095)
++returns bigint
++language plpgsql
++security definer
++set search_path = public
++as $$
++declare removed bigint;
++begin
++  delete from public.leads where ts < now() - make_interval(days => keep_days);
++  get diagnostics removed = row_count;
++  return removed;
++end;
++$$;
++
++revoke all on function public.prune_leads(int) from public, anon;
++grant execute on function public.prune_leads(int) to authenticated;
++
++-- --- 6.3 Новые заявки для дашборда ------------------------------------------
++create or replace view public.v_leads with (security_invoker = on) as
++select id, ts, name, contact, contact_kind, message, lang, path,
++       utm_source, utm_medium, utm_campaign, handled_at, note,
++       (handled_at is null) as is_open
++from public.leads
++order by ts desc;

@@ -1,8 +1,10 @@
 /* ==========================================================================
    GANZA CONSULTING — first-party analytics
    --------------------------------------------------------------------------
-   Sends events to a Supabase table. No cookies, no personal data, no
-   third-party scripts, nothing that follows anyone to another site.
+   Sends events to a Supabase table. No cookies, no cross-session identifier,
+   no personal data, no third-party scripts. The session id lives in
+   sessionStorage and is gone when the tab closes, so nothing here follows a
+   visitor between sessions or between sites.
 
    >>> SETUP: fill in the two values below with your Supabase project URL and
    >>> the *anon* (public) key. Both are safe to publish: row-level security
@@ -42,18 +44,20 @@
   }
 
   // --- identity -------------------------------------------------------------
+  // Только сессия. Раньше здесь жил постоянный visitor_id в localStorage —
+  // межсессионный идентификатор, то есть по грузинскому закону и по ePrivacy
+  // то же самое, что cookie, со всеми вытекающими согласиями. Взамен мы
+  // теряем «уникальных за месяц» и получаем аналитику, которой не нужен
+  // баннер: идентификатор живёт в sessionStorage и умирает с вкладкой.
   var SESSION_TTL = 30 * 60 * 1000;
-  var visitorId = get("localStorage", "ganza:vid");
-  if (!visitorId) { visitorId = uuid(); set("localStorage", "ganza:vid", visitorId); }
-
-  var lastSeen = parseInt(get("localStorage", "ganza:seen") || "0", 10);
+  var lastSeen = parseInt(get("sessionStorage", "ganza:seen") || "0", 10);
   var sessionId = get("sessionStorage", "ganza:sid");
   if (!sessionId || Date.now() - lastSeen > SESSION_TTL) {
     sessionId = uuid();
     set("sessionStorage", "ganza:sid", sessionId);
     set("sessionStorage", "ganza:seq", "0");
   }
-  set("localStorage", "ganza:seen", String(Date.now()));
+  set("sessionStorage", "ganza:seen", String(Date.now()));
 
   var seq = parseInt(get("sessionStorage", "ganza:seq") || "0", 10) + 1;
   set("sessionStorage", "ganza:seq", String(seq));
@@ -101,7 +105,6 @@
   }
 
   var BASE = {
-    visitor_id: visitorId,
     session_id: sessionId,
     path: location.pathname,
     lang: document.documentElement.getAttribute("lang") || "en",
@@ -257,7 +260,7 @@
       if (sectionTime[id] >= 1) send("section", { section: id.slice(0, 100), value: Math.round(sectionTime[id]) });
     });
 
-    set("localStorage", "ganza:seen", String(Date.now()));
+    set("sessionStorage", "ganza:seen", String(Date.now()));
     flush(true);
     if (!partial) finished = true;
     sectionTime = {}; sectionEnter = {}; activeMs = 0;

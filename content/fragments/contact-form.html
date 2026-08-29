@@ -1,0 +1,58 @@
+<section class="contact-form" id="contact-form">
+  <div class="section-label">
+    <span class="tag tag--yellow"><span class="lang-ru">НАПИСАТЬ</span><span class="lang-en">GET IN TOUCH</span></span>
+    <h2><span class="lang-ru">ОПИШИТЕ ЗАДАЧУ</span><span class="lang-en">DESCRIBE THE PROBLEM</span></h2>
+    <p class="section-label__intro">
+      <span class="lang-ru">Отвечаю в течение рабочего дня. Первый разговор — 20 минут, бесплатно: вы рассказываете задачу, я говорю, берусь или нет и почему.</span>
+      <span class="lang-en">I reply within one working day. The first conversation is 20 minutes, free: you describe the problem, I say whether I'll take it on and why.</span>
+    </p>
+  </div>
+
+  <form class="cform" id="cform" novalidate data-endpoint="{{FORM_ENDPOINT}}">
+    <div class="cform__row">
+      <label class="cform__field">
+        <span class="cform__label"><span class="lang-ru">Как вас зовут</span><span class="lang-en">Your name</span></span>
+        <input type="text" name="name" required maxlength="120" autocomplete="name">
+      </label>
+      <label class="cform__field">
+        <span class="cform__label"><span class="lang-ru">Почта или телеграм</span><span class="lang-en">Email or Telegram</span></span>
+        <input type="text" name="contact" required maxlength="200" autocomplete="email"
+               placeholder="you@company.com  ·  @username">
+      </label>
+    </div>
+
+    <label class="cform__field">
+      <span class="cform__label"><span class="lang-ru">Что за задача</span><span class="lang-en">What's the problem</span></span>
+      <textarea name="message" required minlength="10" maxlength="4000" rows="5"></textarea>
+      <span class="cform__hint">
+        <span class="lang-ru">Чем конкретнее, тем полезнее будет первый ответ. Что уже пробовали — тоже важно.</span>
+        <span class="lang-en">The more specific, the more useful my first reply. What you've already tried matters too.</span>
+      </span>
+    </label>
+
+    <!-- ловушка для ботов: скрыта от человека и от скринридера -->
+    <div class="cform__trap" aria-hidden="true">
+      <label>Company<input type="text" name="company" tabindex="-1" autocomplete="off"></label>
+    </div>
+
+    <label class="cform__consent">
+      <input type="checkbox" name="consent" required>
+      <span>
+        <span class="lang-ru">Согласен на обработку этих данных, чтобы со мной связались по задаче. Подробности — в <a href="{{PRIVACY}}">политике конфиденциальности</a>.</span>
+        <span class="lang-en">I agree to my data being processed so that I can be contacted about this enquiry. Details are in the <a href="{{PRIVACY}}">privacy policy</a>.</span>
+      </span>
+    </label>
+
+    <div class="cform__actions">
+      <button class="btn btn--yellow" type="submit" data-track="form-submit">
+        <span class="lang-ru">ОТПРАВИТЬ →</span><span class="lang-en">SEND →</span>
+      </button>
+      <p class="cform__alt">
+        <span class="lang-ru">Или просто напишите в <a href="https://t.me/groovebliss" target="_blank" rel="noopener">Telegram</a>.</span>
+        <span class="lang-en">Or just message me on <a href="https://t.me/groovebliss" target="_blank" rel="noopener">Telegram</a>.</span>
+      </p>
+    </div>
+
+    <p class="cform__status" id="cform-status" role="status" aria-live="polite"></p>
+  </form>
+</section>

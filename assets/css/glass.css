@@ -232,6 +232,11 @@ body::after{
   color:var(--g-text);
   text-shadow:0 2px 40px rgba(0,0,0,.35);
 }
+.hero__title-sub{
+  color:var(--g-text-2);
+  opacity:1;
+  text-shadow:none;
+}
 .hero__title .hl{
   background:linear-gradient(160deg, rgba(232,67,44,.96), rgba(232,67,44,.82));
   border-radius:16px;
@@ -863,3 +868,14 @@ a:focus-visible,button:focus-visible,summary:focus-visible,details:focus-visible
 /* заголовок страницы */
 .page-hero h1{color:var(--g-text); text-shadow:0 2px 40px rgba(0,0,0,.35);}
 .page-hero__lead{color:var(--g-text-2);}
+
+
+/* Форма в стеклянной теме: панель вместо голых рамок. */
+.cform input[type=text], .cform textarea{
+  background:var(--g-surface-2);
+  border:1px solid var(--g-border);
+  border-radius:14px;
+  color:var(--g-text);
+}
+.cform input[type=text]::placeholder{color:var(--g-text-3, rgba(242,240,232,.5));}
+.cform__hint, .cform__alt{color:var(--g-text-2);}

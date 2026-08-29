@@ -27,5 +27,6 @@ PAGE = dict(
         ("cases", 3),
         ("posts", 3),
         ("fragment", "about"),
+        ("fragment", "contact-form"),
     ],
 )

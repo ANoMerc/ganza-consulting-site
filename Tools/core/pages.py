@@ -46,6 +46,15 @@ def load_cases():
     return sorted(_load_dir("cases", "CASE"), key=lambda c: c.get("order", 99))
 
 
+def _load_blocks(name):
+    """content/blocks/<name>.py → словарь {"ru": [...], "en": [...]}"""
+    path = os.path.join(cfg.CONTENT, "blocks", name + ".py")
+    spec = importlib.util.spec_from_file_location(f"blocks_{name}", path)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod.BLOCKS
+
+
 def load_pages():
     return sorted(_load_dir("pages", "PAGE"), key=lambda p: p.get("order", 99))
 
@@ -53,6 +62,26 @@ def load_pages():
 # ---------------------------------------------------------------------------
 # Фрагменты
 # ---------------------------------------------------------------------------
+
+# Заголовок главной. Раньше оба языка лежали в одном <h1> и английский просто
+# прятался CSS-ом — то есть у /en/ главный заголовок страницы был кириллицей,
+# а у обеих версий — наполовину на чужом языке. Теперь H1 рендерится под язык
+# страницы, а мгновенное переключение остаётся у всего остального.
+HERO_H1 = {
+    "ru": ("ПОРЯДОК<br>ИЗ <span class=\"hl\">ХАОСА</span>.<br>БЕЗ ВОДЫ.",
+           "Независимый консалтинг, автоматизация процессов и проектный менеджмент"),
+    "en": ("ORDER<br>FROM <span class=\"hl\">CHAOS</span>.<br>NO FLUFF.",
+           "Independent consulting, process automation and project management"),
+}
+
+
+def hero_h1(lang):
+    big, sub = HERO_H1[lang]
+    return (f'<h1 class="hero__title">'
+            f'<span class="hero__title-main">{big}</span>'
+            f'<span class="hero__title-sub">{sub}</span>'
+            f'</h1>')
+
 def fragment(name, ctx):
     path = os.path.join(cfg.CONTENT, "fragments", name + ".html")
     s = open(path, encoding="utf-8").read()
@@ -61,9 +90,55 @@ def fragment(name, ctx):
              .replace("{{BLOG}}", ctx.to("blog/"))
              .replace("{{CASES}}", ctx.to("cases/"))
              .replace("{{SERVICES}}", ctx.to("services/"))
+             .replace("{{HERO_H1}}", hero_h1(ctx.lang))
+             .replace("{{PRIVACY}}", ctx.to("privacy/"))
+             .replace("{{FORM_ENDPOINT}}", cfg.FORM_ENDPOINT)
              .replace("{{FOUNDER_ALT}}",
                       "основатель Ganza Consulting" if ctx.lang == "ru"
                       else "founder of Ganza Consulting"))
+
+
+# ---------------------------------------------------------------------------
+# Схема из разметки
+# ---------------------------------------------------------------------------
+def faq_nodes(ctx, name="faq"):
+    """FAQPage, собранный регуляркой из самого фрагмента FAQ.
+
+    Смысл ровно в том, чтобы источник был один: вопросы и ответы живут в
+    content/fragments/faq.html, а разметка для поиска считается из них. Если
+    вопрос отредактируют, схема поедет следом и разойтись им негде.
+    """
+    path = os.path.join(cfg.CONTENT, "fragments", name + ".html")
+    if not os.path.exists(path):
+        return []
+    src = open(path, encoding="utf-8").read()
+    lang = ctx.lang
+    qa = []
+    for block in re.findall(r"<details[^>]*>(.*?)</details>", src, re.S):
+        q = re.search(rf'<summary>.*?<span class="lang-{lang}">(.*?)</span>', block, re.S)
+        a = re.search(rf'<p>.*?<span class="lang-{lang}">(.*?)</span>', block, re.S)
+        if not (q and a):
+            continue
+        strip = lambda t: re.sub(r"\s+", " ", re.sub(r"<[^>]+>", "", t)).strip()
+        qa.append((strip(q.group(1)), strip(a.group(1))))
+    if not qa:
+        return []
+    return [{"@type": "FAQPage", "@id": ctx.abs() + "#faq",
+             "inLanguage": lang,
+             "mainEntity": [{"@type": "Question", "name": q,
+                             "acceptedAnswer": {"@type": "Answer", "text": a}}
+                            for q, a in qa]}]
+
+
+def crumbs(ctx, *trail):
+    """BreadcrumbList: (название, путь) от главной к текущей странице."""
+    items = [{"@type": "ListItem", "position": 1,
+              "name": ctx.L["home"], "item": ctx.abs("")}]
+    for n, (name, path) in enumerate(trail, start=2):
+        items.append({"@type": "ListItem", "position": n,
+                      "name": name, "item": ctx.abs(path)})
+    return [{"@type": "BreadcrumbList", "@id": ctx.abs() + "#breadcrumb",
+             "itemListElement": items}]
 
 
 # ---------------------------------------------------------------------------
@@ -103,6 +178,15 @@ def services_teaser(ctx):
 def case_card(case, ctx):
     L = ctx.L
     tags = "".join(f'<span class="badge">{t}</span>' for t in case.get("tags", []))
+    # «Что бы я сделал иначе» — необязательный блок. Кейс без него читается как
+    # реклама; с ним — как разбор, и заодно честно называет слабые места цифры.
+    honest = ""
+    if case.get("honest"):
+        label = "ЧЕСТНАЯ ОГОВОРКА" if ctx.lang == "ru" else "THE HONEST CAVEAT"
+        honest = (f'      <details class="case-card__honest">\n'
+                  f'        <summary>{label}</summary>\n'
+                  f'        <p>{esc(case["honest"][ctx.lang])}</p>\n'
+                  f'      </details>\n')
     return f"""    <article class="case-card case-card--{case['accent']}" data-reveal>
       <div class="case-card__top">
         <span class="case-card__client">{esc(case['client'][ctx.lang]).upper()}</span>
@@ -114,7 +198,7 @@ def case_card(case, ctx):
       <p class="case-card__label">{L['did']}</p>
       <p>{esc(case['did'][ctx.lang])}</p>
       <p class="case-card__result">→ {esc(case['result'][ctx.lang])}</p>
-      <div class="case-card__tags">{tags}</div>
+{honest}      <div class="case-card__tags">{tags}</div>
     </article>"""
 
 
@@ -202,6 +286,13 @@ def render_sections(page, ctx, posts, cases):
             out.append(cases_grid(ctx, cases[:n], more=bool(arg)))
         elif kind == "posts":
             out.append(posts_teaser(ctx, posts, arg or 3))
+        elif kind == "blocks":
+            # Текстовая страница из того же набора блоков, что и статьи:
+            # политика, оферта, «за что не берусь». Ширина и типографика
+            # берутся у статьи, поэтому длинный текст читается одинаково.
+            data = _load_blocks(arg)
+            html = blocks.render(data[ctx.lang], ctx)
+            out.append(f'<section class="textpage"><div class="post__body">{html}</div></section>')
         else:
             raise ValueError(f"неизвестная секция: {kind!r}")
     return "\n".join(out)
@@ -231,7 +322,13 @@ def build_page(page, ctx, posts, cases):
     has_builder = page.get("builder", True)
     if has_builder:
         html += fragment("builder-modal", ctx)
-    html += footer(ctx, scripts=("builder.js",) if has_builder else ())
+
+    # form.js грузим только там, где форма действительно есть
+    scripts = ("builder.js",) if has_builder else ()
+    if any((s if isinstance(s, str) else s[1]) == "contact-form"
+           for s in page["sections"] if not isinstance(s, str)):
+        scripts = scripts + ("form.js",)
+    html += footer(ctx, scripts=scripts)
 
     out = (ctx.url_path or "") + "index.html"
     write(out, html)

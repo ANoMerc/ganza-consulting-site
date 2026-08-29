@@ -2,13 +2,14 @@
 -- GANZA CONSULTING — analytics schema for Supabase (PostgreSQL)
 --
 -- Run this ONCE in Supabase → SQL Editor → New query → Run.
--- It creates: the events table, security rules, indexes, reporting views
--- and a retention function.
+-- It creates: the events table, the leads table (contact form), security
+-- rules, indexes, reporting views and retention functions.
 --
 -- Security model
 --   * the website writes with the public anon key and can ONLY insert
 --   * nobody can read with the anon key — reading requires a logged-in user
---   * no cookies, no personal data, no cross-site identifiers are stored
+--   * no cookies, no cross-session identifier, no cross-site identifiers
+--   * the session id lives in sessionStorage and dies with the tab
 -- ============================================================================
 
 create extension if not exists "pgcrypto";
@@ -20,8 +21,7 @@ create table if not exists public.events (
   id            bigint generated always as identity primary key,
   ts            timestamptz  not null default now(),
   event         text         not null,
-  visitor_id    uuid         not null,   -- stable per browser (localStorage)
-  session_id    uuid         not null,   -- resets after 30 min of inactivity
+  session_id    uuid         not null,   -- sessionStorage; dies with the tab
   path          text,                    -- e.g. /blog/when-not-to-automate/
   lang          text,                    -- en | ru
   page_type     text,                    -- home | blog-index | article | other
@@ -69,7 +69,6 @@ create index if not exists events_ts_idx        on public.events (ts desc);
 create index if not exists events_event_ts_idx  on public.events (event, ts desc);
 create index if not exists events_session_idx   on public.events (session_id, ts);
 create index if not exists events_path_idx      on public.events (path, ts desc);
-create index if not exists events_visitor_idx   on public.events (visitor_id);
 
 -- ---------------------------------------------------------------------------
 -- 3. ROW LEVEL SECURITY
@@ -102,7 +101,6 @@ create or replace view public.v_sessions with (security_invoker = on) as
 with base as (
   select
     session_id,
-    min(visitor_id::text)::uuid                                as visitor_id,
     min(ts)                                                    as started_at,
     max(ts)                                                    as ended_at,
     extract(epoch from (max(ts) - min(ts)))::int               as duration_sec,
@@ -139,7 +137,6 @@ create or replace view public.v_daily with (security_invoker = on) as
 select
   date_trunc('day', started_at)::date          as day,
   count(*)                                     as sessions,
-  count(distinct visitor_id)                   as visitors,
   sum(pageviews)                               as pageviews,
   round(avg(engaged_sec))                      as avg_engaged_sec,
   round(100.0 * count(*) filter (where is_bounce) / nullif(count(*),0), 1) as bounce_pct
@@ -258,11 +255,12 @@ group by 1,2
 order by sessions desc;
 
 -- ---------------------------------------------------------------------------
--- 5. RETENTION — keeps the free tier (500 MB) comfortable
---    Call manually, or schedule with pg_cron if it is enabled on your project:
---      select cron.schedule('prune-events','0 3 * * *','select public.prune_events(180)');
+-- 5. RETENTION — 24 месяца, как заявлено в политике конфиденциальности
+--    Срок в политике и срок здесь должны совпадать, иначе политика — вымысел.
+--      select cron.schedule('prune-events','0 3 * * *','select public.prune_events(730)');
+--      select cron.schedule('prune-leads', '0 3 * * *','select public.prune_leads(1095)');
 -- ---------------------------------------------------------------------------
-create or replace function public.prune_events(keep_days int default 180)
+create or replace function public.prune_events(keep_days int default 730)
 returns bigint
 language plpgsql
 security definer
@@ -315,3 +313,132 @@ grant select on
 --
 -- Sessions that reached Telegram:
 --   select count(distinct session_id) from events where event = 'outbound' and target_href like '%t.me%';
+
+-- ============================================================================
+-- 6. ЗАЯВКИ С ФОРМЫ
+--
+-- Отдельная таблица, отдельная политика. Аноним может только вставить строку
+-- и не может прочитать ни одной — включая свою. Ограничение частоты живёт в
+-- базе, а не только в браузере: клиентскую проверку обходит любой, кто умеет
+-- открыть консоль.
+-- ============================================================================
+create table if not exists public.leads (
+  id            bigint generated always as identity primary key,
+  ts            timestamptz not null default now(),
+  name          text        not null,
+  contact       text        not null,   -- email или @telegram, как прислали
+  contact_kind  text        not null,   -- email | telegram
+  message       text        not null,
+  lang          text,                   -- на каком языке пришли
+  path          text,                   -- с какой страницы отправили
+  utm_source    text,
+  utm_medium    text,
+  utm_campaign  text,
+  session_id    uuid,                   -- связать с аналитикой той же сессии
+  ip_hash       text,                   -- см. ниже: соль на стороне базы
+  handled_at    timestamptz,            -- отметка «ответил»
+  note          text,
+
+  constraint leads_kind_ck    check (contact_kind in ('email','telegram')),
+  constraint leads_len_ck     check (
+    length(name)     between 1 and 120  and
+    length(contact)  between 3 and 200  and
+    length(message)  between 10 and 4000 and
+    coalesce(length(path),0) <= 300
+  ),
+  constraint leads_ts_ck      check (ts > now() - interval '1 day'
+                                 and ts < now() + interval '1 hour')
+);
+
+comment on table public.leads is
+  'Заявки с формы обратной связи. Аноним может только insert. Хранение 36 мес.';
+
+create index if not exists leads_ts_idx      on public.leads (ts desc);
+create index if not exists leads_open_idx    on public.leads (ts desc) where handled_at is null;
+
+alter table public.leads enable row level security;
+
+drop policy if exists "anon can submit a lead" on public.leads;
+drop policy if exists "authenticated can read leads" on public.leads;
+drop policy if exists "authenticated can update leads" on public.leads;
+
+-- Важно: аноним сюда НЕ пишет. Заявки приходят только через Edge Function
+-- submit-lead, которая работает под service-ключом. Причина простая: публичный
+-- anon-ключ лежит в исходнике страницы, и если разрешить ему insert, таблицу
+-- можно набить мусором в обход формы. Заодно только на сервере известен
+-- IP-адрес, из которого считается ip_hash для ограничения частоты.
+revoke insert on public.leads from anon;
+
+create policy "authenticated can read leads"
+  on public.leads for select to authenticated using (true);
+
+create policy "authenticated can update leads"
+  on public.leads for update to authenticated using (true) with check (true);
+
+-- --- 6.1 Ограничение частоты -------------------------------------------------
+-- Не больше 3 заявок за час с одного ip_hash и не больше 30 за час всего.
+-- Триггер срабатывает до вставки: клиент может сколько угодно обходить свою
+-- проверку в JS, до таблицы это не дойдёт.
+create or replace function public.leads_rate_limit()
+returns trigger
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  per_ip  int;
+  overall int;
+begin
+  if new.ip_hash is not null then
+    select count(*) into per_ip
+      from public.leads
+     where ip_hash = new.ip_hash
+       and ts > now() - interval '1 hour';
+    if per_ip >= 3 then
+      raise exception 'rate limit: too many submissions from this source'
+        using errcode = 'check_violation';
+    end if;
+  end if;
+
+  select count(*) into overall
+    from public.leads
+   where ts > now() - interval '1 hour';
+  if overall >= 30 then
+    raise exception 'rate limit: too many submissions overall'
+      using errcode = 'check_violation';
+  end if;
+
+  return new;
+end;
+$$;
+
+drop trigger if exists leads_rate_limit_trg on public.leads;
+create trigger leads_rate_limit_trg
+  before insert on public.leads
+  for each row execute function public.leads_rate_limit();
+
+-- --- 6.2 Хранение ------------------------------------------------------------
+create or replace function public.prune_leads(keep_days int default 1095)
+returns bigint
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare removed bigint;
+begin
+  delete from public.leads where ts < now() - make_interval(days => keep_days);
+  get diagnostics removed = row_count;
+  return removed;
+end;
+$$;
+
+revoke all on function public.prune_leads(int) from public, anon;
+grant execute on function public.prune_leads(int) to authenticated;
+
+-- --- 6.3 Новые заявки для дашборда ------------------------------------------
+create or replace view public.v_leads with (security_invoker = on) as
+select id, ts, name, contact, contact_kind, message, lang, path,
+       utm_source, utm_medium, utm_campaign, handled_at, note,
+       (handled_at is null) as is_open
+from public.leads
+order by ts desc;
