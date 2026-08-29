@@ -1,0 +1,24 @@
+__pycache__/
+*.pyc
+.DS_Store
+
+# Собранный сайт. Публикацией занимается GitHub Actions
+# (.github/workflows/deploy.yml), в репозитории держим только исходники.
+# Если вернётесь на «Deploy from a branch» — удалите всё ниже.
+/index.html
+/404.html
+/sitemap.xml
+/robots.txt
+/.nojekyll
+/blog/
+/cases/
+/services/
+/en/
+/ru/
+/what-i-take/
+/privacy/
+/templates/
+
+# Собранные бандлы CSS/JS — их делает Tools/core/assets.py при каждой сборке.
+# В репозитории живут только исходники в assets/src/.
+assets/build/
