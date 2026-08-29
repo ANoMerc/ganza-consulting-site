@@ -105,7 +105,7 @@ td.path{max-width:340px;overflow:hidden;text-overflow:ellipsis;white-space:nowra
       <div class="chart"><canvas id="cPages"></canvas></div>
     </div>
     <div class="panel">
-      <h2>Where visitors come from</h2>
+      <h2>Where sessions come from</h2>
       <div class="chart"><canvas id="cSources"></canvas></div>
     </div>
     <div class="panel">
@@ -181,7 +181,7 @@ async function load() {
   document.getElementById("footnote").textContent = "loading…";
   while (from < 60000) {
     var { data, error } = await sb.from("events")
-      .select("ts,event,session_id,visitor_id,path,lang,page_type,title,referrer_host,utm_source,utm_medium,device,browser,target,target_href,section,value")
+      .select("ts,event,session_id,path,lang,page_type,title,referrer_host,utm_source,utm_medium,device,browser,target,target_href,section,value")
       .gte("ts", since).order("ts", { ascending: true }).range(from, from + page - 1);
     if (error) { document.getElementById("footnote").textContent = "Error: " + error.message; return; }
     all = all.concat(data);
@@ -255,7 +255,10 @@ function render() {
   var tg = outbound.filter(function (r) { return (r.target_href || "").indexOf("t.me") > -1; });
 
   document.getElementById("kpis").innerHTML = [
-    ["Visitors", new Set(data.map(function (r) { return r.visitor_id; })).size],
+    // Постоянного идентификатора больше нет: он жил в localStorage и по
+    // грузинскому закону приравнивался к cookie. Считаем сессии — это всё,
+    // что даёт сессионный идентификатор, и это честная метрика.
+    ["Sessions", new Set(data.map(function (r) { return r.session_id; })).size],
     ["Sessions", sessions.size],
     ["Pageviews", pv.length],
     ["Avg. time on page", avgSec + "s"],

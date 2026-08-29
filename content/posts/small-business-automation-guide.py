@@ -25,7 +25,7 @@ POST = dict(
         "ru": "автоматизация малого бизнеса, что автоматизировать в первую очередь, автоматизация процессов небольшой команды, no-code автоматизация, окупаемость автоматизации, ИИ для малого бизнеса, автоматизация рабочих процессов, стоимость поддержки автоматизации",
     },
     hashtags=["Automation", "SmallBusiness", "AI", "Productivity", "ProcessOptimization"],
-    related=["when-not-to-automate", "how-much-does-business-consulting-cost", "multilingual-website-not-converting"],
+    related=["when-not-to-automate", "how-much-does-business-consulting-cost", "multilingual-website-not-converting", "automation-instead-of-hiring"],
     body={
         "en": [
             ("p", "Small teams usually automate whatever annoys them most. That's a reasonable instinct and a bad ranking method — the most annoying task is often low-volume, and the highest-payback one is usually something nobody complains about because it's been absorbed into someone's week."),

@@ -96,7 +96,9 @@ PAGE = dict(
     description={{"en": "TODO en, 140–158 chars.", "ru": "TODO ru, 140–158 символов."}},
     keywords={{"en": "todo", "ru": "todo"}},
     sections=[
-        # ("fragment", "имя-файла-из-content/fragments")
+        # ("fragment", "имя-файла-из-content/fragments")  — двуязычный кусок вёрстки
+        # ("blocks",   "имя-файла-из-content/blocks")     — текстовая страница из блоков
+        # ("cases", 3) ("posts", 3) ("services_teaser", None)
         # ("cases", 3) ("posts", 3) ("services_teaser", None)
         ("fragment", "how-we-work"),
     ],

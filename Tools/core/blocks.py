@@ -34,10 +34,14 @@ def anchor(text):
 
 
 def resolve(text, ctx):
-    """Подстановки внутри контента: {{HOME}}, {{BLOG}}, {{CASES}}."""
+    """Подстановки внутри контента: HOME, BLOG, CASES, SERVICES, PRIVACY, TAKE, TEMPLATES."""
     return (text.replace("{{HOME}}", ctx.to())
                 .replace("{{BLOG}}", ctx.to("blog/"))
-                .replace("{{CASES}}", ctx.to("cases/")))
+                .replace("{{CASES}}", ctx.to("cases/"))
+                .replace("{{SERVICES}}", ctx.to("services/"))
+                .replace("{{PRIVACY}}", ctx.to("privacy/"))
+                .replace("{{TAKE}}", ctx.to("what-i-take/"))
+                .replace("{{TEMPLATES}}", ctx.to("templates/")))
 
 
 def plain(blocks):

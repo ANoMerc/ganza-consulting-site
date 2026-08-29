@@ -86,6 +86,35 @@ FAVICON = ("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox
            "font-size='66' font-family='Arial Black,sans-serif' font-weight='900' fill='%23e8ff2e' "
            "text-anchor='middle'%3EG%3C/text%3E%3C/svg%3E")
 
+# Пути к собранным бандлам. Заполняет build.py через set_assets().
+ASSETS = {}
+
+
+def set_assets(built):
+    ASSETS.clear()
+    ASSETS.update(built)
+
+
+# Определение слабого устройства — до первой отрисовки, поэтому инлайном.
+# saveData и prefers-reduced-data — явная просьба пользователя; память и ядра —
+# признак дешёвого телефона, на котором двадцать слоёв размытия и полноэкранный
+# SVG-шум стоят дороже всего остального на странице вместе взятого.
+# Определение слабого устройства — до первой отрисовки, поэтому инлайном.
+# saveData и prefers-reduced-data — явная просьба пользователя, её выполняем
+# без условий. Память и ядра сами по себе не показатель: четырёхъядерный
+# ноутбук отлично тянет оформление. Поэтому слабым считаем либо совсем малую
+# память, либо скромное железо в паре с сенсорным вводом — то есть телефон.
+PERF_SNIPPET = (
+    "(function(d){try{var n=navigator,c=n.connection||{},mm=window.matchMedia,"
+    "touch=mm&&mm('(pointer: coarse)').matches,"
+    "mem=n.deviceMemory||0,cpu=n.hardwareConcurrency||0,"
+    "low=c.saveData===true"
+    "||(mm&&mm('(prefers-reduced-data: reduce)').matches)"
+    "||(mem>0&&mem<=2)"
+    "||(touch&&mem>0&&mem<=4&&cpu>0&&cpu<=4);"
+    "if(low)d.documentElement.setAttribute('data-perf','low');}catch(e){}})(document);"
+)
+
 FONTS = ("https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Mono:wght@400;700"
          "&family=Inter:wght@400;500;600;700&display=swap")
 
@@ -137,12 +166,14 @@ def head(ctx, *, title, description, keywords="", og_image=None, og_image_alt=""
 <link rel="icon" href="{FAVICON}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="{FONTS}" rel="stylesheet">
-<link rel="stylesheet" href="{ctx.asset}css/base.css">
-<link rel="stylesheet" href="{ctx.asset}css/builder.css">
-<link rel="stylesheet" href="{ctx.asset}css/blog.css">
-<link rel="stylesheet" href="{ctx.asset}css/glass.css">
-{jsonld}<script src="{ctx.asset}js/analytics.js" defer></script>
+<link rel="stylesheet" href="{ctx.asset}{ASSETS['css']}">
+<!-- Шрифты с чужого домена больше не блокируют первую отрисовку: страница
+     рисуется системным шрифтом и переключается, когда файлы доедут. -->
+<link rel="preload" as="style" href="{FONTS}" fetchpriority="low">
+<link rel="stylesheet" href="{FONTS}" media="print" onload="this.media='all';this.onload=null">
+<noscript><link rel="stylesheet" href="{FONTS}"></noscript>
+<script>{PERF_SNIPPET}</script>
+{jsonld}
 </head>
 <body class="{body_class}">
 """
@@ -230,7 +261,7 @@ def header(ctx, active=""):
 
 def footer(ctx, scripts=()):
     L = ctx.L
-    extra = "".join(f'<script src="{ctx.asset}js/{s}" defer></script>\n' for s in scripts)
+    extra = "".join(f'<script src="{ctx.asset}{ASSETS[s]}" defer></script>\n' for s in scripts)
     return f"""
 <footer class="footer" id="contact">
   <div class="footer__top">
@@ -254,11 +285,11 @@ def footer(ctx, scripts=()):
   <div class="footer__bottom">
     <p class="footer__joke">{L['footer_joke']}</p>
     <p class="footer__legal">{L['footer_legal']}</p>
-    <p class="footer__links"><a href="{ctx.to('privacy/')}">{L['privacy']}</a></p>
+    <p class="footer__links"><a href="{ctx.to('templates/')}">{L['templates']}</a> · <a href="{ctx.to('what-i-take/')}">{L['take']}</a> · <a href="{ctx.to('privacy/')}">{L['privacy']}</a></p>
   </div>
 </footer>
 
-<script src="{ctx.asset}js/site.js" defer></script>
+<script src="{ctx.asset}{ASSETS['core']}" defer></script>
 {extra}</body>
 </html>
 """

@@ -92,6 +92,7 @@ def fragment(name, ctx):
              .replace("{{SERVICES}}", ctx.to("services/"))
              .replace("{{HERO_H1}}", hero_h1(ctx.lang))
              .replace("{{PRIVACY}}", ctx.to("privacy/"))
+             .replace("{{TAKE}}", ctx.to("what-i-take/"))
              .replace("{{FORM_ENDPOINT}}", cfg.FORM_ENDPOINT)
              .replace("{{FOUNDER_ALT}}",
                       "основатель Ganza Consulting" if ctx.lang == "ru"
@@ -180,6 +181,12 @@ def case_card(case, ctx):
     tags = "".join(f'<span class="badge">{t}</span>' for t in case.get("tags", []))
     # «Что бы я сделал иначе» — необязательный блок. Кейс без него читается как
     # реклама; с ним — как разбор, и заодно честно называет слабые места цифры.
+    read = ""
+    if case.get("read"):
+        r = case["read"]
+        label = "Разбор по теме" if ctx.lang == "ru" else "Related reading"
+        read = (f'      <p class="case-card__read"><a href="{ctx.to("blog/" + r["slug"] + "/")}" '
+                f'data-track="case-read-{r["slug"]}">{label}: {r[ctx.lang]} →</a></p>\n')
     honest = ""
     if case.get("honest"):
         label = "ЧЕСТНАЯ ОГОВОРКА" if ctx.lang == "ru" else "THE HONEST CAVEAT"
@@ -198,7 +205,7 @@ def case_card(case, ctx):
       <p class="case-card__label">{L['did']}</p>
       <p>{esc(case['did'][ctx.lang])}</p>
       <p class="case-card__result">→ {esc(case['result'][ctx.lang])}</p>
-{honest}      <div class="case-card__tags">{tags}</div>
+{honest}{read}      <div class="case-card__tags">{tags}</div>
     </article>"""
 
 
@@ -324,10 +331,10 @@ def build_page(page, ctx, posts, cases):
         html += fragment("builder-modal", ctx)
 
     # form.js грузим только там, где форма действительно есть
-    scripts = ("builder.js",) if has_builder else ()
+    scripts = ("builder",) if has_builder else ()
     if any((s if isinstance(s, str) else s[1]) == "contact-form"
            for s in page["sections"] if not isinstance(s, str)):
-        scripts = scripts + ("form.js",)
+        scripts = scripts + ("form",)
     html += footer(ctx, scripts=scripts)
 
     out = (ctx.url_path or "") + "index.html"

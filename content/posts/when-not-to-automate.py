@@ -25,7 +25,7 @@ POST = dict(
         "ru": "когда не нужно автоматизировать, риски автоматизации процессов, автоматизация сломанных процессов, ошибки внедрения ИИ, автоматизация бизнес-процессов, скрытые издержки автоматизации, стратегия автоматизации, провал RPA",
     },
     hashtags=["Automation", "AI", "ProcessOptimization", "DigitalTransformation", "Efficiency"],
-    related=["small-business-automation-guide", "lidl-digital-transformation-failure", "audit-nobody-reads"],
+    related=["small-business-automation-guide", "lidl-digital-transformation-failure", "audit-nobody-reads", "automation-instead-of-hiring"],
     body={
         "en": [
             ("p", "Every automation pitch sounds the same: \"we'll save you X hours a week.\" Almost none of them ask whether the process being automated should still exist."),
@@ -204,6 +204,7 @@ POST = dict(
             ("h2", "Когда автоматизация точно уместна"),
             ("p", "Всё вышесказанное — не аргумент против автоматизации: именно эта дисциплина и делает её работающей. Автоматизируйте уверенно, когда процесс стабилен, описуем, с малой долей исключений, проверяем и был бы нужен даже в хорошо устроенной версии компании. При этих условиях экономия реальна, накапливается, а стоимость поддержки остаётся соразмерной. Что делать в первую очередь в такой ситуации — в <a href=\"../small-business-automation-guide/\">руководстве по автоматизации малого бизнеса</a>."),
             ("p", "Вопрос, который стоит задать перед любым проектом автоматизации, звучит не «можно ли это автоматизировать». Он звучит так: <strong>если я автоматизирую это ровно в том виде, в каком оно есть сегодня, буду ли я гордиться тем, что выпустил?</strong>"),
+            ("p", "A one-page distillation of this article — <a href=\"{{HOME}}templates/automation-brief/\">the automation brief template</a>: the same thing in a form you can print and fill in."),
         ],
     },
     takeaways={

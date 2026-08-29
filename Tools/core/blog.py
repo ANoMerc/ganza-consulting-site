@@ -9,6 +9,7 @@ import datetime
 import re
 
 from . import blocks, config as cfg
+from .pages import fragment
 from .theme import (Ctx, esc, fmt_date, head, header, footer, ticker,
                     jsonld, org_node, person_node, write)
 
@@ -94,8 +95,8 @@ def faq_section(post, ctx):
 def author_box(ctx):
     return f"""<section class="post__author" data-reveal>
     <picture>
-      <source srcset="{ctx.asset}img/founder.webp" type="image/webp">
-      <img src="{ctx.asset}img/founder.jpg" width="96" height="126" alt="{esc(cfg.AUTHOR_NAME)}" loading="lazy" decoding="async">
+      <source srcset="{ctx.asset}img/founder-sm.webp" type="image/webp">
+      <img src="{ctx.asset}img/founder-sm.jpg" width="96" height="126" alt="{esc(cfg.AUTHOR_NAME)}" loading="lazy" decoding="async">
     </picture>
     <div>
       <p class="post__author-label">{ctx.L['author']}</p>
@@ -211,7 +212,8 @@ def build_post(post, posts, lang):
   <div class="post__cta" data-reveal>
     <div class="post__cta-box">
       <p>{L['cta_text']}</p>
-      <a class="btn btn--yellow" href="{cfg.TELEGRAM}" target="_blank" rel="noopener" data-track="post-cta-telegram">{L['cta_tg']}</a>
+      <a class="btn btn--yellow" href="#contact-form" data-track="post-cta-form">{L['cta_form']}</a>
+      <a class="btn btn--outline" href="{cfg.TELEGRAM}" target="_blank" rel="noopener" data-track="post-cta-telegram">{L['cta_tg']}</a>
       <a class="btn btn--outline" href="{ctx.to('services/')}#pricing" data-track="post-cta-pricing">{L['cta_pricing']}</a>
     </div>
   </div>
@@ -233,9 +235,11 @@ def build_post(post, posts, lang):
     <span class="post__nav-title">{esc(next_post['h1'][lang])}</span>
   </a>
 </nav>
+
+{fragment("contact-form", ctx)}
 </main>
 """
-    html += footer(ctx)
+    html += footer(ctx, scripts=("form",))
     out = ctx.url_path + "index.html"
     write(out, html)
     return out
@@ -280,9 +284,16 @@ def build_index(posts, lang):
     chips += "".join(f'<button class="blog-filter__btn" type="button" data-filter="{esc(t)}">{esc(t)}</button>'
                      for t in tags)
 
+    # Первые две карточки — над сгибом, они и есть кандидаты в LCP. Отложенная
+    # загрузка LCP-картинки стабильно добавляет к нему сотни миллисекунд, так
+    # что первым двум ставим eager + высокий приоритет, остальным — lazy.
+    def _load(i):
+        return ('loading="eager" fetchpriority="high"' if i < 2
+                else 'loading="lazy" fetchpriority="low"')
+
     cards = "\n".join(f"""    <a class="post-card" href="{x['slug']}/" data-tag="{esc(x['tag'][lang])}" data-reveal data-track="card-{x['slug']}">
       <span class="post-card__cover">
-        <img src="{ctx.asset}img/blog/{x['slug']}-card.webp" width="760" height="399" loading="lazy" decoding="async" alt="{esc(x['h1'][lang])}">
+        <img src="{ctx.asset}img/blog/{x['slug']}-card.webp" width="760" height="399" {_load(i)} decoding="async" alt="{esc(x['h1'][lang])}">
       </span>
       <span class="post-card__meta">
         <span class="post-card__tag">{esc(x['tag'][lang])}</span>
@@ -291,7 +302,7 @@ def build_index(posts, lang):
       <h2>{esc(x['h1'][lang])}</h2>
       <p class="post-card__excerpt">{esc(x['dek'][lang])}</p>
       <span class="post-card__cta">{L['read_article']}</span>
-    </a>""" for x in ordered)
+    </a>""" for i, x in enumerate(ordered))
 
     graph = [org_node(), person_node(lang),
              {"@type": "Blog", "@id": ctx.abs() + "#blog", "url": ctx.abs(),

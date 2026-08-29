@@ -25,7 +25,7 @@ POST = dict(
         "ru": "внутреннее повышение или внешний найм, организационный инбридинг, кадровый резерв, риски преемственности, групповое мышление в управлении, найм руководителей, организационный дизайн, закрытый кадровый контур",
     },
     hashtags=["OrganizationalDesign", "Leadership", "CorporateCulture", "TalentStrategy", "ExecutiveHiring"],
-    related=["audit-nobody-reads", "lidl-digital-transformation-failure", "how-to-choose-a-consultant"],
+    related=["audit-nobody-reads", "lidl-digital-transformation-failure", "how-to-choose-a-consultant", "automation-consultant-role"],
     body={
         "en": [
             ("p", "Universities have a name for hiring almost exclusively their own graduates: <strong>academic inbreeding</strong>. Fewer competing ideas, more replication of the same approach, slow intellectual isolation. It is studied, measured, and in many countries actively regulated."),

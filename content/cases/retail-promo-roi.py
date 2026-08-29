@@ -40,5 +40,6 @@ CASE = dict(
               "часть из этих 22% принадлежит сезонности, и отделить её я не могу. Честно "
               "говоря, я ожидал результата лучше.",
     },
+    read=dict(slug="audit-nobody-reads", ru="Почему отчёты не меняют бизнес", en="Why reports don't change anything"),
     tags=["Analytics", "Retail", "Pricing"],
 )

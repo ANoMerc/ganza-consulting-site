@@ -26,7 +26,7 @@ PAGE = dict(
     },
     hero={
         "eyebrow": {"en": "PRIVACY", "ru": "КОНФИДЕНЦИАЛЬНОСТЬ"},
-        "h1": TITLE,
+        "h1": {"en": "PRIVACY POLICY", "ru": "ПОЛИТИКА КОНФИДЕНЦИАЛЬНОСТИ"},
         "lead": {
             "en": "Written against what the code actually does, not against a template.",
             "ru": "Написана по тому, что делает код, а не по шаблону.",

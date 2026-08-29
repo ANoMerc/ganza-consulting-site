@@ -1,0 +1,77 @@
+/* ==========================================================================
+   СЛАБЫЕ УСТРОЙСТВА И ЭКОНОМИЯ ТРАФИКА
+   --------------------------------------------------------------------------
+   Атрибут data-perf="low" ставит инлайновый скрипт в <head> до первой
+   отрисовки — по saveData, prefers-reduced-data, объёму памяти и числу ядер.
+   Поэтому дешёвый телефон не рисует тяжёлое оформление и потом от него не
+   отказывается, а сразу получает облегчённую версию.
+
+   Что именно снимаем и почему:
+     · body::after — полноэкранный SVG-шум на feTurbulence. Самый дорогой
+       элемент страницы: фильтр растеризуется на каждый кадр перерисовки.
+     · body::before — четыре радиальных градиента с бесконечной анимацией.
+       Оставляем один статический.
+     · backdrop-filter — сорок с лишним слоёв размытия. Меняем на плотный фон.
+     · тени и переходы — дёшевы поодиночке, заметны в сумме.
+
+   Загружается последним слоем бандла, поэтому переопределять !important
+   почти нигде не требуется.
+   ========================================================================== */
+
+[data-perf="low"] body::after{ display:none !important; }
+
+[data-perf="low"] body::before{
+  animation:none !important;
+  background-image:radial-gradient(130% 110% at 50% -10%,
+                                   var(--g-bg-2, #16162a) 0%,
+                                   var(--g-bg, #0b0b09) 62%) !important;
+}
+
+/* Размытие снимаем целиком: на слабом GPU оно дороже всего остального вместе. */
+[data-perf="low"] *{
+  -webkit-backdrop-filter:none !important;
+  backdrop-filter:none !important;
+}
+
+[data-perf="low"] .service-cell, [data-perf="low"] .case-card,
+[data-perf="low"] .price-card,   [data-perf="low"] .about__col,
+[data-perf="low"] .post-card,    [data-perf="low"] .related-card,
+[data-perf="low"] .post__toc,    [data-perf="low"] .post__takeaways,
+[data-perf="low"] .post__author, [data-perf="low"] .post__table-wrap,
+[data-perf="low"] .post__note,   [data-perf="low"] .post__steps li,
+[data-perf="low"] .faq__list,    [data-perf="low"] .post__cta-box,
+[data-perf="low"] .site-header,  [data-perf="low"] .cform input[type=text],
+[data-perf="low"] .cform textarea{
+  background:rgba(28,28,22,.94);
+  box-shadow:none;
+}
+[data-perf="low"] .case-card--yellow{background:rgba(70,74,18,.94);}
+[data-perf="low"] .case-card--blue{background:rgba(28,28,96,.94);}
+[data-perf="low"] .case-card--red{background:rgba(96,28,22,.94);}
+
+/* Движение стоит кадров, а на дешёвом экране почти не читается. */
+[data-perf="low"] *{
+  animation-duration:.01ms !important;
+  animation-iteration-count:1 !important;
+  transition-duration:.01ms !important;
+  scroll-behavior:auto !important;
+}
+[data-perf="low"] .btn:hover, [data-perf="low"] .service-cell:hover,
+[data-perf="low"] .case-card:hover, [data-perf="low"] .price-card:hover,
+[data-perf="low"] .post-card:hover, [data-perf="low"] .related-card:hover,
+[data-perf="low"] .contact-link:hover{ transform:none !important; }
+
+/* Появление блоков по мере прокрутки: на слабом устройстве наблюдатель и
+   перерисовка стоят дороже, чем эффект. Показываем сразу. */
+[data-perf="low"] [data-reveal]{ opacity:1 !important; transform:none !important; }
+
+/* Тикер — бесконечная анимация во всю ширину. Останавливаем. */
+[data-perf="low"] .ticker__track{ animation:none !important; }
+
+/* Пользователь явно просил экономить трафик — то же самое, но без JS. */
+@media (prefers-reduced-data: reduce){
+  body::after{ display:none !important; }
+  body::before{ animation:none !important; }
+  *{ -webkit-backdrop-filter:none !important; backdrop-filter:none !important; }
+  .ticker__track{ animation:none !important; }
+}

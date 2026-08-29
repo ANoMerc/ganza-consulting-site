@@ -35,5 +35,6 @@ CASE = dict(
               "заявкам после запуска у меня нет, и придумывать их я не буду. Он показывает "
               "объём и скорость, а не выручку.",
     },
+    read=dict(slug="multilingual-website-not-converting", ru="Почему многоязычный сайт не конвертирует", en="Why a multilingual site doesn't convert"),
     tags=["Web", "Localization", "RTL"],
 )

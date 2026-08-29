@@ -119,9 +119,9 @@ LABELS = {
         "cta_text": "Have a problem like this one? I take on the work a checklist doesn't "
                     "close — fixed scope, a written answer, and a number you can act on. "
                     "The price is known before the work starts.",
-        "cta_tg": "MESSAGE ON TELEGRAM →", "cta_pricing": "SEE PRICING",
+        "cta_form": "DESCRIBE THE PROBLEM →", "cta_tg": "MESSAGE ON TELEGRAM →", "cta_pricing": "SEE PRICING",
         "footer_h": "READY TO SORT<br>OUT THE CHAOS?<br>WRITE TO US.",
-        "privacy": "Privacy policy",
+        "templates": "Templates", "take": "What I take on", "privacy": "Privacy policy",
         "footer_joke": "COPYRIGHT IS BORING",
         "footer_legal": "© 2026 GANZA CONSULTING. ALL RIGHTS... WHATEVER.",
         "ticker": "NOW BOOKING {{QUARTER}}&nbsp;&nbsp;—&nbsp;&nbsp;CONSULTING + AUTOMATION + "
@@ -141,9 +141,9 @@ LABELS = {
         "cta_text": "Похожая задача? Я берусь за то, что не закрывается чек-листом: "
                     "фиксированный объём, письменный ответ и цифра, с которой можно работать. "
                     "Цена известна до начала работы.",
-        "cta_tg": "НАПИСАТЬ В TELEGRAM →", "cta_pricing": "СМОТРЕТЬ ЦЕНЫ",
+        "cta_form": "ОПИСАТЬ ЗАДАЧУ →", "cta_tg": "НАПИСАТЬ В TELEGRAM →", "cta_pricing": "СМОТРЕТЬ ЦЕНЫ",
         "footer_h": "ПОРА РАЗГРЕСТИ<br>ХАОС?<br>НАПИШИТЕ НАМ.",
-        "privacy": "Политика конфиденциальности",
+        "templates": "Шаблоны", "take": "За что я берусь", "privacy": "Политика конфиденциальности",
         "footer_joke": "КОПИРАЙТ — СКУКА",
         "footer_legal": "© 2026 GANZA CONSULTING. ВСЕ ПРАВА... НЕВАЖНО.",
         "ticker": "ПРИНИМАЕМ ПРОЕКТЫ НА {{QUARTER}}&nbsp;&nbsp;—&nbsp;&nbsp;КОНСАЛТИНГ + АВТОМАТИЗАЦИЯ + "
@@ -160,10 +160,12 @@ MONTHS = {
 
 # --- меню -------------------------------------------------------------------
 # Порядок пунктов в шапке. Ключ 'page' — slug страницы, 'anchor' — якорь на ней.
+# Слэш на конце обязателен: без него GitHub Pages отвечает 301 на каждый клик
+# в шапке, то есть каждая внутренняя ссылка ведёт на редирект, а не на канон.
 NAV = [
-    dict(key="services", page="services"),
-    dict(key="cases", page="cases"),
-    dict(key="blog", page="blog"),
+    dict(key="services", page="services/"),
+    dict(key="cases", page="cases/"),
+    dict(key="blog", page="blog/"),
     dict(key="contact", page="", anchor="contact"),
 ]
 

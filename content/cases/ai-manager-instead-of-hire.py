@@ -49,5 +49,6 @@ CASE = dict(
               "ломалось. Созвоны раз в неделю, письменные протоколы, правки там, где были "
               "нужны. Интересен здесь ответ, а не драма.",
     },
+    read=dict(slug="when-not-to-automate", ru="Когда не нужно автоматизировать", en="When not to automate"),
     tags=["n8n", "Telegram", "CustDev", "Operations"],
 )

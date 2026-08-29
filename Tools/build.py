@@ -14,8 +14,8 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-from core import blog, config as cfg, pages
-from core.theme import Ctx, write
+from core import assets, blog, config as cfg, pages
+from core.theme import Ctx, set_assets, write
 
 
 # ---------------------------------------------------------------------------
@@ -114,9 +114,11 @@ NOT_FOUND = """<!DOCTYPE html>
 <link rel="icon" href="{favicon}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="{fonts}" rel="stylesheet">
-<link rel="stylesheet" href="{site}/{assets}/css/base.css">
-<link rel="stylesheet" href="{site}/{assets}/css/glass.css">
+<link rel="stylesheet" href="{site}/{assets}/{css_bundle}">
+<link rel="preload" as="style" href="{fonts}" fetchpriority="low">
+<link rel="stylesheet" href="{fonts}" media="print" onload="this.media='all';this.onload=null">
+<noscript><link rel="stylesheet" href="{fonts}"></noscript>
+<script>{perf}</script>
 <style>
   .nf{{max-width:720px; margin:0 auto; padding:22vh 24px 12vh; text-align:left;}}
   .nf__code{{font-family:var(--font-mono); font-size:13px; letter-spacing:.14em;
@@ -150,10 +152,11 @@ def build_404():
     Пути здесь абсолютные: файл показывается по произвольному URL любой
     вложенности, и относительные ссылки на css из него не разрешаются.
     """
-    from core.theme import FAVICON, FONTS
+    from core.theme import ASSETS, FAVICON, FONTS, PERF_SNIPPET
     write("404.html", NOT_FOUND.format(
         lang=cfg.DEFAULT_LANG, brand=cfg.BRAND, site=cfg.SITE,
-        assets=cfg.ASSETS, favicon=FAVICON, fonts=FONTS))
+        assets=cfg.ASSETS, favicon=FAVICON, fonts=FONTS,
+        css_bundle=ASSETS["css"], perf=PERF_SNIPPET))
 
 
 # ---------------------------------------------------------------------------
@@ -188,7 +191,11 @@ def main():
 
     wiped = clean()
 
-    print(f"контент: {len(page_defs)} страниц, {len(cases)} кейсов, {len(posts)} статей\n")
+    built = assets.build()          # склейка CSS/JS до страниц: в них попадут имена бандлов
+    set_assets(built)
+
+    print(f"контент: {len(page_defs)} страниц, {len(cases)} кейсов, {len(posts)} статей")
+    print(assets.report(built) + "\n")
 
     made = 0
     for lang in cfg.LANGS:
