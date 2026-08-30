@@ -147,6 +147,7 @@ POST = dict(
             ("q", "Многие до сих пор соревнуются в том, кто поставит на входную дверь замок "
                   "надёжнее. Настоящий вопрос — кто научится строить дом, из которого не хочется "
                   "уходить."),
+            ("p", "Если фильтр всё-таки нужен, его стоит хотя бы измерить: <a href=\"{{HOME}}templates/noise-audit/\">шумовой аудит</a> за день показывает, насколько расходятся оценки разных интервьюеров по одним и тем же кандидатам. Обычно сильнее, чем ожидают."),
         ],
 
         "en": [
@@ -271,6 +272,7 @@ POST = dict(
                   "longer than their competitors."),
             ("q", "Many are still competing over who fits the sturdier lock to the front door. "
                   "The real question is who learns to build a house people don't want to leave."),
+            ("p", "If a filter is genuinely needed, it is worth at least measuring: <a href=\"{{HOME}}templates/noise-audit/\">a noise audit</a> takes a day and shows how far different interviewers diverge on the same candidates. Usually further than anyone expects."),
         ],
     },
     takeaways={
