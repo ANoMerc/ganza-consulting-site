@@ -94,10 +94,7 @@ def faq_section(post, ctx):
 
 def author_box(ctx):
     return f"""<section class="post__author" data-reveal>
-    <picture>
-      <source srcset="{ctx.asset}img/founder-sm.webp" type="image/webp">
-      <img src="{ctx.asset}img/founder-sm.jpg" width="120" height="160" alt="{esc(cfg.AUTHOR_NAME)}" loading="lazy" decoding="async">
-    </picture>
+    <img src="{ctx.asset}img/founder-sm.webp" width="120" height="160" alt="{esc(cfg.AUTHOR_NAME)}" loading="lazy" decoding="async">
     <div>
       <p class="post__author-label">{ctx.L['author']}</p>
       <p class="post__author-name">{esc(cfg.AUTHOR_NAME)}</p>

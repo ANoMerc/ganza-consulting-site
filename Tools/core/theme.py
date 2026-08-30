@@ -198,7 +198,7 @@ def person_node(lang):
         "@type": "Person", "@id": f"{cfg.SITE}/#george-mercer",
         "name": cfg.AUTHOR_NAME,
         "url": f"{cfg.SITE}/{cfg.LANG_PREFIX[lang]}#about",
-        "image": f"{cfg.SITE}/{cfg.ASSETS}/img/founder.jpg",
+        "image": f"{cfg.SITE}/{cfg.ASSETS}/img/founder.webp",
         "description": cfg.AUTHOR_BIO[lang],
         "jobTitle": "Independent consultant" if lang == "en" else "Независимый консультант",
         "worksFor": {"@id": f"{cfg.SITE}/#organization"},

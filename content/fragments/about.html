@@ -13,11 +13,12 @@
   </div>
   <div class="about__col about__col--photo">
     <div class="about__photo-frame">
-      <picture>
-        <source srcset="{{ASSET}}img/founder.webp" type="image/webp">
-        <img class="about__photo" src="{{ASSET}}img/founder.jpg" width="736" height="962"
-             loading="lazy" decoding="async" alt="George Mercer, {{FOUNDER_ALT}}">
-      </picture>
+      <!-- Без <picture> и без запасного jpg: фотография вырезана по контуру,
+           а прозрачности в jpeg не бывает — запасной файл подкладывал под
+           человека чёрный прямоугольник. webp с альфой понимают все браузеры
+           с 2020 года, обложки блога здесь давно живут без запасного. -->
+      <img class="about__photo" src="{{ASSET}}img/founder.webp" width="736" height="962"
+           loading="lazy" decoding="async" alt="George Mercer, {{FOUNDER_ALT}}">
       <span class="about__photo-tag">GEORGE MERCER<br><span class="lang-ru">ОСНОВАТЕЛЬ</span><span class="lang-en">FOUNDER</span></span>
     </div>
   </div>
