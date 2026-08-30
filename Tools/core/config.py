@@ -43,14 +43,14 @@ CONTROLLER = {
 }
 
 AUTHOR_BIO = {
-    "en": "Independent consultant and founder of Ganza Consulting. Works on the single hard "
-          "problems other firms decline: non-standard automation, stalled projects, messy "
+    "en": "Independent consultant and founder of Ganza Consulting. Works on the problems a "
+          "checklist doesn't close: non-standard automation, stalled projects, messy "
           "processes and custom web builds. Every article here is written from engagements "
           "that were actually delivered — not from a content calendar.",
-    "ru": "Независимый консультант и основатель Ganza Consulting. Берёт единичные сложные "
-          "задачи, от которых отказываются другие: нетиповую автоматизацию, застрявшие "
-          "проекты, запутанные процессы и нестандартную веб-разработку. Каждая статья здесь "
-          "написана по реально сделанным проектам, а не по контент-плану.",
+    "ru": "Независимый консультант и основатель Ganza Consulting. Берёт задачи, которые не "
+          "закрываются чек-листом: нетиповую автоматизацию, застрявшие проекты, запутанные "
+          "процессы и нестандартную веб-разработку. Каждая статья здесь написана по реально "
+          "сделанным проектам, а не по контент-плану.",
 }
 
 # --- языки ------------------------------------------------------------------
@@ -142,7 +142,7 @@ LABELS = {
                     "фиксированный объём, письменный ответ и цифра, с которой можно работать. "
                     "Цена известна до начала работы.",
         "cta_form": "ОПИСАТЬ ЗАДАЧУ →", "cta_tg": "НАПИСАТЬ В TELEGRAM →", "cta_pricing": "СМОТРЕТЬ ЦЕНЫ",
-        "footer_h": "ПОРА РАЗГРЕСТИ<br>ХАОС?<br>НАПИШИТЕ НАМ.",
+        "footer_h": "ПОРА РАЗГРЕСТИ<br>ХАОС?<br>НАПИШИТЕ МНЕ.",
         "templates": "Шаблоны", "take": "За что я берусь", "privacy": "Политика конфиденциальности",
         "footer_joke": "КОПИРАЙТ — СКУКА",
         "footer_legal": "© 2026 GANZA CONSULTING. ВСЕ ПРАВА... НЕВАЖНО.",
@@ -166,6 +166,8 @@ NAV = [
     dict(key="services", page="services/"),
     dict(key="cases", page="cases/"),
     dict(key="blog", page="blog/"),
+    dict(key="templates", page="templates/"),
+    dict(key="take", page="what-i-take/"),
     dict(key="contact", page="", anchor="contact"),
 ]
 

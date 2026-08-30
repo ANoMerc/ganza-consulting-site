@@ -55,6 +55,10 @@ def _load_blocks(name):
     return mod.BLOCKS
 
 
+def load_services():
+    return sorted(_load_dir("services", "SERVICE"), key=lambda x: x.get("order", 99))
+
+
 def load_pages():
     return sorted(_load_dir("pages", "PAGE"), key=lambda p: p.get("order", 99))
 
@@ -150,17 +154,20 @@ def services_teaser(ctx):
     фрагмента, что и полная секция, — расходиться им негде."""
     src = open(os.path.join(cfg.CONTENT, "fragments", "services.html"), encoding="utf-8").read()
     items = []
-    for m in re.finditer(r'data-project-type="([a-z]+)".*?<h3>(.*?)</h3>', src, re.S):
-        kind, title = m.group(1), m.group(2).replace("<br>", " ")
-        items.append(f"""    <a class="teaser-card" href="{ctx.to('services/')}#services" data-reveal data-track="teaser-{kind}">
+    # Ключ — data-service, а не data-project-type: у направления «ИИ» нет
+    # ставки в калькуляторе и потому нет data-project-type, но своя страница
+    # у него есть, и в тизере оно должно быть наравне с остальными.
+    for m in re.finditer(r'data-service="([a-z-]+)".*?<h3>(.*?)</h3>', src, re.S):
+        slug, title = m.group(1), m.group(2).replace("<br>", " ")
+        items.append(f"""    <a class="teaser-card" href="{ctx.to('services/' + slug + '/')}" data-reveal data-track="teaser-{slug}">
       <span class="teaser-card__title">{title}</span>
       <span class="teaser-card__go">→</span>
     </a>""")
     L = ctx.L
-    lead = ("Одна сложная задача — и человек, который в ней разберётся. Четыре направления, "
+    lead = ("Одна сложная задача — и человек, который в ней разберётся. Пять направлений, "
             "в каждом фиксированный объём и цена до старта."
             if ctx.lang == "ru" else
-            "One hard problem and the person who'll get to the bottom of it. Four areas, each "
+            "One hard problem and the person who'll get to the bottom of it. Five areas, each "
             "with a fixed scope and a price agreed before the work starts.")
     return f"""<section class="teaser" id="services-teaser">
   <div class="section-label">
@@ -181,6 +188,14 @@ def case_card(case, ctx):
     tags = "".join(f'<span class="badge">{t}</span>' for t in case.get("tags", []))
     # «Что бы я сделал иначе» — необязательный блок. Кейс без него читается как
     # реклама; с ним — как разбор, и заодно честно называет слабые места цифры.
+    # Разбор кейса в виде заполненного шаблона — если он есть, это главная
+    # ссылка карточки: документ убедительнее пересказа.
+    detail = ""
+    if case.get("detail"):
+        d = case["detail"]
+        detail = (f'      <p class="case-card__detail"><a href="{ctx.to(d["path"])}" '
+                  f'data-track="case-detail-{d["path"].strip("/").replace("/", "-")}">'
+                  f'{d[ctx.lang]} →</a></p>\n')
     read = ""
     if case.get("read"):
         r = case["read"]
@@ -205,7 +220,7 @@ def case_card(case, ctx):
       <p class="case-card__label">{L['did']}</p>
       <p>{esc(case['did'][ctx.lang])}</p>
       <p class="case-card__result">→ {esc(case['result'][ctx.lang])}</p>
-{honest}{read}      <div class="case-card__tags">{tags}</div>
+{detail}{honest}{read}      <div class="case-card__tags">{tags}</div>
     </article>"""
 
 
@@ -293,6 +308,10 @@ def render_sections(page, ctx, posts, cases):
             out.append(cases_grid(ctx, cases[:n], more=bool(arg)))
         elif kind == "posts":
             out.append(posts_teaser(ctx, posts, arg or 3))
+        elif kind == "service":
+            from . import services as svc_mod
+            data = {x["slug"]: x for x in load_services()}[arg]
+            out.append(f'<div class="svc">{svc_mod.render(data, ctx)}</div>')
         elif kind == "blocks":
             # Текстовая страница из того же набора блоков, что и статьи:
             # политика, оферта, «за что не берусь». Ширина и типографика

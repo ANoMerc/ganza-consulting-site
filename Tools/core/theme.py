@@ -285,7 +285,7 @@ def footer(ctx, scripts=()):
   <div class="footer__bottom">
     <p class="footer__joke">{L['footer_joke']}</p>
     <p class="footer__legal">{L['footer_legal']}</p>
-    <p class="footer__links"><a href="{ctx.to('templates/')}">{L['templates']}</a> · <a href="{ctx.to('what-i-take/')}">{L['take']}</a> · <a href="{ctx.to('privacy/')}">{L['privacy']}</a></p>
+    <p class="footer__links"><a href="{ctx.to('privacy/')}">{L['privacy']}</a></p>
   </div>
 </footer>
 

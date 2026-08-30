@@ -92,12 +92,21 @@ def render(blocks, ctx, collect_toc=False):
                           for t, b in content)
             out.append(f'<ol class="post__steps" data-reveal>{lis}</ol>')
         elif kind == "table":
-            head = "".join(f'<th scope="col">{h}</th>' for h in content["head"])
+            # Таблица-паспорт («ключ — значение») шапки не имеет. Пустой <thead>
+            # рисовал бы поперёк неё серую полосу, поэтому если все заголовки
+            # пустые, шапку не выводим вовсе.
+            heads = content.get("head") or []
+            has_head = any(str(h).strip() for h in heads)
+            thead = ""
+            if has_head:
+                cells = "".join(f'<th scope="col">{h}</th>' for h in heads)
+                thead = f"<thead><tr>{cells}</tr></thead>"
             rows = "".join("<tr>" + "".join(f"<td>{r(c)}</td>" for c in row) + "</tr>"
                            for row in content["rows"])
             cap = f'<caption>{content["caption"]}</caption>' if content.get("caption") else ""
-            out.append('<div class="post__table-wrap" data-reveal><table class="post__table">'
-                       f"{cap}<thead><tr>{head}</tr></thead><tbody>{rows}</tbody></table></div>")
+            cls = "post__table" + ("" if has_head else " post__table--plain")
+            out.append('<div class="post__table-wrap" data-reveal>'
+                       f'<table class="{cls}">{cap}{thead}<tbody>{rows}</tbody></table></div>')
         else:
             raise ValueError(f"неизвестный тип блока: {kind!r}")
 
