@@ -12,7 +12,7 @@
   margin:0 auto;
   border-bottom:var(--border-w) solid var(--line);
 }
-.blog-hero h1{font-size:clamp(34px, 5vw, 56px);}
+.blog-hero h1{font-size:clamp(28px, 5vw, 56px);}
 .blog-hero__intro{
   font-family:var(--font-body);
   font-size:15px;
@@ -136,7 +136,7 @@
 }
 .post__tag{background:var(--yellow); color:var(--ink); padding:5px 10px;}
 .post__head h1{
-  font-size:clamp(30px, 5vw, 50px);
+  font-size:clamp(26px, 5vw, 50px);
   line-height:1.08;
   max-width:900px;
 }

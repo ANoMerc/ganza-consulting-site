@@ -125,7 +125,7 @@ def build_post(post, posts, lang):
          f'<meta property="article:section" content="{esc(post["tag"][lang])}">']
         + [f'<meta property="article:tag" content="{esc(t)}">' for t in post["hashtags"]])
 
-    cover = f"{cfg.SITE}/{cfg.ASSETS}/img/blog/{post['cover']}"
+    cover = f"{cfg.SITE}/{cfg.ASSETS}/img/blog/{post['cover'].format(lang=lang)}"
     graph = [org_node(), person_node(lang),
              {"@type": "BreadcrumbList", "@id": ctx.abs() + "#breadcrumb",
               "itemListElement": [
@@ -293,7 +293,7 @@ def build_index(posts, lang):
 
     cards = "\n".join(f"""    <a class="post-card" href="{x['slug']}/" data-tag="{esc(x['tag'][lang])}" data-reveal data-track="card-{x['slug']}">
       <span class="post-card__cover">
-        <img src="{ctx.asset}img/blog/{x['slug']}-card.webp" width="760" height="399" {_load(i)} decoding="async" alt="{esc(x['h1'][lang])}">
+        <img src="{ctx.asset}img/blog/{x['slug']}-card-{lang}.webp" width="760" height="399" {_load(i)} decoding="async" alt="{esc(x['h1'][lang])}">
       </span>
       <span class="post-card__meta">
         <span class="post-card__tag">{esc(x['tag'][lang])}</span>

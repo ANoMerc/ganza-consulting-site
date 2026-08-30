@@ -38,7 +38,9 @@ def load_posts():
     posts = _load_dir("posts", "POST")
     for p in posts:
         p.setdefault("updated", p["date"])
-        p.setdefault("cover", f"{p['slug']}-cover.png")
+        # Обложка своя на каждый язык: {slug}-cover-ru.png / -en.png.
+        # Здесь хранится шаблон, язык подставляет тот, кто рисует страницу.
+        p.setdefault("cover", p["slug"] + "-cover-{lang}.png")
     return sorted(posts, key=lambda p: p["date"])
 
 

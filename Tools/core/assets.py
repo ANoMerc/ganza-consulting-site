@@ -14,11 +14,47 @@
 import hashlib
 import os
 import re
+import shutil
 
 from . import config as cfg
 
 SRC = os.path.join(cfg.ROOT, "assets", "src")
 OUT = os.path.join(cfg.ROOT, "assets", "build")
+
+# ---------------------------------------------------------------------------
+# Шрифты
+# ---------------------------------------------------------------------------
+# Свои файлы вместо чужого CDN. Причина не в скорости: прошлый набор шрифтов
+# раздавался Google Fonts и не содержал кириллицы, из-за чего весь русский
+# сайт набирался системным Arial, и заметить это было нечем. Свои файлы
+# лежат в репозитории и проверяются скриптом Tools/fontcheck.py.
+#
+# Латиница и кириллица — разные файлы с unicode-range: русский посетитель не
+# качает латинский набор, английский не качает кириллический. Режет и пакует
+# Tools/make-webfonts.py, вручную и редко.
+LATIN = ("U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,"
+         "U+2000-206F,U+2074,U+20AC,U+2122,U+2190-21FF,U+2212,U+2215,U+FEFF,U+FFFD")
+CYRILLIC = "U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116"
+
+# (файл, семейство, начертание, диапазон)
+FONT_FACES = [
+    ("unbounded-900-cyrillic.woff2",     "Unbounded",      "900",       CYRILLIC),
+    ("unbounded-900-latin.woff2",        "Unbounded",      "900",       LATIN),
+    ("jetbrains-mono-400-cyrillic.woff2", "JetBrains Mono", "400",      CYRILLIC),
+    ("jetbrains-mono-400-latin.woff2",    "JetBrains Mono", "400",      LATIN),
+    ("jetbrains-mono-700-cyrillic.woff2", "JetBrains Mono", "700",      CYRILLIC),
+    ("jetbrains-mono-700-latin.woff2",    "JetBrains Mono", "700",      LATIN),
+    ("inter-var-cyrillic.woff2",          "Inter",         "100 900",   CYRILLIC),
+    ("inter-var-latin.woff2",             "Inter",         "100 900",   LATIN),
+]
+
+# Что предзагружать в <head> — по языку страницы: заголовок и текст первого
+# экрана, и только они. Предзагружать всё — значит соревноваться с
+# собственным CSS за ту же полосу.
+PRELOAD = {
+    "ru": ["unbounded-900-cyrillic.woff2", "inter-var-cyrillic.woff2"],
+    "en": ["unbounded-900-latin.woff2", "inter-var-latin.woff2"],
+}
 
 # Порядок важен: glass.css — снимаемый слой оформления и идёт последним.
 # lowpower.css последним: он снимает оформление, а не добавляет.
@@ -53,10 +89,31 @@ def build():
 
     out = {}
 
+    # Шрифты копируются в build/ с хешем в имени и объявляются @font-face
+    # в начале бандла. Оба лежат в одной папке, поэтому в url() достаточно
+    # имени файла — относительные пути внутри build/ никогда не разъедутся.
+    fonts = {}
+    for fname, family, weight, urange in FONT_FACES:
+        src = os.path.join(SRC, "fonts", fname)
+        digest = hashlib.sha1(open(src, "rb").read()).hexdigest()[:8]
+        stem, ext = os.path.splitext(fname)
+        hashed = f"{stem}.{digest}{ext}"
+        shutil.copyfile(src, os.path.join(OUT, hashed))
+        fonts[fname] = hashed
+    out["preload_fonts"] = {lang: [f"build/{fonts[f]}" for f in files]
+                            for lang, files in PRELOAD.items()}
+
+    faces = "\n".join(
+        "@font-face{font-family:'%s';font-style:normal;font-weight:%s;"
+        "font-display:swap;src:url(%s) format('woff2');unicode-range:%s;}"
+        % (family, weight, fonts[fname], urange)
+        for fname, family, weight, urange in FONT_FACES
+    )
+
     css = "\n".join(
         open(os.path.join(SRC, "css", f), encoding="utf-8").read() for f in CSS_BUNDLE
     )
-    css = _minify_css(css)
+    css = faces + "\n" + _minify_css(css)
     name = f"site.{_hash(css)}.css"
     open(os.path.join(OUT, name), "w", encoding="utf-8").write(css)
     out["css"] = f"build/{name}"
@@ -79,6 +136,11 @@ def report(built):
                             ("js", [f for fs in JS_BUNDLES.values() for f in fs]))
         for f in files
     )
-    out_bytes = sum(os.path.getsize(os.path.join(OUT, f)) for f in os.listdir(OUT))
+    out_bytes = sum(os.path.getsize(os.path.join(OUT, f))
+                    for f in os.listdir(OUT) if not f.endswith(".woff2"))
+    font_bytes = sum(os.path.getsize(os.path.join(OUT, f))
+                     for f in os.listdir(OUT) if f.endswith(".woff2"))
     return (f"ассеты: {len(CSS_BUNDLE)}+{sum(len(v) for v in JS_BUNDLES.values())} файлов "
-            f"→ {len(built)} бандла · {src_bytes // 1024} → {out_bytes // 1024} КБ")
+            f"→ {len(built) - 1} бандла · {src_bytes // 1024} → {out_bytes // 1024} КБ · "
+            f"шрифты {len(FONT_FACES)} файлов, {font_bytes // 1024} КБ "
+            f"(на язык качается около половины)")

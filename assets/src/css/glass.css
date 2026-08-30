@@ -430,10 +430,11 @@ body::after{
 /* ==========================================================================
    4. БЛОГ
    ========================================================================== */
-/* В брутальной теме под шапкой блога шла жирная тёмная черта. На тёмном
-   стекле она читается как чёрная полоса поперёк экрана — меняем на ту же
-   тонкую линию, что и у остальных границ темы. */
-.blog-hero{border-bottom:1px solid var(--g-border);}
+/* В брутальной теме под шапкой блога шла жирная тёмная черта. Сначала я
+   заменил её на тонкую линию темы, но на тёмном фоне она белая и режет
+   страницу ровно там, где ничего разделять не нужно: заголовок блога и
+   фильтры — это один блок. Линии здесь нет вовсе. */
+.blog-hero{border-bottom:0;}
 .blog-hero__intro{color:var(--g-text-2);}
 .blog-hero__count{color:var(--g-text-3); opacity:1;}
 .breadcrumbs a{color:var(--g-text-2); opacity:1;}
@@ -525,7 +526,13 @@ body.page-article::after{opacity:.035;}
 .post__steps li{padding:16px 18px 16px 62px;}
 .post__steps li::before{color:var(--yellow);}
 .post__steps span{color:var(--g-text-2); opacity:1;}
-.post__table-wrap{border:1px solid var(--g-border); border-radius:var(--g-r); overflow:hidden;}
+/* overflow-x:auto, а не overflow:hidden. Короткая запись перебивала
+   прокрутку из blog.css, и таблица шире экрана не пряталась под скролл, а
+   толкала всю страницу: на телефоне статья ехала вбок, а правая колонка
+   таблицы была недостижима. По вертикали прячем — скругление углов держится
+   на этом. */
+.post__table-wrap{border:1px solid var(--g-border); border-radius:var(--g-r);
+  overflow-x:auto; overflow-y:hidden;}
 .post__table{background:transparent; color:var(--g-text-2);}
 .post__table caption{
   background:var(--g-surface-2); color:var(--g-text-3);

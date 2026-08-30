@@ -12,8 +12,12 @@
   --line:#0d0d0a;
   --border-w:3px;
   --border-w-lg:4px;
-  --font-display:'Archivo Black', Arial, sans-serif;
-  --font-mono:'Space Mono', 'Courier New', monospace;
+  /* Unbounded и JetBrains Mono вместо Archivo Black и Space Mono: в тех
+     двух нет ни одного кириллического глифа, и русская половина сайта
+     молча набиралась Arial и Courier New. Запасные шрифты в стеке — с
+     кириллицей, чтобы отказ CDN не возвращал ту же проблему. */
+  --font-display:'Unbounded', 'Arial Black', Arial, sans-serif;
+  --font-mono:'JetBrains Mono', 'DejaVu Sans Mono', 'Courier New', monospace;
   --font-body:'Inter', -apple-system, sans-serif;
 }
 
@@ -35,7 +39,12 @@ img{max-width:100%; display:block;}
 [hidden]{display:none !important;}
 a{color:inherit; text-decoration:none;}
 ul{list-style:none;}
-h1,h2,h3{font-family:var(--font-display); text-transform:uppercase; line-height:1.02; letter-spacing:-0.01em;}
+/* overflow-wrap здесь не украшение, а страховка. Unbounded заметно шире
+   прежнего Archivo Black, а русские слова длиннее английских: на узком
+   экране «автоматизировать» перестаёт помещаться в строку и, если не
+   разрешить перенос внутри слова, толкает всю страницу вбок. */
+h1,h2,h3{font-family:var(--font-display); text-transform:uppercase; line-height:1.02;
+  letter-spacing:-0.01em; overflow-wrap:break-word;}
 
 /* ---- language switching ---- */
 html[data-lang="ru"] .lang-en{display:none;}

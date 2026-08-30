@@ -112,12 +112,7 @@ NOT_FOUND = """<!DOCTYPE html>
 <title>404 — {brand}</title>
 <meta name="robots" content="noindex, follow">
 <link rel="icon" href="{favicon}">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="{site}/{assets}/{css_bundle}">
-<link rel="preload" as="style" href="{fonts}" fetchpriority="low">
-<link rel="stylesheet" href="{fonts}" media="print" onload="this.media='all';this.onload=null">
-<noscript><link rel="stylesheet" href="{fonts}"></noscript>
 <script>{perf}</script>
 <style>
   .nf{{max-width:720px; margin:0 auto; padding:22vh 24px 12vh; text-align:left;}}
@@ -152,10 +147,10 @@ def build_404():
     Пути здесь абсолютные: файл показывается по произвольному URL любой
     вложенности, и относительные ссылки на css из него не разрешаются.
     """
-    from core.theme import ASSETS, FAVICON, FONTS, PERF_SNIPPET
+    from core.theme import ASSETS, FAVICON, PERF_SNIPPET
     write("404.html", NOT_FOUND.format(
         lang=cfg.DEFAULT_LANG, brand=cfg.BRAND, site=cfg.SITE,
-        assets=cfg.ASSETS, favicon=FAVICON, fonts=FONTS,
+        assets=cfg.ASSETS, favicon=FAVICON,
         css_bundle=ASSETS["css"], perf=PERF_SNIPPET))
 
 

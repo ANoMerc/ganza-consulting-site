@@ -115,15 +115,17 @@ PERF_SNIPPET = (
     "if(low)d.documentElement.setAttribute('data-perf','low');}catch(e){}})(document);"
 )
 
-FONTS = ("https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Mono:wght@400;700"
-         "&family=Inter:wght@400;500;600;700&display=swap")
+# Ссылки на Google Fonts здесь больше нет. Archivo Black и Space Mono
+# раздавались оттуда и не содержали кириллицы — русский сайт молча набирался
+# Arial и Courier New. Теперь шрифты свои, лежат в assets/src/fonts/,
+# объявляются в бандле (core/assets.py) и проверяются Tools/fontcheck.py.
 
 
 def head(ctx, *, title, description, keywords="", og_image=None, og_image_alt="",
          og_type="website", jsonld="", extra_meta="", robots=None, body_class="",
          feed=None):
     robots = robots or "index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1"
-    og_image = og_image or f"{cfg.SITE}/{cfg.ASSETS}/img/og-cover.png"
+    og_image = og_image or f"{cfg.SITE}/{cfg.ASSETS}/img/og-cover-{ctx.lang}.png"
 
     alts = "\n".join(
         f'<link rel="alternate" hreflang="{l}" href="{ctx.abs(lang=l)}">' for l in cfg.LANGS
@@ -164,14 +166,11 @@ def head(ctx, *, title, description, keywords="", og_image=None, og_image_alt=""
 <meta name="twitter:image" content="{og_image}">
 {extra_meta}
 <link rel="icon" href="{FAVICON}">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- Шрифты лежат рядом с бандлом, на чужой домен запросов больше нет:
+     ни preconnect, ни ожидания стороннего CSS. @font-face объявлены в самом
+     бандле, а два файла первого экрана предзагружаются. -->
+{chr(10).join(f'<link rel="preload" as="font" type="font/woff2" href="{ctx.asset}{f}" crossorigin>' for f in ASSETS.get("preload_fonts", {}).get(ctx.lang, []))}
 <link rel="stylesheet" href="{ctx.asset}{ASSETS['css']}">
-<!-- Шрифты с чужого домена больше не блокируют первую отрисовку: страница
-     рисуется системным шрифтом и переключается, когда файлы доедут. -->
-<link rel="preload" as="style" href="{FONTS}" fetchpriority="low">
-<link rel="stylesheet" href="{FONTS}" media="print" onload="this.media='all';this.onload=null">
-<noscript><link rel="stylesheet" href="{FONTS}"></noscript>
 <script>{PERF_SNIPPET}</script>
 {jsonld}
 </head>
@@ -186,7 +185,9 @@ def org_node():
     return {
         "@type": "Organization", "@id": f"{cfg.SITE}/#organization",
         "name": cfg.BRAND, "url": f"{cfg.SITE}/", "email": cfg.EMAIL,
-        "logo": {"@type": "ImageObject", "url": f"{cfg.SITE}/{cfg.ASSETS}/img/og-cover.png",
+        # Узел организации один на весь сайт, языка у него нет — берём
+        # русскую карточку, русская версия основная (она же x-default).
+        "logo": {"@type": "ImageObject", "url": f"{cfg.SITE}/{cfg.ASSETS}/img/og-cover-ru.png",
                  "width": 1200, "height": 630},
         "sameAs": [cfg.TELEGRAM, cfg.LINKEDIN],
     }
