@@ -18,6 +18,10 @@ BLOCKS = {
               "для оценки, а вам — понимание, стоит ли вообще начинать. Незаполненный блок "
               "тоже информативен: если вы не можете ответить на вопрос, это и есть первый "
               "результат."),
+        ("p", "Как он выглядит заполненным по реальному проекту — "
+              "<a href=\"{{HOME}}cases/ai-manager/\">разбор кейса «ИИ-менеджер вместо "
+              "найма»</a>: те же девять разделов с ответами и пояснениями, почему каждый "
+              "сформулирован именно так."),
         ("note", "Правило, которое экономит больше всего: <strong>сначала заполните разделы "
                  "1–3 и остановитесь.</strong> Если после них стало понятно, что процесс надо "
                  "переделать, а не автоматизировать, вы уже сэкономили бюджет внедрения."),
@@ -204,6 +208,9 @@ BLOCKS = {
               "needed to estimate, and give you an understanding of whether to start at all. "
               "An unfilled block is informative too: if you cannot answer a question, that is "
               "your first result."),
+        ("p", "What it looks like filled in from a real project: "
+              "<a href=\"{{HOME}}cases/ai-manager/\">the AI manager case</a> — the same nine "
+              "sections with answers, annotated with why each is worded the way it is."),
         ("note", "The rule that saves the most: <strong>fill in sections 1–3 and stop.</strong> "
                  "If by then it is clear the process needs redesigning rather than automating, "
                  "you have already saved the implementation budget."),

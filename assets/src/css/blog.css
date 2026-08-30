@@ -394,7 +394,12 @@ a.lang-switch{text-decoration:none;}
   display:flex; gap:20px; align-items:flex-start;
   border:var(--border-w) solid var(--line); padding:22px; margin:44px 0; background:var(--paper-dim);
 }
-.post__author img{width:96px; height:96px; object-fit:cover; border:var(--border-w) solid var(--line); flex:0 0 auto;}
+/* Гибким элементом здесь является <picture>, а не <img>: без flex:0 0 auto на
+   нём фотография сжималась до двух десятков пикселей. Портретное соотношение
+   вместо квадрата — на квадратном кропе от человека остаётся один нос. */
+.post__author picture{flex:0 0 auto; display:block; width:120px;}
+.post__author img{width:120px; height:160px; object-fit:cover; object-position:50% 20%;
+                  border:var(--border-w) solid var(--line); flex:0 0 auto;}
 .post__author-label{font-family:var(--font-mono); font-size:10px; letter-spacing:.1em; text-transform:uppercase; opacity:.6;}
 .post__author-name{font-family:var(--font-display); font-size:18px; margin:4px 0 8px;}
 .post__author-bio{font-size:15px; margin-bottom:10px;}
@@ -437,4 +442,10 @@ a.lang-switch{text-decoration:none;}
   .post__toc,.post__takeaways,.post__faq,.post__author{
     max-width:none; margin-left:24px; margin-right:24px;
   }
+}
+
+/* Таблица без шапки («ключ — значение»): первый столбец играет роль заголовка. */
+.post__table--plain td:first-child{
+  font-family:var(--font-mono); font-size:12.5px; letter-spacing:.03em;
+  text-transform:uppercase; opacity:.72; white-space:nowrap; vertical-align:top;
 }

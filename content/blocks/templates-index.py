@@ -7,7 +7,7 @@ BLOCKS = {
         ("p", "Каждая собрана из практики и из статей этого блога, а приёмы, которые я взял "
               "у других, названы своими именами: определение готовности и недоделанная работа — "
               "из Large-Scale Scrum, допуски и управление по отклонениям — из PRINCE2, "
-              "формальная альтернатива для больших систем — ГОСТ 34.602-2020."),
+              "шумовой аудит и протокол промежуточных оценок — из «Шума» Канемана, Сибони и Санстейна, формальная альтернатива для больших систем — ГОСТ 34.602-2020."),
 
         ("h2", "Шаблон ТЗ на автоматизацию одного процесса"),
         ("p", "Девять разделов вместо девяти обязательных разделов стандарта. Заполните первые "
@@ -29,6 +29,14 @@ BLOCKS = {
               "сделанным, а что в это определение не вошло, но всё равно должно случиться. "
               "Для команд, которые работают асинхронно. "
               "<a href=\"{{HOME}}templates/decision-record/\">Открыть шаблон →</a>"),
+
+        ("h2", "Шумовой аудит"),
+        ("p", "Приём из «Шума» Канемана, Сибони и Санстейна. Как за день измерить разброс в "
+              "решениях, которые должны были совпасть — оценках кандидатов, сметах, "
+              "приоритетах, — три вида шума и шесть приёмов гигиены решений. Меряет "
+              "согласованность, а не правоту, поэтому работает даже там, где правильный ответ "
+              "станет известен через год. "
+              "<a href=\"{{HOME}}templates/noise-audit/\">Открыть шаблон →</a>"),
 
         ("note", "Если после заполнения окажется, что задача ваша, а рук нет — "
                  "<a href=\"{{SERVICES}}\">посмотрите форматы работы</a>. Если окажется, что "
@@ -62,6 +70,14 @@ BLOCKS = {
               "as done and what didn't make that definition but still has to happen. For teams "
               "working asynchronously. "
               "<a href=\"{{HOME}}templates/decision-record/\">Open the template →</a>"),
+
+        ("h2", "Noise audit"),
+        ("p", "A practice from <em>Noise</em> by Kahneman, Sibony and Sunstein. How to spend a "
+              "day measuring the scatter in judgements that should have agreed — candidate "
+              "scores, estimates, priorities — plus three kinds of noise and six decision "
+              "hygiene practices. It measures agreement rather than correctness, so it works "
+              "even where the right answer won't be known for a year. "
+              "<a href=\"{{HOME}}templates/noise-audit/\">Open the template →</a>"),
 
         ("note", "If filling one in shows the problem is yours but the hands aren't — "
                  "<a href=\"{{SERVICES}}\">look at the engagement formats</a>. If it shows there "

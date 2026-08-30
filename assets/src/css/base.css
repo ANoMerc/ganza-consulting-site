@@ -28,6 +28,11 @@ body{
   overflow-x:hidden;
 }
 img{max-width:100%; display:block;}
+
+/* Скрытие атрибутом hidden должно работать всегда. Любое собственное
+   display: у элемента перебивает браузерное [hidden]{display:none} — из-за
+   этого фильтр в блоге проставлял hidden, а карточки оставались на экране. */
+[hidden]{display:none !important;}
 a{color:inherit; text-decoration:none;}
 ul{list-style:none;}
 h1,h2,h3{font-family:var(--font-display); text-transform:uppercase; line-height:1.02; letter-spacing:-0.01em;}
@@ -304,7 +309,10 @@ html[data-lang="en"] .lang-switch__opt[data-set="en"]{opacity:1;}
 .services{border-bottom:var(--border-w) solid var(--line);}
 .services__grid{
   display:grid;
-  grid-template-columns:repeat(4,1fr);
+  /* Три колонки, а не четыре: направлений стало пять, и при четырёх
+     последнее оставалось одиноким в пустом ряду. При трёх пятая карточка
+     занимает две колонки и ряд закрывается. */
+  grid-template-columns:repeat(3,1fr);
   border-top:var(--border-w) solid var(--line);
   max-width:1320px;
   margin:0 auto;
@@ -993,10 +1001,12 @@ html[data-lang="en"] .lang-switch__opt[data-set="en"]{opacity:1;}
 /* ==========================================================================
    ФОРМА ОБРАТНОЙ СВЯЗИ
    ========================================================================== */
-.contact-form{padding:var(--section-pad, 90px) 0;}
-/* Выравниваем по .section-label выше, у неё свои 32px по горизонтали. */
-.cform{display:flex; flex-direction:column; gap:22px; max-width:720px; margin:34px 32px 0;}
-@media (max-width:640px){.cform{margin:28px 20px 0;}}
+/* Контейнер сайта — max-width:1320px и padding:0 32px, как у .teaser.
+   Раньше форма этого не знала и на экранах шире 1320 прилипала к краю окна,
+   пока весь остальной контент центрировался. */
+.contact-form{max-width:1320px; margin:0 auto; padding:0 32px var(--section-pad, 90px);}
+.contact-form .section-label{padding-left:0; padding-right:0;}
+.cform{display:flex; flex-direction:column; gap:22px; max-width:720px; margin:34px 0 0;}
 .cform__row{display:grid; grid-template-columns:1fr 1fr; gap:22px;}
 @media (max-width:640px){.cform__row{grid-template-columns:1fr;}}
 
@@ -1034,7 +1044,8 @@ html[data-lang="en"] .lang-switch__opt[data-set="en"]{opacity:1;}
 .cform__status--err{color:var(--red);}
 
 /* Текстовые страницы (политика, оферта): та же колонка, что у статьи. */
-.textpage{padding:0 32px 90px;}
+/* Текстовые страницы: тот же контейнер, что и везде. */
+.textpage{max-width:1320px; margin:0 auto; padding:0 32px 90px;}
 .textpage .post__body{max-width:72ch; margin:0;}
 @media (max-width:640px){.textpage{padding:0 20px 64px;}}
 .footer__links{margin:10px 0 0;}
@@ -1079,4 +1090,149 @@ html[data-lang="en"] .lang-switch__opt[data-set="en"]{opacity:1;}
   .post__table, .post__table th, .post__table td{border:1px solid #999 !important;}
   .post__checklist li{break-inside:avoid;}
   h2, h3{break-after:avoid;}
+}
+
+/* Ссылка на заполненное ТЗ в карточке кейса: главный переход, поэтому ярче
+   остальных ссылок карточки. */
+.case-card__detail{margin:16px 0 0;}
+.case-card__detail a{
+  font-family:var(--font-mono); font-size:12.5px; line-height:1.45;
+  letter-spacing:.03em; font-weight:700;
+  color:var(--yellow); text-decoration:underline; text-underline-offset:3px;
+}
+
+/* ==========================================================================
+   СТРАНИЦА НАПРАВЛЕНИЯ
+   Контейнер такой же, как у .teaser и .contact-form: max-width:1320px и
+   margin:0 auto. Фиксированные боковые отступы здесь были бы ошибкой —
+   они считаются от окна, а не от колонки, и на широком экране блок уезжает
+   влево. Один раз уже уехал.
+   ========================================================================== */
+.svc{max-width:1320px; margin:0 auto; padding:40px 32px 8px;}
+.svc-block{margin:0 0 54px;}
+.svc-block:last-child{margin-bottom:8px;}
+.svc-block__title{
+  font-family:var(--font-mono); font-size:12px; font-weight:700;
+  letter-spacing:.12em; text-transform:uppercase;
+  color:var(--g-text-3, rgba(13,13,10,.7));
+  margin:0 0 20px; padding-bottom:12px;
+  border-bottom:1px solid var(--g-border, rgba(13,13,10,.14));
+}
+
+/* ---- простые списки ---- */
+.svc-list{list-style:none; margin:0; padding:0; max-width:860px;
+  display:flex; flex-direction:column; gap:14px;}
+.svc-list li{
+  position:relative; padding-left:26px;
+  font-size:16px; line-height:1.6; color:var(--g-text-2, inherit);
+}
+.svc-list li::before{
+  content:"▸"; position:absolute; left:0; top:0;
+  color:var(--blue); font-weight:700;
+}
+.svc-list--check li::before{content:"✓"; color:var(--yellow);}
+.svc-list--no li::before{content:"—"; color:var(--red);}
+
+/* ---- шаги ---- */
+.svc-steps{
+  list-style:none; margin:0; padding:0; counter-reset:svc;
+  display:grid; grid-template-columns:1fr; gap:16px;
+}
+/* Две колонки, а не auto-fit: у направлений то четыре шага, то пять, и
+   auto-fit оставлял последний карточкой в треть ширины посреди пустоты.
+   Нечётный последний растягивается на обе колонки — ряд всегда полный. */
+@media (min-width:900px){
+  .svc-steps{grid-template-columns:1fr 1fr;}
+  .svc-steps li:last-child:nth-child(odd){grid-column:1 / -1;}
+}
+.svc-steps li{
+  counter-increment:svc; padding:24px 24px 26px;
+  background:linear-gradient(158deg, var(--g-surface-2, rgba(0,0,0,.04)), var(--g-surface, rgba(0,0,0,.02)));
+  border:1px solid var(--g-border, rgba(13,13,10,.14));
+  border-radius:var(--g-r, 22px);
+  box-shadow:var(--g-spec, none), var(--g-shadow, none);
+}
+.svc-steps li::before{
+  content:counter(svc, decimal-leading-zero);
+  display:block; font-family:var(--font-mono); font-size:12px; font-weight:700;
+  letter-spacing:.12em; color:var(--yellow); margin-bottom:14px;
+}
+.svc-steps strong{
+  display:block; font-family:var(--font-display); font-size:17px; line-height:1.22;
+  text-transform:uppercase; margin-bottom:10px;
+}
+.svc-steps span{display:block; font-size:14.5px; line-height:1.65; color:var(--g-text-2, inherit);}
+
+/* ---- форматы и цены ---- */
+.svc-prices{display:grid; grid-template-columns:repeat(auto-fit,minmax(290px,1fr)); gap:16px;}
+.svc-price{
+  display:flex; flex-direction:column; gap:10px; padding:24px;
+  text-decoration:none; color:inherit;
+  background:linear-gradient(158deg, var(--g-surface-2, rgba(0,0,0,.04)), var(--g-surface, rgba(0,0,0,.02)));
+  border:1px solid var(--g-border, rgba(13,13,10,.14));
+  border-radius:var(--g-r, 22px);
+  box-shadow:var(--g-spec, none), var(--g-shadow, none);
+  transition:border-color .18s ease, transform .18s ease;
+}
+.svc-price:hover{border-color:var(--g-border-2, var(--ink)); transform:translateY(-2px);}
+.svc-price__name{
+  font-family:var(--font-display); font-size:16px; line-height:1.22; text-transform:uppercase;
+}
+.svc-price__note{font-size:14px; line-height:1.55; color:var(--g-text-3, inherit);}
+.svc-price__num{
+  margin-top:auto; padding-top:6px;
+  font-family:var(--font-display); font-size:30px; line-height:1; color:var(--yellow);
+}
+.svc-more{margin:22px 0 0;}
+.svc-more a:not(.btn){
+  font-family:var(--font-mono); font-size:12.5px; letter-spacing:.06em;
+  text-decoration:underline; text-underline-offset:4px; color:var(--g-text-2, inherit);
+}
+
+/* ---- кейс ---- */
+.svc-case{
+  display:flex; flex-direction:column; gap:12px; padding:30px 30px 32px;
+  max-width:860px; text-decoration:none; color:inherit;
+  background:linear-gradient(158deg, var(--g-surface-2, rgba(0,0,0,.04)), var(--g-surface, rgba(0,0,0,.02)));
+  border:1px solid var(--g-border, rgba(13,13,10,.14));
+  border-radius:var(--g-r, 22px);
+  box-shadow:var(--g-spec, none), var(--g-shadow, none);
+  transition:border-color .18s ease, transform .18s ease;
+}
+.svc-case:hover{border-color:var(--g-border-2, var(--ink)); transform:translateY(-2px);}
+.svc-case__stat{
+  font-family:var(--font-display); font-size:clamp(28px,4vw,40px); line-height:1; color:var(--yellow);
+}
+.svc-case__title{
+  font-family:var(--font-display); font-size:19px; line-height:1.2; text-transform:uppercase;
+}
+.svc-case__lead{font-size:15px; line-height:1.6; color:var(--g-text-2, inherit);}
+
+/* ---- почитать ---- */
+.svc-read{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:2px; max-width:860px;}
+.svc-read a{
+  display:block; padding:14px 16px; border-radius:var(--g-r-sm, 14px);
+  font-size:15.5px; line-height:1.4; text-decoration:none; color:inherit;
+  border:1px solid transparent; transition:background .18s ease, border-color .18s ease;
+}
+.svc-read a::before{content:"→ "; color:var(--blue); font-family:var(--font-mono);}
+.svc-read a:hover{background:var(--g-surface, rgba(0,0,0,.04)); border-color:var(--g-border, rgba(13,13,10,.14));}
+
+.svc-block--muted .svc-list li{color:var(--g-text-3, inherit);}
+
+@media (max-width:720px){
+  .svc{padding-left:16px; padding-right:16px;}
+  .svc-block{margin-bottom:40px;}
+  .svc-steps li{padding:20px;}
+}
+
+/* Пятая карточка услуг ведёт ссылкой, а не открывает калькулятор: ссылка
+   внутри CTA должна выглядеть так же, как обычный текст CTA. */
+.service-cell__cta a{color:inherit; text-decoration:none;}
+
+/* Последняя карточка направления, если она вторая в своём ряду из трёх,
+   растягивается на оставшиеся две колонки. Работает и для пяти карточек,
+   и останется верным, если их станет восемь. */
+@media (min-width:981px){
+  .services__grid > .service-cell:last-child:nth-child(3n+2){grid-column:span 2;}
 }
